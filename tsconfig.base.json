@@ -26,6 +26,8 @@
             "@inventory/core/logging": ["libs/core/src/lib/logging/index.ts"],
             "@inventory/core/validation": ["libs/core/src/lib/validation/index.ts"],
             "@inventory/core": ["libs/core/src/index.ts"],
+            "@inventory/database/type-orm-config": ["libs/database/src/lib/type-orm-config/index.ts"],
+            "@inventory/database": ["libs/database/src/index.ts"],
         }
     },
     "exclude": ["node_modules", "tmp"]
