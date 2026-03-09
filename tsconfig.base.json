@@ -16,9 +16,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
-            "@inventory/core/decorators": [
-                "libs/core/src/lib/decorators/index.ts"
-            ],
+            "@inventory/core/decorators": ["libs/core/src/lib/decorators/index.ts"],
             "@inventory/core/domain": ["libs/core/src/lib/domain/index.ts"],
             "@inventory/core/errors": ["libs/core/src/lib/errors/index.ts"],
             "@inventory/core/guards": ["libs/core/src/lib/guards/index.ts"],
@@ -28,6 +26,19 @@
             "@inventory/core": ["libs/core/src/index.ts"],
             "@inventory/database/type-orm-config": ["libs/database/src/lib/type-orm-config/index.ts"],
             "@inventory/database": ["libs/database/src/index.ts"],
+            "@inventory/shared/domain": ["libs/shared/src/lib/domain/index.ts"],
+            "@inventory/shared/infrastructure": ["libs/shared/src/lib/infrastructure/index.ts"],
+            "@inventory/shared/registry": ["libs/shared/src/lib/registry/index.ts"],
+            "@inventory/shared": ["libs/shared/src/index.ts"],
+            "@inventory/user/domain": ["libs/user/src/lib/domain/index.ts"],
+            "@inventory/user/application": ["libs/user/src/lib/application/index.ts"],
+            "@inventory/user/infrastructure": ["libs/user/src/lib/infrastructure/index.ts"],
+            "@inventory/user": ["libs/user/src/index.ts"],
+            "@inventory/auth/domain": ["libs/auth/src/lib/domain/index.ts"],
+            "@inventory/auth/application": ["libs/auth/src/lib/application/index.ts"],
+            "@inventory/auth/infrastructure": ["libs/auth/src/lib/infrastructure/index.ts"],
+            "@inventory/auth/presentation": ["libs/auth/src/lib/presentation/index.ts"],
+            "@inventory/auth": ["libs/auth/src/index.ts"],
         }
     },
     "exclude": ["node_modules", "tmp"]
