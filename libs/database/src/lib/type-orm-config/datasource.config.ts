@@ -5,4 +5,4 @@ export const publicDataSourceConfig: PostgresConnectionOptions = {
     type: 'postgres',
     url: parsed.data?.DATABASE_URL,
     synchronize: false
-};
+}

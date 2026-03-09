@@ -1,9 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-
-import { publicDataSourceConfig } from './type-orm-config/public-schema.config';
-
-// import { GlobalRegistry } from '@cloud-native-erp/shared/registry';
+import { publicDataSourceConfig } from './type-orm-config/datasource.config';
+import { GlobalRegistry } from '@inventory/shared/registry';
 
 @Global()
 @Module({
@@ -12,8 +10,7 @@ import { publicDataSourceConfig } from './type-orm-config/public-schema.config';
             useFactory: async () => {
                 return {
                     ...publicDataSourceConfig,
-                    // entities: GlobalRegistry.entities,
-                    // migrations: GlobalRegistry.migrations
+                    entities: GlobalRegistry.entities,
                 }
             }
         })

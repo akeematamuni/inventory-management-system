@@ -1,26 +1,17 @@
 import { DataSource } from 'typeorm';
-import { publicDataSourceConfig } from './public-schema.config';
-import { getEntitiesOrMigrations } from './util.config';
+import { publicDataSourceConfig } from './datasource.config';
+import { getMigrations } from './util.config';
 
-/**
-Utility script for running batch migrations for public schema.
-Uses the same generic configs used by individual modules. 
-COMMAND: pnpm exec tsx libs/database/src/lib/type-orm-config/public-migrations.config.ts
-*/
-
-export const publicModules: string[] = [
-    'billing',
-    'tenant',
-    'auth',
-    'public-user'
-]
+/** COMMAND: pnpm exec tsx libs/database/src/lib/type-orm-config/migrations.config.ts */
 
 async function runPublicMigrations() {
-    console.log('Starting migration script for public...');
+    const migrations =  await getMigrations();
+
+    console.log('Starting migration script for public...\n', migrations);
 
     const publicDataSource = new DataSource({
         ...publicDataSourceConfig,
-        migrations: getEntitiesOrMigrations(publicModules, 'migrations'),
+        migrations
     });
 
     try {
