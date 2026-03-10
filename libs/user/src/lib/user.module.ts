@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { USER_REPOSITORY } from './domain';
-import { CreateUserService, GetUserByEmailService, GetUserByIdService } from './application';
+import { CreateUserService, GetUserByEmailService, GetUserByIdService, UserExistService } from './application';
 import { UserRepositoryTypeOrm } from './infrastructure';
 import { UserEntityTypeOrm } from './infrastructure/typeorm/entities/user.entity';
 import { SharedModule } from '@inventory/shared';
@@ -17,12 +17,14 @@ import { SharedModule } from '@inventory/shared';
         { provide: USER_REPOSITORY, useClass: UserRepositoryTypeOrm },
         { provide: CreateUserService, useClass: CreateUserService },
         { provide: GetUserByEmailService, useClass: GetUserByEmailService },
-        { provide: GetUserByIdService, useClass: GetUserByIdService }
+        { provide: GetUserByIdService, useClass: GetUserByIdService },
+        { provide: UserExistService, useClass: UserExistService }
     ],
     exports: [
         CreateUserService,
         GetUserByEmailService,
-        GetUserByIdService
+        GetUserByIdService,
+        UserExistService
     ],
 })
 export class UserModule {}

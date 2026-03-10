@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { EntityManager, IsNull, Repository } from "typeorm";
+import { EntityManager, Repository } from "typeorm";
 
 import { Email, IUserRepository, User } from "../../../domain";
 import { UserEntityTypeOrm } from "../entities/user.entity";
@@ -15,12 +15,6 @@ export class UserRepositoryTypeOrm implements IUserRepository {
         const entity = UserMapper.toPersistence(user);
         const saved = await repo.save(entity);
         return UserMapper.toDomain(saved);
-    }
-
-    async findAll(manager?: EntityManager): Promise<User[]> {
-        const repo = manager ? manager.getRepository(UserEntityTypeOrm) : this.repository;
-        const entities = await repo.find({ where: { deletedAt: IsNull() } });
-        return entities.map(e => UserMapper.toDomain(e));
     }
 
     async findById(id: string, manager?: EntityManager): Promise<User | null> {
