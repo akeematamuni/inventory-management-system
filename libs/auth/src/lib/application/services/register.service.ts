@@ -2,7 +2,7 @@ import { Injectable, Inject } from "@nestjs/common";
 import { RegisterDTO } from "../dtos/auth.dto";
 import { ITokenGenerator, TokenPayload, TOKEN_GENERATOR } from "@inventory/shared/domain";
 import { Email } from '@inventory/user/domain';
-import { CreateUserService, GetUserByEmailService } from "@inventory/user/application";
+import { CreateUserService, UserExistService } from "@inventory/user/application";
 import {
     EmailAlreadyRegisteredException, RefreshTokenEntity, REFRESH_TOKEN_REPOSITORY, IRefreshTokenRepository
 } from '../../domain'
@@ -13,7 +13,7 @@ export class RegisterService {
         @Inject(TOKEN_GENERATOR) private readonly tokenGenerator: ITokenGenerator,
         @Inject(REFRESH_TOKEN_REPOSITORY) private readonly refreshTokenRepo: IRefreshTokenRepository,
         @Inject(CreateUserService) private readonly createUserService: CreateUserService,
-        @Inject(GetUserByEmailService) private readonly getUserByEmailService: GetUserByEmailService
+        @Inject(UserExistService) private readonly userExistService: UserExistService
     ) {}
 
     async execute(dto: RegisterDTO) {
@@ -21,7 +21,7 @@ export class RegisterService {
         const email = Email.create(dto.email).value;
        
         /* Check for email availability */
-        const emailExists = await this.getUserByEmailService.execute(email);
+        const emailExists = await this.userExistService.execute(email);
         if (emailExists) {
             throw new EmailAlreadyRegisteredException(email);
         }
