@@ -25,7 +25,7 @@ export class JwtGuard extends AuthGuard('jwt') {
     /* eslint-disable @typescript-eslint/no-explicit-any */
     override handleRequest(err: any, user: any) {
         /* eslint-enable @typescript-eslint/no-explicit-any */
-        if (err || !user || !user.tenantId || !user.userId || !user.email) {
+        if (err || !user || !user.userId || !user.email) {
             throw new UnauthorizedException('You are not authorized..');
         }
         
