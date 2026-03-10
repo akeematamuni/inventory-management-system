@@ -9,7 +9,7 @@ out-tsc
 node_modules
 logs
 .env
-pnpm-lock.yaml
+pnpm-lock.*
 
 # IDEs and editors
 /.idea
