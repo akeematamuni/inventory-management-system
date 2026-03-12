@@ -6,3 +6,6 @@ export * from './value-objects/adjustment-reason.vo';
 export * from './entities/warehouse.entity';
 export * from './entities/product.entity';
 export * from './entities/stock-ledger-entry.entity';
+export * from './entities/stock-balance.entity';
+export * from './entities/purchase-order-line.entity';
+export * from './entities/purchase-order.entity';
