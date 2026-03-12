@@ -90,7 +90,7 @@ export class PurchaseOrderEntity extends Entity<PurchaseOrderProps> {
      * Automatically transitions status based on whether all lines are fully received.
      * Returns the lines that were actually updated, the application service uses these to write the correct ledger entries.
     */
-    public recieveLine(receipts: {lineId: string, quantity: number}[]): PurchaseOrderLineEntity[] {
+    public recieveLines(receipts: {lineId: string, quantity: number}[]): PurchaseOrderLineEntity[] {
         if (this.props.status === PurchaseOrderStatus.DRAFT) {
             throw new Error('Purchase ordr must be confirmed before recieving stock');
         }
