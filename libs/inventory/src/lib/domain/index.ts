@@ -9,3 +9,17 @@ export * from './entities/stock-ledger-entry.entity';
 export * from './entities/stock-balance.entity';
 export * from './entities/purchase-order-line.entity';
 export * from './entities/purchase-order.entity';
+export * from './entities/stock-transfer-line.entity';
+export * from './entities/stock-transfer.entity';
+export * from './entities/adjustment.entity';
+export * from './entities/cycle-count-line.entity';
+export * from './entities/cycle-count.entity';
+export * from './repositories/warehouse.repository';
+export * from './repositories/product.repository';
+export * from './repositories/stock-ledger-entry.repository';
+export * from './repositories/stock-balance.repository';
+export * from './repositories/purchase-order.repository';
+export * from './repositories/stock-transfer.repository';
+export * from './repositories/adjustment.repository';
+export * from './repositories/cycle-count.repository';
+
