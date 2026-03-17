@@ -16,7 +16,7 @@ export class ProductEntityTypeOrm {
     description?: string | null;
 
     @Column({ name: 'unit_cost', type: 'decimal', precision: 15, scale: 4, default: 0 })
-    unitCost!: number;
+    unitCost!: string;
 
     @Column({ type: 'varchar', length: 3, default: 'USD' })
     currency!: string;
@@ -25,7 +25,7 @@ export class ProductEntityTypeOrm {
     reorderPoint!: number;
 
     @Column({ type: 'varchar', length: 150, unique: true, nullable: true })
-    barcode!: string;
+    barcode?: string | null;
 
     @Column({ name: 'is_active', type: 'boolean', default: true })
     isActive!: boolean
