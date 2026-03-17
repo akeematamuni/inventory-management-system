@@ -16,7 +16,7 @@ export class AdjustmentEntityTypeOrm {
 
     @Index()
     @Column({ name: 'movement_type', type: 'enum', enum: MovementType })
-    movementType!: MovementType.ADJUSTMENT_UP | MovementType.ADJUSTMENT_DOWN;
+    movementType!: MovementType;
 
     @Column({ type: 'int' })
     quantity!: number;
@@ -25,7 +25,7 @@ export class AdjustmentEntityTypeOrm {
     reasonCode!: AdjustmentReasonCode;
 
     @Column({ name: 'reason_notes', type: 'text', nullable: true })
-    reasonNotes?: string;
+    reasonNotes?: string | null;
 
     @Column({ type: 'text', nullable: true })
     notes?: string | null;
