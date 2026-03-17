@@ -61,7 +61,17 @@
                 "libs/auth/src/lib/presentation/index.ts"
             ],
             "@inventory/auth": ["libs/auth/src/index.ts"],
-            "@inventory/inventory": ["libs/inventory/src/index.ts"]
+            "@inventory/inventory": ["libs/inventory/src/index.ts"],
+            "@inventory/inventory/domain": ["libs/inventory/src/lib/domain/index.ts"],
+            "@inventory/inventory/application": [
+                "libs/inventory/src/lib/application/index.ts"
+            ],
+            "@inventory/inventory/infrastructure": [
+                "libs/inventory/src/lib/infrastructure/index.ts"
+            ],
+            "@inventory/inventory/presentation": [
+                "libs/inventory/src/lib/presentation/index.ts"
+            ],
         }
     },
     "exclude": ["node_modules", "tmp"]
