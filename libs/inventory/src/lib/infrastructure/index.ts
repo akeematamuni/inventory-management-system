@@ -9,3 +9,8 @@ export * from './typeorm/entities/stock-transfer.entity';
 export * from './typeorm/entities/adjustment.entity';
 export * from './typeorm/entities/cycle-count-line.entity';
 export * from './typeorm/entities/cycle-count.entity';
+export * from './typeorm/mappers/warehouse.mapper';
+export * from './typeorm/mappers/product.mapper';
+export * from './typeorm/mappers/stock-ledger-entry.mapper';
+export * from './typeorm/mappers/stock-balance.mapper';
+export * from './typeorm/mappers/purchase-order.mapper';
