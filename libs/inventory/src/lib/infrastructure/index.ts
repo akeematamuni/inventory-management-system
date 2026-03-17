@@ -14,3 +14,6 @@ export * from './typeorm/mappers/product.mapper';
 export * from './typeorm/mappers/stock-ledger-entry.mapper';
 export * from './typeorm/mappers/stock-balance.mapper';
 export * from './typeorm/mappers/purchase-order.mapper';
+export * from './typeorm/mappers/stock-transfer.mapper';
+export * from './typeorm/mappers/adjustment.mapper';
+export * from './typeorm/mappers/cycle-count.mapper';
