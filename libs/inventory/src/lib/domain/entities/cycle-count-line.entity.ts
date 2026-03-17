@@ -58,5 +58,5 @@ export class CycleCountLineEntity extends Entity<CycleCountLineProps> {
     get productId(): string { return this.props.productId; }
     get cycleCountId(): string { return this.props.cycleCountId; }
     get systemQuantity(): number { return this.props.systemQuantity; }
-    get countedQuantity(): number | null | undefined { return this.props.countedQuantity; }
+    get countedQuantity(): number | null { return this.props.countedQuantity; }
 }

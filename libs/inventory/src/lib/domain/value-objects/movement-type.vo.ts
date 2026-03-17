@@ -1,7 +1,7 @@
 /**
  * Describes the nature of a stock ledger entry.
  * Every unit of stock movement maps to exactly one MovementType.
- */
+*/
 export enum MovementType {
     // Stock in from procurement
     RECEIPT = 'RECEIPT',

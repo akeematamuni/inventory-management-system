@@ -5,7 +5,7 @@ import { MovementType } from "../value-objects/movement-type.vo";
 export interface AdjustmentProps {
     productId: string;
     warehouseId: string;
-    movementType: MovementType.ADJUSTMENT_UP | MovementType.ADJUSTMENT_DOWN;
+    movementType: MovementType;
     quantity: number;
     reason: AdjustmentReason;
     notes?: string | null;
@@ -16,7 +16,7 @@ export interface AdjustmentProps {
 export interface CreateAdjustmentProps {
     productId: string;
     warehouseId: string;
-    movementType: MovementType.ADJUSTMENT_UP | MovementType.ADJUSTMENT_DOWN;
+    movementType: MovementType;
     quantity: number;
     reason: AdjustmentReason;
     notes?: string;
@@ -34,6 +34,13 @@ export class AdjustmentEntity extends Entity<AdjustmentProps> {
     }
 
     public static create(props: CreateAdjustmentProps): AdjustmentEntity {
+        const mvt = props.movementType;
+        if (mvt !== (MovementType.ADJUSTMENT_UP || MovementType.ADJUSTMENT_DOWN)) {
+            throw new Error(
+                `Manual adjustment can only be ${MovementType.ADJUSTMENT_UP} or ${MovementType.ADJUSTMENT_DOWN}`
+            );
+        }
+
         return new AdjustmentEntity(
             {
                 ...props,
