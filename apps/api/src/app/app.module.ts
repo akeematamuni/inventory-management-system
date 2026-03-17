@@ -7,6 +7,7 @@ import { DatabaseModule } from '@inventory/database';
 import { SharedModule } from '@inventory/shared';
 import { UserModule } from '@inventory/user';
 import { AuthModule } from '@inventory/auth';
+import { InventoryModule } from '@inventory/inventory';
 
 @Module({
     imports: [
@@ -14,7 +15,8 @@ import { AuthModule } from '@inventory/auth';
         DatabaseModule,
         SharedModule,
         UserModule,
-        AuthModule
+        AuthModule,
+        InventoryModule
     ],
     controllers: [AppController],
     providers: [AppService],
