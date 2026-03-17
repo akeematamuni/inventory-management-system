@@ -48,6 +48,10 @@ export class StockLedgerEntryEntity extends Entity<StockLedgerEntryProps> {
         );
     }
 
+    public static reconstitute(props: StockLedgerEntryProps, id: string): StockLedgerEntryEntity {
+        return new StockLedgerEntryEntity(props, id);
+    }
+
     get productId(): string {
         return this.props.productId;
     }

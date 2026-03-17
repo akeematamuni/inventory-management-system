@@ -60,6 +60,10 @@ export class ProductEntity extends Entity<ProductProps> {
         );
     }
 
+    public static reconstitute(props: ProductProps, id: string): ProductEntity {
+        return new ProductEntity(props, id);
+    }
+
     public update(props: UpdateProductProps): void {
         if (props.name?.trim()) this.props.name = props.name.trim();
         if (props.description?.trim()) this.props.description = props.description;
