@@ -1,5 +1,5 @@
-export * from './typeorm/entities/warehouse.entity';
-export * from './typeorm/entities/product.entity';
+// export * from './typeorm/entities/warehouse.entity';
+// export * from './typeorm/entities/product.entity';
 export * from './typeorm/entities/stock-ledger-entry.entity';
 export * from './typeorm/entities/stock-balance.entity';
 export * from './typeorm/entities/purchase-order-line.entity';
@@ -9,6 +9,7 @@ export * from './typeorm/entities/stock-transfer.entity';
 export * from './typeorm/entities/adjustment.entity';
 export * from './typeorm/entities/cycle-count-line.entity';
 export * from './typeorm/entities/cycle-count.entity';
+export * from './typeorm/entities/product-settings.entity';
 export * from './typeorm/mappers/warehouse.mapper';
 export * from './typeorm/mappers/product.mapper';
 export * from './typeorm/mappers/stock-ledger-entry.mapper';
