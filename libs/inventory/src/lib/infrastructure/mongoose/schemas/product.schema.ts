@@ -7,6 +7,7 @@ export class ProductEntityMongo {
     _id!: string;
 
     @Prop({ required: true })
+    name!: string;
 
     @Prop({ required: true, unique: true, index: true })
     sku!: string;
@@ -17,6 +18,9 @@ export class ProductEntityMongo {
     @Prop({ required: true, type: Number, default: 0 })
     unitCost!: number;
 
+    @Prop({ required: true, type: Number, default: 0 })
+    reorderPoint!: number;
+
     @Prop({ required: true, default: 'USD' })
     currency!: string;
 
@@ -25,8 +29,10 @@ export class ProductEntityMongo {
 
     @Prop({ required: true, default: true })
     isActive!: boolean;
+
+    createdAt!: Date;
+    updatedAt!: Date;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(ProductEntityMongo);
-
-export type ProductDocument = ProductEntityMongo & Document;
+export type ProductDocument = ProductEntityMongo & Omit<Document, '_id'>;
