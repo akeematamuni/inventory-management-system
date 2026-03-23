@@ -36,3 +36,4 @@ export * from './events/adjustment-created.event';
 export * from './events/cycle-count-approved.event';
 export * from './events/stock-depleted.event';
 export * from './events/opening-stock-set.event';
+export * from './ports/event-publisher.interface';
