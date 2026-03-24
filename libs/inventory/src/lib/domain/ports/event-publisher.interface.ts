@@ -13,7 +13,7 @@ export type InventoryDomainEvent =
     | OpeningStockSetEvent
     | StockDepletedEvent 
     | StockTransferDispatchedEvent
-    | StockTransferReceivedEvent
+    | StockTransferReceivedEvent;
 
 export interface IInventoryEventPublisher {
     publish(event: InventoryDomainEvent): Promise<void>;
