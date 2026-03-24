@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Document } from "mongoose";
+import { Document, Types } from "mongoose";
 
 @Schema({ collection: 'products', timestamps: { createdAt: 'createdAt', updatedAt: 'updatedAt' } })
 export class ProductEntityMongo {
@@ -15,8 +15,8 @@ export class ProductEntityMongo {
     @Prop({ default: null })
     description?: string | null;
 
-    @Prop({ required: true, type: Number, default: 0 })
-    unitCost!: number;
+    @Prop({ required: true, type: Types.Decimal128, default: 0 })
+    unitCost!: Types.Decimal128;
 
     @Prop({ required: true, type: Number, default: 0 })
     reorderPoint!: number;

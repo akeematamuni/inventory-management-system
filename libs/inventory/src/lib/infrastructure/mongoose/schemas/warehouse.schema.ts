@@ -17,8 +17,10 @@ export class WarehouseEntityMongo {
 
     @Prop({ required: true, default: true })
     isActive!: boolean;
+
+    createdAt!: Date;
+    updatedAt!: Date;
 }
 
 export const WarehouseSchema = SchemaFactory.createForClass(WarehouseEntityMongo);
-
-export type WarehouseDocument = WarehouseEntityMongo & Document;
+export type WarehouseDocument = WarehouseEntityMongo & Omit<Document, '_id'>;

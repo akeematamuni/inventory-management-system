@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { ProductEntity, StockKeepingUnit, Money } from "../../../domain";
 import { ProductDocument } from "../schemas/product.schema";
 
@@ -9,7 +10,7 @@ export class ProductMapper {
                 name: raw.name,
                 sku: StockKeepingUnit.create(raw.sku),
                 description: raw.description,
-                unitCost: Money.create(Number(raw.unitCost), raw.currency),
+                unitCost: Money.create(Number(raw.unitCost.toString()), raw.currency),
                 reorderPoint: raw.reorderPoint,
                 barcode: raw.barcode,
                 isActive: raw.isActive,
@@ -26,7 +27,7 @@ export class ProductMapper {
             sku: domain.sku.value,
             name: domain.name,
             description: domain.description,
-            unitCost: domain.unitCost.amount,
+            unitCost: Types.Decimal128.fromString(domain.unitCost.amount.toString()),
             currency: domain.unitCost.currency,
             reorderPoint: domain.reorderPoint,
             barcode: domain.barcode,
