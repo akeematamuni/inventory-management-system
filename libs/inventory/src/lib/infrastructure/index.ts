@@ -18,8 +18,8 @@ export * from './typeorm/mappers/purchase-order.mapper';
 export * from './typeorm/mappers/stock-transfer.mapper';
 export * from './typeorm/mappers/adjustment.mapper';
 export * from './typeorm/mappers/cycle-count.mapper';
-// 
-// 
+export * from './mongoose/repositories/product.repository';
+export * from './mongoose/repositories/warehouse.repository';
 export * from './typeorm/repositories/adjustment.repository';
 export * from './typeorm/repositories/cycle-count.repository';
 export * from './typeorm/repositories/purchase-order.repository';
