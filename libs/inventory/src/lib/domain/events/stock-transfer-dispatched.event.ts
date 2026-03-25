@@ -9,5 +9,6 @@ export class StockTransferDispatchedEvent {
             productId: string;
             quantityDispatched: number;
         }[],
+        public readonly notes?: string | null
     ) {}
 }

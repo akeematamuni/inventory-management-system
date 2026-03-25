@@ -10,5 +10,6 @@ export class StockTransferReceivedEvent {
             quantityReceived: number;
             variance: number;
         }[],
+        public readonly notes?: string | null
     ) {}
 }

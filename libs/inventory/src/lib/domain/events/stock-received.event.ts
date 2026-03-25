@@ -8,5 +8,6 @@ export class StockReceivedEvent {
         public readonly currency: string,
         public readonly createdBy: string,
         public readonly occurredAt: Date,
+        public readonly notes?: string | null
     ) {}
 }

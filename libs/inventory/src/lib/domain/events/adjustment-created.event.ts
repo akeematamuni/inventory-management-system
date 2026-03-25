@@ -8,5 +8,6 @@ export class AdjustmentCreatedEvent {
         public readonly reasonCode: string,
         public readonly createdBy: string,
         public readonly occurredAt: Date,
+        public readonly notes?: string | null
     ) {}
 }
