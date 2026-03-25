@@ -26,6 +26,7 @@ export * from './typeorm/repositories/purchase-order.repository';
 export * from './typeorm/repositories/stock-balance.repository';
 export * from './typeorm/repositories/stock-ledger-entry.repository';
 export * from './typeorm/repositories/stock-transfer.repository';
+export * from './typeorm/repositories/product-settings.repository';
 export * from './events/adapters/event-emitter.publisher';
 export * from './events/adapters/kafka.publisher';
 
