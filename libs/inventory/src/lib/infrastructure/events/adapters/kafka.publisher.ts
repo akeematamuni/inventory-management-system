@@ -29,6 +29,9 @@ export class InventoryPublisherKafka implements IInventoryEventPublisher, OnModu
             client: {
                 clientId: 'inventory',
                 brokers: [this.configService.getOrThrow('KAFKA_BROKER')]
+            },
+            producer: {
+                allowAutoTopicCreation: true
             }
         });
     }
@@ -52,6 +55,17 @@ export class InventoryPublisherKafka implements IInventoryEventPublisher, OnModu
     }
 
     async onModuleInit(): Promise<void> {
+        /** In case there is a switch from the traditional fire and forget */
+        // const topics = [
+        //     'inventory.stock_received',
+        //     'inventory.stock_transfer_dispatched',
+        //     'inventory.stock_transfer_received',
+        //     'inventory.adjustment_created',
+        //     'inventory.cycle_count_approved',
+        //     'inventory.opening_stock_set',
+        // ];
+
+        // topics.forEach(topic => this.client.subscribeToResponseOf(topic));
         await this.client.connect();
     }
 

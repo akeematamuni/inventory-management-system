@@ -32,3 +32,7 @@ export * from './typeorm/repositories/product-settings.repository';
 export * from './typeorm/repositories/stock-alert.repository';
 export * from './events/adapters/event-emitter.publisher';
 export * from './events/adapters/kafka.publisher';
+export * from './events/handlers/low-stock-alert.handler';
+export * from './events/handlers/stock-balance-update.handler';
+export * from './events/handlers/low-stock-alert-kafka.handler';
+export * from './events/handlers/stock-balance-update-kafka.handler';

@@ -25,7 +25,7 @@ export class LowStockAlertHandler {
         private readonly productSettingRepo:IProductSettingsRepository
     ) {}
 
-    private async checkAndAlert(productId: string, warehouseId: string): Promise<void> {
+    protected async checkAndAlert(productId: string, warehouseId: string): Promise<void> {
         const [product, balance] = await Promise.all([
             this.productSettingRepo.findById(productId),
             this.balanceRepo.findByProductAndWarehouse(productId, warehouseId)
@@ -52,7 +52,7 @@ export class LowStockAlertHandler {
         */
     }
 
-    private async checkAndResolve(productId: string, warehouseId: string): Promise<void> {
+    protected async checkAndResolve(productId: string, warehouseId: string): Promise<void> {
         const [product, balance] = await Promise.all([
             this.productSettingRepo.findById(productId),
             this.balanceRepo.findByProductAndWarehouse(productId, warehouseId)
