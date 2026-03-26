@@ -87,18 +87,20 @@ export class StockBalanceUpdateHandler {
     @OnEvent(StockReceivedEvent.name, { async: true })
     async handleStockReceivedEvent(event: StockReceivedEvent): Promise<void> {
         await this.dataSource.transaction(async (manager: EntityManager) => {
-            await this.applyUpdate({
-                productId: event.productId,
-                warehouseId: event.warehouseId,
-                quantityChange: event.quantity,
-                movementType: MovementType.RECEIPT,
-                referenceId: event.purchaseOrderId,
-                referenceType: 'PURCHASE_ORDER',
-                notes: event.notes,
-                createdBy: event.createdBy,
-                occurredAt: event.occurredAt,
-                manager
-            });
+            for (const e of event.lines) {
+                await this.applyUpdate({
+                    productId: e.productId,
+                    warehouseId: event.warehouseId,
+                    quantityChange: e.quantityReceived,
+                    movementType: MovementType.RECEIPT,
+                    referenceId: event.purchaseOrderId,
+                    referenceType: 'PURCHASE_ORDER',
+                    notes: event.notes,
+                    createdBy: event.createdBy,
+                    occurredAt: event.occurredAt,
+                    manager
+                });
+            }
         });
     }
 
