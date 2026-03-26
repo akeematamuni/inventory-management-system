@@ -10,6 +10,7 @@ export * from './typeorm/entities/adjustment.entity';
 export * from './typeorm/entities/cycle-count-line.entity';
 export * from './typeorm/entities/cycle-count.entity';
 export * from './typeorm/entities/product-settings.entity';
+export * from './typeorm/entities/stock-alert.entity';
 export * from './mongoose/mappers/warehouse.mapper';
 export * from './mongoose/mappers/product.mapper'
 export * from './typeorm/mappers/stock-ledger-entry.mapper';
@@ -18,6 +19,7 @@ export * from './typeorm/mappers/purchase-order.mapper';
 export * from './typeorm/mappers/stock-transfer.mapper';
 export * from './typeorm/mappers/adjustment.mapper';
 export * from './typeorm/mappers/cycle-count.mapper';
+export * from './typeorm/mappers/stock-alert.mapper';
 export * from './mongoose/repositories/product.repository';
 export * from './mongoose/repositories/warehouse.repository';
 export * from './typeorm/repositories/adjustment.repository';
@@ -27,6 +29,6 @@ export * from './typeorm/repositories/stock-balance.repository';
 export * from './typeorm/repositories/stock-ledger-entry.repository';
 export * from './typeorm/repositories/stock-transfer.repository';
 export * from './typeorm/repositories/product-settings.repository';
+export * from './typeorm/repositories/stock-alert.repository';
 export * from './events/adapters/event-emitter.publisher';
 export * from './events/adapters/kafka.publisher';
-
