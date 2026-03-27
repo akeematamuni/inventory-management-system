@@ -4,10 +4,10 @@ import { InjectDataSource } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 
 import {
-    IStockBalanceRepository, IStockLedgerEntryRepository,
-    STOCK_BALANCE_REPOSITORY, STOCK_LEDGER_ENTRY_REPOSITORY,
-    StockReceivedEvent, StockTransferDispatchedEvent,
-    StockTransferReceivedEvent, AdjustmentCreatedEvent,
+    IStockBalanceRepository, IStockLedgerEntryRepository, IStockAlertRepository, 
+    IProductSettingsRepository,STOCK_BALANCE_REPOSITORY, STOCK_LEDGER_ENTRY_REPOSITORY, 
+    STOCK_ALERT_REPOSITORY, PRODUCT_SETTINGS_REPOSITORY, StockReceivedEvent, 
+    StockTransferDispatchedEvent,StockTransferReceivedEvent, AdjustmentCreatedEvent, 
     CycleCountApprovedEvent, OpeningStockSetEvent
 } from "../../../domain";
 
@@ -23,14 +23,18 @@ export class StockBalanceUpdateHandlerKafka extends StockBalanceUpdateHandler {
     constructor(
         @InjectDataSource()
         dataSource: DataSource,
+        @Inject(STOCK_ALERT_REPOSITORY)
+        alertRepo: IStockAlertRepository,
         @Inject(STOCK_BALANCE_REPOSITORY)
         balanceRepo: IStockBalanceRepository,
         @Inject(STOCK_LEDGER_ENTRY_REPOSITORY)
-        ledgerRepo: IStockLedgerEntryRepository
+        ledgerRepo: IStockLedgerEntryRepository,
+        @Inject(PRODUCT_SETTINGS_REPOSITORY)
+        productSettingRepo:IProductSettingsRepository
     ) {
-        super(dataSource, balanceRepo, ledgerRepo);
+        super(dataSource, alertRepo, balanceRepo, ledgerRepo, productSettingRepo);
     }
-    
+
     @EventPattern('inventory.adjustment_created')
     override async handleAdjustmentCreatedEvent(@Payload() event: AdjustmentCreatedEvent): Promise<void> {
         await super.handleAdjustmentCreatedEvent(event);

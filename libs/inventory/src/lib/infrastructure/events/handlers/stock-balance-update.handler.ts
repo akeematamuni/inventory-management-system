@@ -4,12 +4,11 @@ import { InjectDataSource } from "@nestjs/typeorm";
 import { OnEvent } from "@nestjs/event-emitter";
 
 import {
-    IStockBalanceRepository, IStockLedgerEntryRepository,
-    STOCK_BALANCE_REPOSITORY, STOCK_LEDGER_ENTRY_REPOSITORY,
-    StockBalanceEntity, StockLedgerEntryEntity, MovementType,
-    StockReceivedEvent, StockTransferDispatchedEvent,
-    StockTransferReceivedEvent, AdjustmentCreatedEvent,
-    CycleCountApprovedEvent, OpeningStockSetEvent
+    IStockBalanceRepository, IStockLedgerEntryRepository, IStockAlertRepository, IProductSettingsRepository,
+    STOCK_BALANCE_REPOSITORY, STOCK_LEDGER_ENTRY_REPOSITORY, STOCK_ALERT_REPOSITORY, PRODUCT_SETTINGS_REPOSITORY,
+    StockBalanceEntity, StockLedgerEntryEntity, MovementType, StockReceivedEvent, StockTransferDispatchedEvent,
+    StockTransferReceivedEvent, AdjustmentCreatedEvent, CycleCountApprovedEvent, OpeningStockSetEvent, StockAlertEntity,
+    ProductSettings
 } from "../../../domain";
 
 interface Params {
@@ -32,10 +31,14 @@ export class StockBalanceUpdateHandler {
     constructor(
         @InjectDataSource()
         private readonly dataSource: DataSource,
+        @Inject(STOCK_ALERT_REPOSITORY)
+        private readonly alertRepo: IStockAlertRepository,
         @Inject(STOCK_BALANCE_REPOSITORY)
         private readonly balanceRepo: IStockBalanceRepository,
         @Inject(STOCK_LEDGER_ENTRY_REPOSITORY)
-        private readonly ledgerRepo: IStockLedgerEntryRepository
+        private readonly ledgerRepo: IStockLedgerEntryRepository,
+        @Inject(PRODUCT_SETTINGS_REPOSITORY)
+        private readonly productSettingRepo:IProductSettingsRepository
     ) {}
 
     /**
@@ -43,18 +46,23 @@ export class StockBalanceUpdateHandler {
      * To be called with a transaction to ensure atomicity
      * Every event handler method is just a thin wrapper that calls with the right arguments
     */
-    protected async applyUpdate(params: Params): Promise<void> {
+    protected async applyUpdate(params: Params): Promise<{
+        product: ProductSettings; balance: StockBalanceEntity;
+    } | undefined> {
         const { productId, warehouseId, quantityChange, manager } = params;
 
-        const balance = await this.balanceRepo.findByProductAndWarehouse(productId, warehouseId, manager)
-            ?? StockBalanceEntity.create({warehouseId, productId});
+        const product = await this.productSettingRepo.findById(productId, manager);
+        if (!product || !product.isActive) return ;
+
+        const balance = await this.balanceRepo.findByProductAndWarehouse(product.id, warehouseId, manager)
+            ?? StockBalanceEntity.create({ warehouseId, productId });
 
         balance.apply(quantityChange);
 
         const ledgerEntry = StockLedgerEntryEntity.create({
-            productId,
-            warehouseId,
             quantityChange,
+            productId: product.id,
+            warehouseId: balance.warehouseId,
             movementType: params.movementType,
             balanceAfter: balance.quantity,
             referenceId: params.referenceId,
@@ -65,6 +73,47 @@ export class StockBalanceUpdateHandler {
 
         await this.ledgerRepo.save(ledgerEntry, manager);
         await this.balanceRepo.save(balance, manager);
+
+        return { product, balance };
+    }
+
+    protected async checkAndAlert(
+        product: ProductSettings, balance: StockBalanceEntity, manager: EntityManager
+    ): Promise<void> {
+        if (!balance.isStockLow(product.reorderPoint)) return;
+
+        const alertExists = await this.alertRepo.findUnresolvedByProductAndWarehouse(
+            product.id, balance.warehouseId, manager
+        );
+        if (alertExists) return;
+
+        const alert = StockAlertEntity.create({
+            productId: product.id,
+            warehouseId: balance.warehouseId,
+            currentBalance: balance.quantity,
+            reorderPoint: product.reorderPoint
+        });
+
+        await this.alertRepo.save(alert, manager);
+
+        /**
+         * NOTE: Another alert should be fired here for cross-module subscription 
+         * Also to trigger the exact module that dispatches the notification
+        */
+    }
+
+    protected async checkAndResolve(
+        product: ProductSettings, balance: StockBalanceEntity, manager: EntityManager
+    ): Promise<void> {
+        if (balance.isStockLow(product.reorderPoint)) return;
+
+        const alertExists = await this.alertRepo.findUnresolvedByProductAndWarehouse(
+            product.id, balance.warehouseId, manager
+        );
+        if (!alertExists) return;
+
+        alertExists.resolve();
+        await this.alertRepo.save(alertExists, manager);
     }
 
     @OnEvent(OpeningStockSetEvent.name, { async: true })
@@ -88,7 +137,7 @@ export class StockBalanceUpdateHandler {
     async handleStockReceivedEvent(event: StockReceivedEvent): Promise<void> {
         await this.dataSource.transaction(async (manager: EntityManager) => {
             for (const e of event.lines) {
-                await this.applyUpdate({
+                const result = await this.applyUpdate({
                     productId: e.productId,
                     warehouseId: event.warehouseId,
                     quantityChange: e.quantityReceived,
@@ -100,6 +149,10 @@ export class StockBalanceUpdateHandler {
                     occurredAt: event.occurredAt,
                     manager
                 });
+
+                if (result) {
+                    await this.checkAndResolve(result.product, result.balance, manager);
+                }
             }
         });
     }
@@ -109,7 +162,7 @@ export class StockBalanceUpdateHandler {
         await this.dataSource.transaction(async (manager: EntityManager) => {
             for (const e of event.lines) {
                 // Note that quantity change is negative, hence the minus (-)
-                await this.applyUpdate({
+                const result = await this.applyUpdate({
                     productId: e.productId,
                     warehouseId: event.sourceWarehouseId,
                     quantityChange: -e.quantityDispatched,
@@ -121,6 +174,10 @@ export class StockBalanceUpdateHandler {
                     occurredAt: event.occurredAt,
                     manager
                 });
+
+                if (result) {
+                    await this.checkAndAlert(result.product, result.balance, manager);
+                }
             }
         });
     }
@@ -129,7 +186,7 @@ export class StockBalanceUpdateHandler {
     async handleStockTransferReceivedEvent(event: StockTransferReceivedEvent): Promise<void> {
         await this.dataSource.transaction(async (manager: EntityManager) => {
             for (const e of event.lines) {
-                await this.applyUpdate({
+                const result = await this.applyUpdate({
                     productId: e.productId,
                     warehouseId: event.destinationWarehouseId,
                     quantityChange: e.quantityReceived,
@@ -142,9 +199,13 @@ export class StockBalanceUpdateHandler {
                     manager
                 });
 
+                if (result) {
+                    await this.checkAndResolve(result.product, result.balance, manager);
+                }
+
                 // If there is variance, update source
                 if (e.variance) {
-                    await this.applyUpdate({
+                    const result = await this.applyUpdate({
                         productId: e.productId,
                         warehouseId: event.sourceWarehouseId,
                         quantityChange: -e.variance,
@@ -155,6 +216,10 @@ export class StockBalanceUpdateHandler {
                         occurredAt: event.occurredAt,
                         manager
                     });
+
+                    if (result) {
+                        await this.checkAndAlert(result.product, result.balance, manager);
+                    }
                 }
             }
         });
@@ -166,7 +231,7 @@ export class StockBalanceUpdateHandler {
             ? event.quantity : -event.quantity;
         
         await this.dataSource.transaction(async (manager: EntityManager) => {
-            await this.applyUpdate({
+            const result = await this.applyUpdate({
                 productId: event.productId,
                 warehouseId: event.warehouseId,
                 quantityChange: change,
@@ -178,6 +243,14 @@ export class StockBalanceUpdateHandler {
                 occurredAt: event.occurredAt,
                 manager
             });
+
+            if (result && event.movementType === MovementType.ADJUSTMENT_UP) {
+                await this.checkAndResolve(result.product, result.balance, manager);
+            }
+
+            if (result && event.movementType === MovementType.ADJUSTMENT_DOWN) {
+                await this.checkAndAlert(result.product, result.balance, manager);
+            }
         });
     }
 
@@ -187,7 +260,7 @@ export class StockBalanceUpdateHandler {
             for (const e of event.lines) {
                 if (!e.variance) continue;
 
-                await this.applyUpdate({
+                const result = await this.applyUpdate({
                     productId: e.productId,
                     warehouseId: event.warehouseId,
                     quantityChange: e.variance,
@@ -198,6 +271,11 @@ export class StockBalanceUpdateHandler {
                     occurredAt: event.occurredAt,
                     manager
                 });
+
+                if (result) {
+                    await this.checkAndAlert(result.product, result.balance, manager);
+                    await this.checkAndResolve(result.product, result.balance, manager);
+                }
             }
         });
     }
