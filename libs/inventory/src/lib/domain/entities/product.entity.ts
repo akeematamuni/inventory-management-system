@@ -19,7 +19,7 @@ export interface CreateProductProps {
     sku: StockKeepingUnit;
     description?: string | null;
     unitCost: Money;
-    reorderPoint: number;
+    reorderPoint?: number;
     barcode?: string | null;
 }
 
