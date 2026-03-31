@@ -4,7 +4,6 @@ import { Inject } from "@nestjs/common";
 import {
     IPurchaseOrderRepository, PURCHASE_ORDER_REPOSITORY,
     IInventoryEventPublisher, INVENTORY_EVENT_PUBLISHER,
-    IProductRepository, PRODUCT_REPOSITORY,
     PurchaseOrderNotFoundException, StockReceivedEvent,
 } from '../../../domain';
 
@@ -13,8 +12,6 @@ import { ConfirmGoodsReceiptCommand } from './confirm-goods-receipt.command';
 @CommandHandler(ConfirmGoodsReceiptCommand)
 export class ConfirmGoodsReceiptHandler implements ICommandHandler<ConfirmGoodsReceiptCommand> {
     constructor(
-        @Inject(PRODUCT_REPOSITORY)
-        private readonly productRepo: IProductRepository,
         @Inject(INVENTORY_EVENT_PUBLISHER)
         private readonly publisher: IInventoryEventPublisher,
         @Inject(PURCHASE_ORDER_REPOSITORY)

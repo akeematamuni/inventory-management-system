@@ -10,7 +10,7 @@ import {
 import { ActivateProductCommand } from "./activate-product.command";
 
 @CommandHandler(ActivateProductCommand)
-export class DeactivateProductHandler implements ICommandHandler<ActivateProductCommand> {
+export class ActivateProductHandler implements ICommandHandler<ActivateProductCommand> {
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,

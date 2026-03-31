@@ -7,7 +7,7 @@ import { GetAllProductsQuery } from "./get-all-product.query";
 
 
 @QueryHandler(GetAllProductsQuery)
-export class GetProductHandler implements IQueryHandler<GetAllProductsQuery> {
+export class GetAllProductsHandler implements IQueryHandler<GetAllProductsQuery> {
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository
