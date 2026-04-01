@@ -34,7 +34,10 @@ export class DispatchTransferHandler implements ICommandHandler<DispatchTransfer
                 transfer.destinationWarehouseId,
                 performedBy,
                 new Date(),
-                dispatchedLines,
+                dispatchedLines.map(l => ({
+                    productId: l.productId,
+                    quantityDispatched: l.quantityDispatched
+                }))
             )
         );
     }
