@@ -20,6 +20,7 @@ export class AdjustmentMapper {
 
     public static toPersistence(domain: AdjustmentEntity): AdjustmentEntityTypeOrm {
         const entity = new AdjustmentEntityTypeOrm();
+        entity.id = domain.id;
         entity.productId = domain.productId;
         entity.warehouseId = domain.warehouseId;
         entity.movementType = domain.movementType;
