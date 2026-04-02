@@ -5,6 +5,8 @@ export interface StockLedgerEntryProps {
     productId: string;
     warehouseId: string;
     movementType: MovementType;
+    unitCost?: number | null;
+    currency?: string | null;
     quantityChange: number;
     balanceAfter: number;
     referenceId: string;
@@ -18,6 +20,8 @@ export interface CreateStockLedgerEntryProps {
     productId: string;
     warehouseId: string;
     movementType: MovementType;
+    unitCost?: number | null;
+    currency?: string | null;
     quantityChange: number;
     balanceAfter: number;
     referenceId: string;
@@ -89,4 +93,7 @@ export class StockLedgerEntryEntity extends Entity<StockLedgerEntryProps> {
     get occurredAt(): Date {
         return this.props.occurredAt
     }
+
+    get unitCost(): number | null | undefined { return this.props.unitCost }
+    get currency(): string | null | undefined { return this.props.currency }
 }

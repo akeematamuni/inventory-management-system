@@ -18,6 +18,12 @@ export class StockLedgerEntryEntityTypeOrm {
     @Column({ name: 'movement_type', type: 'enum', enum: MovementType })
     movementType!: MovementType;
 
+    @Column({ name: 'unit_cost', type: 'decimal', precision: 15, scale: 4, nullable: true })
+    unitCost?: number | null;
+
+    @Column({ type: 'varchar', length: 3, nullable: true })
+    currency?: string | null;
+
     @Column({ name: 'quantity_change', type: 'int' })
     quantityChange!: number;
 

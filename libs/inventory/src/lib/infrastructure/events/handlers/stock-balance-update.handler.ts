@@ -16,6 +16,8 @@ interface Params {
     warehouseId: string;
     quantityChange: number;
     movementType: MovementType;
+    unitCost?: number | null;
+    currency?: string | null;
     referenceId: string;
     referenceType: string;
     notes?: string | null;
@@ -64,6 +66,7 @@ export class StockBalanceUpdateHandler {
             productId: product.id,
             warehouseId: balance.warehouseId,
             movementType: params.movementType,
+            unitCost: params.unitCost,
             balanceAfter: balance.quantity,
             referenceId: params.referenceId,
             referenceType: params.referenceType,
@@ -124,6 +127,8 @@ export class StockBalanceUpdateHandler {
                 warehouseId: event.warehouseId,
                 quantityChange: event.quantity,
                 movementType: MovementType.OPENING_STOCK,
+                unitCost: event.unitCost,
+                currency: event.currency,
                 referenceId: event.productId,
                 referenceType: 'OPENING_STOCK',
                 createdBy: event.createdBy,
@@ -142,6 +147,8 @@ export class StockBalanceUpdateHandler {
                     warehouseId: event.warehouseId,
                     quantityChange: e.quantityReceived,
                     movementType: MovementType.RECEIPT,
+                    unitCost: e.unitCostAtOrder,
+                    currency: e.currency,
                     referenceId: event.purchaseOrderId,
                     referenceType: 'PURCHASE_ORDER',
                     notes: event.notes,

@@ -8,6 +8,8 @@ export class StockLedgerEntryMapper {
                 productId: raw.productId,
                 warehouseId: raw.warehouseId,
                 movementType: raw.movementType,
+                unitCost: raw.unitCost,
+                currency: raw.currency,
                 quantityChange: raw.quantityChange,
                 balanceAfter: raw.balanceAfter,
                 referenceId: raw.referenceId,
@@ -25,6 +27,8 @@ export class StockLedgerEntryMapper {
         entity.id = domain.id;
         entity.productId = domain.productId;
         entity.warehouseId = domain.warehouseId;
+        entity.unitCost = domain.unitCost;
+        entity.currency = domain.currency;
         entity.movementType = domain.movementType;
         entity.quantityChange = domain.quantityChange;
         entity.balanceAfter = domain.balanceAfter;
