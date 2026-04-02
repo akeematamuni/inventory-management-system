@@ -46,12 +46,24 @@ export class SubmitCycleCountLineDto {
     countedQuantity!: number;
 }
 
-export class SubmitCycleCountLinesDto {
+export class SubmitCycleCountDto {
+    @ApiProperty({ example: 'cycle-count-uuid' })
+    @IsString()
+    @IsNotEmpty()
+    cycleCountId!: string;
+
     @ApiProperty({ type: [SubmitCycleCountLineDto] })
     @IsArray()
     @Type(() => SubmitCycleCountLineDto)
     @ValidateNested({ each: true })
     lines!: SubmitCycleCountLineDto[];
+}
+
+export class ApproveOrRejectCycleCountDto {
+    @ApiProperty({ example: 'cycle-count-uuid' })
+    @IsString()
+    @IsNotEmpty()
+    cycleCountId!: string;
 }
 
 export class CycleCountLineResponseDto {

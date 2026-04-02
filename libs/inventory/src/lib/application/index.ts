@@ -72,3 +72,6 @@ export * from './command/cycle-count/submit-cycle-count.command';
 export * from './command/cycle-count/submit-cycle-count.handler';
 export * from './command/cycle-count/approve-cycle-count.command';
 export * from './command/cycle-count/approve-cycle-count.handler';
+export * from './command/cycle-count/reject-cycle-count.command';
+export * from './command/cycle-count/reject-cycle-count.handler';
+
