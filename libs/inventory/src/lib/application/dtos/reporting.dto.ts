@@ -5,8 +5,12 @@ import {
     StockAlertEntity, StockAlertStatus, MovementType
 } from '../../domain';
 
-// import { ValuationMethod } from '../queries/reporting/get-inventory-valuation.query';
+export enum ValuationMethod {
+    FIFO = 'FIFO',
+    AVCO = 'AVCO',
+}
 
+// Deals with balance
 export class StockLevelResponseDto {
     @ApiProperty() productId!: string;
     @ApiProperty() warehouseId!: string;
@@ -23,6 +27,7 @@ export class StockLevelResponseDto {
     }
 }
 
+// Deals with ledger
 export class MovementHistoryResponseDto {
     @ApiProperty() id!: string;
     @ApiProperty() productId!: string;
@@ -53,6 +58,7 @@ export class MovementHistoryResponseDto {
     }
 }
 
+// Deals with alert
 export class StockAlertResponseDto {
     @ApiProperty() id!: string;
     @ApiProperty() productId!: string;
@@ -77,24 +83,25 @@ export class StockAlertResponseDto {
     }
 }
 
-// export class InventoryValuationResponseDto {
-//     @ApiProperty() productId: string;
-//     @ApiProperty() warehouseId: string;
-//     @ApiProperty() currentBalance: number;
-//     @ApiProperty() totalValue: number;
-//     @ApiProperty() valuationMethod: ValuationMethod;
+// Deals with valuation
+export class InventoryValuationResponseDto {
+    @ApiProperty() productId: string;
+    @ApiProperty() warehouseId: string;
+    @ApiProperty() currentBalance: number;
+    @ApiProperty() totalValue: number;
+    @ApiProperty() valuationMethod: ValuationMethod;
 
-//     constructor(
-//         productId: string,
-//         warehouseId: string,
-//         currentBalance: number,
-//         totalValue: number,
-//         valuationMethod: ValuationMethod,
-//     ) {
-//         this.productId = productId;
-//         this.warehouseId = warehouseId;
-//         this.currentBalance = currentBalance;
-//         this.totalValue = totalValue;
-//         this.valuationMethod = valuationMethod;
-//     }
-// }
+    constructor(
+        productId: string,
+        warehouseId: string,
+        currentBalance: number,
+        totalValue: number,
+        valuationMethod: ValuationMethod,
+    ) {
+        this.productId = productId;
+        this.warehouseId = warehouseId;
+        this.currentBalance = currentBalance;
+        this.totalValue = totalValue;
+        this.valuationMethod = valuationMethod;
+    }
+}
