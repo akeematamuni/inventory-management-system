@@ -5,6 +5,7 @@ export * from './dtos/purchasing.dto';
 export * from './dtos/transfer.dto';
 export * from './dtos/adjustment.dto';
 export * from './dtos/cycle-count.dto';
+export * from './dtos/opening.dto';
 
 // Warehouse
 export * from './command/warehouse/create-warehouse.command';
@@ -79,4 +80,8 @@ export * from './query/cycle-count/get-cycle-count.handler';
 export * from './query/cycle-count/get-all-cycle-count.query';
 export * from './query/cycle-count/get-all-cycle-count.handler';
 
-// 
+// Opening
+export * from './command/opening/set-opening-stock.command';
+export * from './command/opening/set-opening-stock.handler';
+
+// Reporting
