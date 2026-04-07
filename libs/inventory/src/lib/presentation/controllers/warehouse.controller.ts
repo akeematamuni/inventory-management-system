@@ -80,7 +80,7 @@ export class WarehouseController {
 
     @Get()
     @ApiOperation({ summary: 'Get all warehouses' })
-    @ApiResponse({ status: 200, type: WarehouseResponseDto })
+    @ApiResponse({ status: 200, type: [WarehouseResponseDto] })
     async getAll(): Promise<WarehouseResponseDto[]> {
         return await this.queryBus.execute(new GetAllWarehousesQuery());
     }
