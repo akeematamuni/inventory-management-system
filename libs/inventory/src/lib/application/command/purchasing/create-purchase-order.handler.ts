@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     IPurchaseOrderRepository, PURCHASE_ORDER_REPOSITORY,
@@ -14,6 +14,8 @@ import { CreatePurchaseOrderCommand } from './create-purchase-order.command';
 
 @CommandHandler(CreatePurchaseOrderCommand)
 export class CreatePurchaseOrderHandler implements ICommandHandler<CreatePurchaseOrderCommand> {
+    private readonly logger = new Logger(CreatePurchaseOrderHandler.name);
+
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,
@@ -60,6 +62,7 @@ export class CreatePurchaseOrderHandler implements ICommandHandler<CreatePurchas
         });
 
         const saved = await this.purchaseOrderRepo.save(purchaseOrder);
+        this.logger.log(`Purchase order created. User: ${saved.createdBy} | Order: ${saved.id}`);
         return saved.id;
     }
 }

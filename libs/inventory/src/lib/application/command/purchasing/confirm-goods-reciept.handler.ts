@@ -1,16 +1,18 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     IPurchaseOrderRepository, PURCHASE_ORDER_REPOSITORY,
     IInventoryEventPublisher, INVENTORY_EVENT_PUBLISHER,
     PurchaseOrderNotFoundException, StockReceivedEvent,
-} from '../../../domain';
+} from "../../../domain";
 
-import { ConfirmGoodsReceiptCommand } from './confirm-goods-receipt.command';
+import { ConfirmGoodsReceiptCommand } from "./confirm-goods-receipt.command";
 
 @CommandHandler(ConfirmGoodsReceiptCommand)
 export class ConfirmGoodsReceiptHandler implements ICommandHandler<ConfirmGoodsReceiptCommand> {
+    private readonly logger = new Logger(ConfirmGoodsReceiptHandler.name);
+
     constructor(
         @Inject(INVENTORY_EVENT_PUBLISHER)
         private readonly publisher: IInventoryEventPublisher,
@@ -29,6 +31,7 @@ export class ConfirmGoodsReceiptHandler implements ICommandHandler<ConfirmGoodsR
         );
 
         await this.purchaseOrderRepo.save(purchaseOrder);
+        this.logger.log(`Goods received. User: ${performedBy} | Order: ${purchaseOrderId}`);
 
         /** Publish event to run in the background updating ledger and balance. */ 
         await this.publisher.publish(

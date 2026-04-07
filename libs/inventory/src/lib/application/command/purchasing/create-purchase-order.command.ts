@@ -3,7 +3,7 @@ export class CreatePurchaseOrderLine {
         public readonly productId: string,
         public readonly quantityOrdered: number,
         public readonly unitCostAtOrder: number,
-        public readonly currency: string,
+        public readonly currency?: string,
     ) {}
 }
 
@@ -13,6 +13,6 @@ export class CreatePurchaseOrderCommand {
         public readonly supplierName: string,
         public readonly lines: CreatePurchaseOrderLine[],
         public readonly createdBy: string,
-        public readonly notes?: string,
+        public readonly notes?: string
     ) {}
 }
