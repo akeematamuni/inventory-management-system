@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import { 
     IProductRepository, IProductSettingsRepository,
@@ -11,6 +11,8 @@ import { UpdateProductCommand } from "./update-product.command";
 
 @CommandHandler(UpdateProductCommand)
 export class UpdateProductHandler implements ICommandHandler<UpdateProductCommand> {
+    private readonly logger = new Logger(UpdateProductHandler.name);
+
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,
@@ -20,7 +22,16 @@ export class UpdateProductHandler implements ICommandHandler<UpdateProductComman
 
     async execute(command: UpdateProductCommand): Promise<void> {
         let unitCost = undefined;
-        const { id, name, amount, currency, reorderPoint, description, barcode } = command;
+        const {
+            id, 
+            name, 
+            amount, 
+            currency, 
+            reorderPoint, 
+            description, 
+            barcode,
+            user
+        } = command;
 
         const product = await this.productRepo.findById(id);
         if (!product) throw new ProductNotFoundException(id);
@@ -41,5 +52,7 @@ export class UpdateProductHandler implements ICommandHandler<UpdateProductComman
                 isActive: product.isActive
             });
         }
+
+        this.logger.log(`Product updated. User: ${user} | Product: ${product.id}`);
     }
 }

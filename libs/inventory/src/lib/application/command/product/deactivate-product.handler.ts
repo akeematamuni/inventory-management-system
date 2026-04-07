@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import { 
     IProductRepository, IProductSettingsRepository,
@@ -11,6 +11,8 @@ import { DeactivateProductCommand } from "./deactivate-product.command";
 
 @CommandHandler(DeactivateProductCommand)
 export class DeactivateProductHandler implements ICommandHandler<DeactivateProductCommand> {
+    private readonly logger = new Logger(DeactivateProductHandler.name);
+
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,
@@ -30,5 +32,7 @@ export class DeactivateProductHandler implements ICommandHandler<DeactivateProdu
             isActive: product.isActive,
             reorderPoint: product.reorderPoint
         });
+
+        this.logger.warn(`Product deactivated. User: ${command.user} | Product: ${product.id}`);
     }
 }

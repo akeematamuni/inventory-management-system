@@ -25,7 +25,7 @@ export class CreateProductDto {
     @IsOptional()
     @IsString()
     @Length(3, 3)
-    currency?: string | null;
+    currency?: string;
 
     @ApiPropertyOptional({ example: 100 })
     @IsOptional()

@@ -19,16 +19,16 @@ export interface CreateProductProps {
     sku: StockKeepingUnit;
     description?: string | null;
     unitCost: Money;
-    reorderPoint?: number;
+    reorderPoint?: number | null;
     barcode?: string | null;
 }
 
 export interface UpdateProductProps {
-    name?: string;
-    description?: string;
+    name?: string | null;
+    description?: string | null;
     unitCost?: Money;
-    reorderPoint?: number;
-    barcode?: string;
+    reorderPoint?: number | null;
+    barcode?: string | null;
 }
 
 /**

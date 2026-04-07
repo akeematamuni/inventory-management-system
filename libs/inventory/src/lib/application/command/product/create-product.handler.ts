@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import { 
     IProductRepository, IProductSettingsRepository,
@@ -12,6 +12,8 @@ import { CreateProductCommand } from "./create-product.command";
 
 @CommandHandler(CreateProductCommand)
 export class CreateProductHandler implements ICommandHandler<CreateProductCommand> {
+    private readonly logger = new Logger(CreateProductHandler.name);
+
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,
@@ -20,7 +22,8 @@ export class CreateProductHandler implements ICommandHandler<CreateProductComman
     ) {}
 
     async execute(command: CreateProductCommand): Promise<string> {
-        const { name, amount, currency, reorderPoint, description, barcode } = command;
+        const { name, amount, currency, reorderPoint, description, barcode, user } = command;
+
         const sku = StockKeepingUnit.create(command.sku);
         const skuExists = await this.productRepo.skuExists(sku.value);
 
@@ -42,6 +45,7 @@ export class CreateProductHandler implements ICommandHandler<CreateProductComman
             reorderPoint: saved.reorderPoint
         });
 
+        this.logger.log(`Product created. User: ${user} | Product: ${saved.id}`);
         return saved.id;
     }
 }
