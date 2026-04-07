@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
 import {
@@ -10,6 +10,8 @@ import { UpdateWarehouseCommand } from "./update-warehouse.command";
 
 @CommandHandler(UpdateWarehouseCommand)
 export class UpdateWarehouseHandler implements ICommandHandler<UpdateWarehouseCommand> {
+    private logger = new Logger(UpdateWarehouseHandler.name);
+
     constructor(
         @Inject(WAREHOUSE_REPOSITORY)
         private readonly repository: IWarehouseRepository
@@ -21,5 +23,6 @@ export class UpdateWarehouseHandler implements ICommandHandler<UpdateWarehouseCo
 
         warehouse.update(command.name, command.address);
         await this.repository.save(warehouse);
+        this.logger.log(`Updated warehouse. User: ${command.user} | Warehouse: ${warehouse.id}`);
     }
 }

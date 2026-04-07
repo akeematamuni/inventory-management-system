@@ -22,9 +22,9 @@ export class CreateWarehouseDto {
 }
 
 export class UpdateWarehouseDto {
-    @ApiProperty()
-    @IsString()
-    id!: string;
+    // @ApiProperty()
+    // @IsString()
+    // id!: string;
 
     @ApiPropertyOptional()
     @IsString()

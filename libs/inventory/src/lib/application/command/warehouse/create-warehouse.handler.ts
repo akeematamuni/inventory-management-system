@@ -1,5 +1,6 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
+
 import {
     IWarehouseRepository, WAREHOUSE_REPOSITORY,
     WarehouseEntity,WarehouseCodeAlreadyExistsException,
@@ -8,6 +9,8 @@ import { CreateWarehouseCommand } from './create-warehouse.command';
 
 @CommandHandler(CreateWarehouseCommand)
 export class CreateWarehouseHandler implements ICommandHandler<CreateWarehouseCommand> {
+    private logger = new Logger(CreateWarehouseHandler.name);
+
     constructor(
         @Inject(WAREHOUSE_REPOSITORY)
         private readonly warehouseRepo: IWarehouseRepository,
@@ -26,6 +29,7 @@ export class CreateWarehouseHandler implements ICommandHandler<CreateWarehouseCo
         });
 
         const saved = await this.warehouseRepo.save(warehouse);
+        this.logger.log(`New warehouse created. User: ${command.user} | Warehouse: ${saved.id}`);
         return saved.id;
     }
 }

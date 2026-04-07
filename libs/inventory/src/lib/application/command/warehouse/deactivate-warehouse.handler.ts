@@ -1,4 +1,4 @@
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 
 import {
@@ -10,6 +10,8 @@ import { DeactivateWarehouseCommand } from "./deactivate-warehouse.command";
 
 @CommandHandler(DeactivateWarehouseCommand)
 export class DeactivateWarehouseHandler implements ICommandHandler<DeactivateWarehouseCommand> {
+    private readonly logger = new Logger(DeactivateWarehouseHandler.name);
+
     constructor(
         @Inject(WAREHOUSE_REPOSITORY)
         private readonly repository: IWarehouseRepository
@@ -23,5 +25,6 @@ export class DeactivateWarehouseHandler implements ICommandHandler<DeactivateWar
 
         warehouse.deactivate()
         await this.repository.save(warehouse);
+        this.logger.warn(`Warehouse deactivated. User: ${command.user} | Warehouse: ${warehouse.id}`);
     }
 }
