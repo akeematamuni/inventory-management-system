@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     IWarehouseRepository, WAREHOUSE_REPOSITORY,
@@ -15,6 +15,8 @@ import { SetOpeningStockCommand } from './set-opening-stock.command';
 
 @CommandHandler(SetOpeningStockCommand)
 export class SetOpeningStockHandler implements ICommandHandler<SetOpeningStockCommand> {
+    private readonly logger = new Logger(SetOpeningStockHandler.name);
+
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,
@@ -34,7 +36,7 @@ export class SetOpeningStockHandler implements ICommandHandler<SetOpeningStockCo
         if (!warehouse) throw new WarehouseNotFoundException(warehouseId);
         if (!warehouse.isActive) throw new WarehouseInactiveException(warehouseId);
 
-        // Guard 1: product must exist and be active
+        // Guard 2: product must exist and be active
         const product = await this.productRepo.findById(command.productId);
         if (!product) throw new ProductNotFoundException(command.productId);
         if (!product.isActive) throw new ProductInactiveException(command.productId);
@@ -43,6 +45,14 @@ export class SetOpeningStockHandler implements ICommandHandler<SetOpeningStockCo
         const exists = await this.balanceRepo.findByProductAndWarehouse(productId, warehouseId);
         if (exists) throw new Error(`Product has balance in this warehouse. Use adjustment instead.`);
 
+        this.logger.log(
+            `
+            Opening stock has been set for Product: ${productId}, 
+            In Warehouse: ${warehouseId}, PerformedBy: ${performedBy},
+            Quantity: ${quantity}.
+            `
+        );
+        
         await this.publisher.publish(new OpeningStockSetEvent(
             productId,
             warehouseId,
