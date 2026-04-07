@@ -14,7 +14,7 @@ export interface CreatePurchaseOrderLineProps {
     productId: string;
     unitCostAtOrder: number;
     quantityOrdered: number;
-    currency: string;
+    currency?: string;
 }
 
 /**
@@ -30,7 +30,8 @@ export class PurchaseOrderLineEntity extends Entity<PurchaseOrderLineProps> {
         return new PurchaseOrderLineEntity(
             {
                 ...props,
-                quantityRecieved: 0
+                quantityRecieved: 0,
+                currency: props.currency ?? 'USD'
             },
             BaseId.generate().value
         );
