@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
-import { CycleCountLineEntityTypeOrm } from "./cycle-count-line.entity";
+import type { CycleCountLineEntityTypeOrm } from "./cycle-count-line.entity";
 import { CycleCountStatus } from "../../../domain";
 
 @Entity('cycle_counts')
@@ -28,6 +28,10 @@ export class CycleCountEntityTypeOrm {
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
     updatedAt!: Date;
 
-    @OneToMany(() => CycleCountLineEntityTypeOrm, y => y.cycleCount, { cascade: true, eager: false })
+    @OneToMany(
+        'CycleCountLineEntityTypeOrm', 
+        (y: CycleCountLineEntityTypeOrm) => y.cycleCount, 
+        { cascade: true, eager: false }
+    )
     lines!: CycleCountLineEntityTypeOrm[];
 }

@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import { CycleCountEntityTypeOrm } from "./cycle-count.entity";
+import type { CycleCountEntityTypeOrm } from "./cycle-count.entity";
 
 @Entity('cycle_count_lines')
 export class CycleCountLineEntityTypeOrm {
@@ -18,7 +18,7 @@ export class CycleCountLineEntityTypeOrm {
     @Column({ name: 'counted_quantity', type: 'int', nullable: true })
     countedQuantity!: number | null;
 
-    @ManyToOne(() => CycleCountEntityTypeOrm, x => x.lines)
+    @ManyToOne('CycleCountEntityTypeOrm', (x: CycleCountEntityTypeOrm) => x.lines)
     @JoinColumn({ name: 'cycle_count_id' })
     cycleCount!: CycleCountEntityTypeOrm;
 }

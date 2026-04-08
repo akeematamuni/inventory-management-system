@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { PurchaseOrderEntityTypeOrm } from './purchase-order.entity';
+import type { PurchaseOrderEntityTypeOrm } from './purchase-order.entity';
 
 @Entity('purchase_order_lines')
 export class PurchaseOrderLineEntityTypeOrm {
@@ -24,7 +24,7 @@ export class PurchaseOrderLineEntityTypeOrm {
     @Column({ name: 'purchase_order_id', type: 'uuid' })
     purchaseOrderId!: string;
 
-    @ManyToOne(() => PurchaseOrderEntityTypeOrm, x => x.lines)
+    @ManyToOne('PurchaseOrderEntityTypeOrm', (x: PurchaseOrderEntityTypeOrm) => x.lines)
     @JoinColumn({ name: 'purchase_order_id' })
     purchaseOrder!: PurchaseOrderEntityTypeOrm
 }

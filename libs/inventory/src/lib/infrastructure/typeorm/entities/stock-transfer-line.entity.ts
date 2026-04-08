@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import { StockTransferEntityTypeOrm } from './stock-transfer.entity';
+import type { StockTransferEntityTypeOrm } from './stock-transfer.entity';
 
 @Entity('stock_transfer_lines')
 export class StockTransferLineEntityTypeOrm {
@@ -21,7 +21,7 @@ export class StockTransferLineEntityTypeOrm {
     @Column({ name: 'stock_transfer_id', type: 'uuid' })
     stockTransferId!: string;
 
-    @ManyToOne(() => StockTransferEntityTypeOrm, x => x.lines)
+    @ManyToOne('StockTransferEntityTypeOrm', (x: StockTransferEntityTypeOrm) => x.lines)
     @JoinColumn({ name: 'stock_transfer_id' })
     stockTransfer!: StockTransferEntityTypeOrm
 }

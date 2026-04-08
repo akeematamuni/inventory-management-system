@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, OneToMany, CreateDateColumn, UpdateDateColumn, Index } from "typeorm";
-import { StockTransferLineEntityTypeOrm } from "./stock-transfer-line.entity";
+import type { StockTransferLineEntityTypeOrm } from "./stock-transfer-line.entity";
 import { StockTransferStatus } from "../../../domain";
 
 @Entity('stock_transfers')
@@ -31,6 +31,10 @@ export class StockTransferEntityTypeOrm {
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
     updatedAt!: Date;
 
-    @OneToMany(() => StockTransferLineEntityTypeOrm, y => y.stockTransfer, { cascade: true, eager: false })
+    @OneToMany(
+        'StockTransferLineEntityTypeOrm', 
+        (y: StockTransferLineEntityTypeOrm) => y.stockTransfer, 
+        { cascade: true, eager: false }
+    )
     lines!: StockTransferLineEntityTypeOrm[];
 }
