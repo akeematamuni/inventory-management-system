@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     IStockTransferRepository, STOCK_TRANSFER_REPOSITORY,
@@ -11,6 +11,8 @@ import { DispatchTransferCommand } from './dispatch-transfer.command';
 
 @CommandHandler(DispatchTransferCommand)
 export class DispatchTransferHandler implements ICommandHandler<DispatchTransferCommand> {
+    private readonly logger = new Logger(DispatchTransferHandler.name);
+
     constructor(
         @Inject(INVENTORY_EVENT_PUBLISHER)
         private readonly publisher: IInventoryEventPublisher,
@@ -26,6 +28,7 @@ export class DispatchTransferHandler implements ICommandHandler<DispatchTransfer
 
         const dispatchedLines = transfer.dispatch();
         await this.transferRepo.save(transfer);
+        this.logger.log(`Stock transfer dispatched. User: ${performedBy} | Transfer: ${transferId}`);
 
         await this.publisher.publish(
             new StockTransferDispatchedEvent(

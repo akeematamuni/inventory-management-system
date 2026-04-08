@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     IAdjustmentRepository, ADJUSTMENT_REPOSITORY,
@@ -17,6 +17,8 @@ import { CreateAdjustmentCommand } from "./create-adjustment.command";
 
 @CommandHandler(CreateAdjustmentCommand)
 export class CreateAdjustmentHandler implements ICommandHandler<CreateAdjustmentCommand> {
+    private readonly logger = new Logger(CreateAdjustmentHandler.name);
+
     constructor(
         @Inject(ADJUSTMENT_REPOSITORY)
         private readonly adjRepo: IAdjustmentRepository,
@@ -32,10 +34,14 @@ export class CreateAdjustmentHandler implements ICommandHandler<CreateAdjustment
 
     async execute(command: CreateAdjustmentCommand): Promise<string> {
         const { 
-            productId, warehouseId, 
-            quantity, movementType, 
-            reasonCode, performedBy,
-            notes, reasonNotes
+            productId, 
+            warehouseId, 
+            quantity, 
+            movementType, 
+            reasonCode, 
+            performedBy,
+            notes, 
+            reasonNotes
         } = command;
 
         // Guard 1: warehouse must exist and be active
@@ -72,6 +78,7 @@ export class CreateAdjustmentHandler implements ICommandHandler<CreateAdjustment
         });
 
         await this.adjRepo.save(adjustment);
+        this.logger.log(`Adjustment created. User: ${performedBy} | Adjustment: ${adjustment.id}`);
 
         await this.publisher.publish(new AdjustmentCreatedEvent(
             adjustment.id,

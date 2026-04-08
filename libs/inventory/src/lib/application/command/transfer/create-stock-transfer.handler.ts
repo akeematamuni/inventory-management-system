@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     IStockTransferRepository, STOCK_TRANSFER_REPOSITORY,
@@ -15,6 +15,8 @@ import { CreateStockTransferCommand } from "./create-stock-transfer.command";
 
 @CommandHandler(CreateStockTransferCommand)
 export class CreateStockTransferHandler implements ICommandHandler<CreateStockTransferCommand> {
+    private readonly logger = new Logger(CreateStockTransferHandler.name);
+
     constructor(
         @Inject(PRODUCT_REPOSITORY)
         private readonly productRepo: IProductRepository,
@@ -63,6 +65,7 @@ export class CreateStockTransferHandler implements ICommandHandler<CreateStockTr
         });
 
         const saved = await this.transferRepo.save(transfer);
+        this.logger.log(`Stock transfer created. User: ${createdBy} | Transfer: ${saved.id}`);
         return saved.id;
     }
 }
