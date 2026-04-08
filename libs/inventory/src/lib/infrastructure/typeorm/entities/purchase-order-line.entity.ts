@@ -24,7 +24,11 @@ export class PurchaseOrderLineEntityTypeOrm {
     @Column({ name: 'purchase_order_id', type: 'uuid' })
     purchaseOrderId!: string;
 
-    @ManyToOne('PurchaseOrderEntityTypeOrm', (x: PurchaseOrderEntityTypeOrm) => x.lines)
+    @ManyToOne(
+        'PurchaseOrderEntityTypeOrm', 
+        (x: PurchaseOrderEntityTypeOrm) => x.lines,
+        { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+    )
     @JoinColumn({ name: 'purchase_order_id' })
     purchaseOrder!: PurchaseOrderEntityTypeOrm
 }

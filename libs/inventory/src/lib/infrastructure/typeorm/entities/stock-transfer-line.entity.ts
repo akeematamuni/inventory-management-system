@@ -21,7 +21,11 @@ export class StockTransferLineEntityTypeOrm {
     @Column({ name: 'stock_transfer_id', type: 'uuid' })
     stockTransferId!: string;
 
-    @ManyToOne('StockTransferEntityTypeOrm', (x: StockTransferEntityTypeOrm) => x.lines)
+    @ManyToOne(
+        'StockTransferEntityTypeOrm', 
+        (x: StockTransferEntityTypeOrm) => x.lines,
+        { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+    )
     @JoinColumn({ name: 'stock_transfer_id' })
     stockTransfer!: StockTransferEntityTypeOrm
 }

@@ -18,7 +18,11 @@ export class CycleCountLineEntityTypeOrm {
     @Column({ name: 'counted_quantity', type: 'int', nullable: true })
     countedQuantity!: number | null;
 
-    @ManyToOne('CycleCountEntityTypeOrm', (x: CycleCountEntityTypeOrm) => x.lines)
+    @ManyToOne(
+        'CycleCountEntityTypeOrm', 
+        (x: CycleCountEntityTypeOrm) => x.lines,
+        { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+    )
     @JoinColumn({ name: 'cycle_count_id' })
     cycleCount!: CycleCountEntityTypeOrm;
 }
