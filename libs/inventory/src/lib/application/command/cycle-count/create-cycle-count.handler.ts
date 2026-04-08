@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import {
     ICycleCountRepository, CYCLE_COUNT_REPOSITORY,
@@ -15,6 +15,8 @@ import { CreateCycleCountCommand } from "./create-cycle-count.command";
 
 @CommandHandler(CreateCycleCountCommand)
 export class CreateCycleCountHandler implements ICommandHandler<CreateCycleCountCommand> {
+    private readonly logger = new Logger(CreateCycleCountHandler.name);
+
     constructor(
         @Inject(WAREHOUSE_REPOSITORY)
         private readonly warehouseRepo: IWarehouseRepository,
@@ -60,6 +62,7 @@ export class CreateCycleCountHandler implements ICommandHandler<CreateCycleCount
         });
 
         const saved = await this.cycleCountRepo.save(cycleCount);
+        this.logger.log(`Cycle count created. User: ${createdBy} | Cycle-Count: ${cycleCount.id}`);
         return saved.id;
     }
 }

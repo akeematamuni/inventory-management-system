@@ -1,5 +1,5 @@
 import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
-import { Inject } from "@nestjs/common";
+import { Inject, Logger } from "@nestjs/common";
 
 import { 
     ICycleCountRepository, CYCLE_COUNT_REPOSITORY,
@@ -11,6 +11,8 @@ import { ApproveCycleCountCommand } from "./approve-cycle-count.command";
 
 @CommandHandler(ApproveCycleCountCommand)
 export class ApproveCycleCountHandler implements ICommandHandler<ApproveCycleCountCommand> {
+    private readonly logger = new Logger(ApproveCycleCountHandler.name);
+
     constructor(
         @Inject(INVENTORY_EVENT_PUBLISHER)
         private readonly publisher: IInventoryEventPublisher,
@@ -27,6 +29,7 @@ export class ApproveCycleCountHandler implements ICommandHandler<ApproveCycleCou
         const varianceLines = cycleCount.approve(approvedBy);
 
         await this.cycleCountRepo.save(cycleCount);
+        this.logger.log(`Cycle count apporoved. User: ${approvedBy} | Cycle-Count: ${cycleCountId}`);
 
         if (varianceLines.length > 0) {
             await this.publisher.publish(new CycleCountApprovedEvent(
