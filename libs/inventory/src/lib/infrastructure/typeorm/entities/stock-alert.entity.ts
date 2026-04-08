@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryColumn, CreateDateColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryColumn, CreateDateColumn, Index, Unique } from 'typeorm';
 import { StockAlertStatus } from '../../../domain';
 
 @Entity('stock_alerts')
+@Unique(['productId', 'warehouseId', 'status'])
 export class StockAlertEntityTypeOrm {
     @PrimaryColumn('uuid')
     id!: string;
