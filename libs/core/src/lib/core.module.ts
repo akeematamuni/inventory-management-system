@@ -5,10 +5,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD, APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { PassportModule } from '@nestjs/passport';
 import { CqrsModule } from '@nestjs/cqrs';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 
 import { configSchema } from './config/config.schema';
 import { LoggingInterceptor } from './interceptors/logging.interceptor';
-import { GlobalExceptionFilter } from './errors/global-exception.filter';
+import { AllExceptionFilter } from './errors/all-exception.filter';
 import { JwtGuard } from './guards/jwt.guard';
 import { JwtStrategy } from './guards/jwt.strategy';
 
@@ -25,6 +26,7 @@ export const parsed = configSchema.safeParse(process.env);
 @Module({
     imports: [
         CqrsModule.forRoot(),
+        EventEmitterModule.forRoot(),
         PassportModule.register({ defaultStrategy: 'jwt' }),
         ConfigModule.forRoot({
             isGlobal: true, 
@@ -38,10 +40,10 @@ export const parsed = configSchema.safeParse(process.env);
     ],
     providers: [
         JwtGuard,
-        GlobalExceptionFilter,
+        AllExceptionFilter,
         LoggingInterceptor,
         { provide: APP_GUARD, useExisting: JwtGuard },
-        { provide: APP_FILTER, useExisting: GlobalExceptionFilter },
+        { provide: APP_FILTER, useExisting: AllExceptionFilter },
         { provide: APP_INTERCEPTOR, useExisting: LoggingInterceptor },
         {
             provide: JwtStrategy,
