@@ -49,6 +49,22 @@ import {
     ReportingController, StockTransferController
 } from './presentation';
 
+const cqrsHandlers = [
+    CreateWarehouseHandler, UpdateWarehouseHandler, DeactivateWarehouseHandler,
+    CreateProductHandler, UpdateProductHandler, DeactivateProductHandler,
+    ActivateProductHandler, CreatePurchaseOrderHandler, ConfirmPurchaseOrderHandler,
+    ConfirmGoodsReceiptHandler, CreateStockTransferHandler, DispatchTransferHandler,
+    ReceiveTransferHandler, CreateAdjustmentHandler, CreateCycleCountHandler,
+    SubmitCycleCountHandler, ApproveCycleCountHandler, RejectCycleCountHandler,
+    SetOpeningStockHandler,
+    GetWarehouseHandler, GetAllWarehousesHandler, GetProductHandler,
+    GetAllProductsHandler, GetPurchaseOrderHandler, GetAllPurchaseOrderHandler,
+    GetStockTransferHandler, GetAllStockTransfersHandler, GetAdjustmentHandler,
+    GetAllAdjustmentsHandler, GetCycleCountHandler, GetAllCycleCountsHandler,
+    GetStockLevelsHandler, GetMovementHistoryHandler, GetStockAlertsHandler,
+    GetInventoryValuationHandler
+].map(h => ({ provide: h, useClass: h }));
+
 @Module({
     imports: [
         TypeOrmModule.forFeature([
@@ -92,6 +108,7 @@ import {
         },
         { provide: StockBalanceUpdateHandler, useClass: StockBalanceUpdateHandler },
         { provide: StockBalanceUpdateHandlerKafka, useClass: StockBalanceUpdateHandlerKafka },
+
         { provide: WAREHOUSE_REPOSITORY, useClass: WarehouseRepositoryMongo },
         { provide: PRODUCT_REPOSITORY, useClass: ProductRepositoryMongo },
         { provide: ADJUSTMENT_REPOSITORY, useClass: AdjustmentRepositoryTypeOrm },
@@ -102,34 +119,8 @@ import {
         { provide: STOCK_BALANCE_REPOSITORY, useClass: StockBalanceRepositoryTypeOrm },
         { provide: STOCK_LEDGER_ENTRY_REPOSITORY, useClass: StockLedgerEntryRepositoryTypeOrm },
         { provide: STOCK_TRANSFER_REPOSITORY, useClass: StockTransferRepositoryTypeOrm },
-        { provide: CreateWarehouseHandler , useClass: CreateWarehouseHandler },
-        { provide: UpdateWarehouseHandler, useClass: UpdateWarehouseHandler },
-        { provide: DeactivateWarehouseHandler, useClass: DeactivateWarehouseHandler },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
-        // { provide , useClass:  },
+        
+        ...cqrsHandlers
     ],
     exports: [],
 })
