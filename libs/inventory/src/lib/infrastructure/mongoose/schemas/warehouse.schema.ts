@@ -3,19 +3,19 @@ import { Document } from 'mongoose';
 
 @Schema({ collection: 'warehouses', timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' } })
 export class WarehouseEntityMongo {
-    @Prop({ required: true, unique: true })
+    @Prop({ type: String, required: true, unique: true })
     _id!: string;
 
-    @Prop({ required: true })
+    @Prop({ type: String, required: true })
     name!: string;
 
-    @Prop({ required: true, unique: true, index: true })
+    @Prop({ type: String, required: true, unique: true, index: true })
     code!: string;
 
-    @Prop({ default: null })
+    @Prop({ type: String, default: null })
     address?: string | null;
 
-    @Prop({ required: true, default: true })
+    @Prop({ type: Boolean ,required: true, default: true })
     isActive!: boolean;
 
     createdAt!: Date;

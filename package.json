@@ -5,6 +5,7 @@
     "scripts": {
         "build": "nx build api",
         "start": "node --enable-source-maps dist/apps/api/main.js",
+        "seed": "tsx libs/database/src/lib/type-orm-config/system-seed.config.ts",
         "typeorm": "node -r @swc-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
         "migration:run": "tsx libs/database/src/lib/type-orm-config/migrations.config.ts",
         "migration:revert": "pnpm typeorm migration:revert",
