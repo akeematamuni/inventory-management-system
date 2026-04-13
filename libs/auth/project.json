@@ -7,7 +7,7 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "pnpm exec swc libs/auth/src -d dist --config-file .swcrc"
+                "command": "tsc -p libs/auth/tsconfig.lib.json && tsc-alias -p libs/auth/tsconfig.lib.json"
             }
         },
         "lint": {

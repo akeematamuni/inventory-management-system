@@ -2,6 +2,7 @@ import { DataSource } from 'typeorm';
 import { Connection } from 'mongoose';
 import { randomUUID } from 'node:crypto';
 import { config } from 'dotenv';
+import { parsed } from '@inventory/core';
 import { publicDataSourceConfig } from './datasource.config';
 import mongoose from 'mongoose';
 
@@ -297,7 +298,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     ledgerId, 
                     balance.productId, 
                     IDS.warehouses.war, 
-                    product.unitCost, 
+                    product?.unitCost, 
                     currency, 
                     balance.qty, 
                     IDS.users.kate
@@ -341,7 +342,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     ledgerId, 
                     balance.productId, 
                     IDS.warehouses.lag, 
-                    product.unitCost, 
+                    product?.unitCost, 
                     currency, 
                     balance.qty, 
                     IDS.users.sammy
@@ -525,7 +526,7 @@ export async function seedDatabase(): Promise<void> {
     await dataSource.initialize();
     console.log('PostgreSQL connected');
 
-    await mongoose.connect(process.env.MONGO_URI);
+    await mongoose.connect(parsed.data?.MONGO_URI || '');
     const connection = mongoose.connection;
     console.log('MongoDB connected');
 

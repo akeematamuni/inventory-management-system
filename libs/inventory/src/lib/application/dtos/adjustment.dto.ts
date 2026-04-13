@@ -1,7 +1,9 @@
 import { IsString, IsNotEmpty, IsNumber, IsOptional, IsEnum, Min } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
-import { AdjustmentEntity, MovementType, AdjustmentReasonCode } from "../../domain";
+import { MovementType } from "../../domain/value-objects/movement-type.vo";
+import { AdjustmentEntity } from "../../domain/entities/adjustment.entity";
+import { AdjustmentReasonCode } from "../../domain/value-objects/adjustment-reason.vo";
 
 export class CreateAdjustmentDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -43,8 +45,8 @@ export class AdjustmentResponseDto {
     @ApiProperty() productId!: string;
     @ApiProperty() warehouseId!: string;
     @ApiProperty() quantity!: number;
-    @ApiProperty() movementType!: MovementType;
-    @ApiProperty() reasonCode!: AdjustmentReasonCode;
+    @ApiProperty({ enum: MovementType }) movementType!: MovementType;
+    @ApiProperty({ enum: AdjustmentReasonCode }) reasonCode!: AdjustmentReasonCode;
     @ApiPropertyOptional() reasonNotes?: string | null;
     @ApiProperty() performedBy!: string;
     @ApiPropertyOptional() notes?: string | null;

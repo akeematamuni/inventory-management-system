@@ -7,7 +7,7 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "pnpm exec swc libs/database/src -d dist --config-file .swcrc"
+                "command": "tsc -p libs/database/tsconfig.lib.json && tsc-alias -p libs/database/tsconfig.lib.json"
             }
         },
         "lint": {

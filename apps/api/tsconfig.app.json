@@ -1,12 +1,23 @@
 {
     "extends": "./tsconfig.json",
     "compilerOptions": {
-        "outDir": "../../dist/out-tsc",
+        "outDir": "../../dist/apps/api",
+        "declaration": true,
         "types": ["node"],
-        "emitDecoratorMetadata": true,
+        "target": "es2021",
         "experimentalDecorators": true,
-        "target": "es2021"
+        "emitDecoratorMetadata": true,
+        "strictNullChecks": true,
+        "noImplicitAny": true,
+        "strictBindCallApply": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true
     },
     "include": ["src/**/*.ts"],
-    "exclude": ["jest.config.cts", "src/**/*.spec.ts", "src/**/*.test.ts"]
+    "exclude": [
+        "jest.config.ts",
+        "jest.config.cts",
+        "src/**/*.spec.ts",
+        "src/**/*.test.ts"
+    ]
 }

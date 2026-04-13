@@ -1,6 +1,6 @@
 import { IsString, IsNumber, Length, IsOptional, IsNotEmpty, Min } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { ProductEntity } from "../../domain";
+import { ProductEntity } from "../../domain/entities/product.entity";
 
 export class CreateProductDto {
     @ApiProperty({ example: 'Safety Jacket Type 1' })

@@ -6,6 +6,7 @@ import { populateRegistry } from './manifest';
 import { WinstonModule } from 'nest-winston';
 import { baseLogger } from '@inventory/core/logging';
 import { ConfigService } from '@nestjs/config';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 config();
 
@@ -22,6 +23,41 @@ async function bootstrap() {
     const port = config.get('PORT');
 
     app.setGlobalPrefix(globalPrefix);
+
+    const swaggerConfig = new DocumentBuilder()
+        .setTitle('Inventory Management System')
+        .setDescription(
+            'IMS API developed with DDD + Polyglot Architecture & Persistence + CQRS.\n\n' +
+            'Built for Chizoba Supply Co., a West African PPE distributor.\n\n' +
+            'Run the migrations and seed script first to populate demo data.'
+        )
+        .setVersion('1.0.0')
+        .addBearerAuth()
+        .addTag('warehouses', 'Warehouse management')
+        .addTag('products', 'Product catalogue')
+        .addTag('opening-stock', 'Initial stock seeding')
+        .addTag('purchasing', 'Purchase orders and goods receipt')
+        .addTag('stock-transfers', 'Inter-warehouse stock transfers')
+        .addTag('adjustments', 'Manual stock adjustments')
+        .addTag('cycle-counts', 'Periodic counting and stocktakes')
+        .addTag('reporting', 'Stock levels, history, alerts, valuation')
+        .build();
+
+    const document = SwaggerModule.createDocument(app, swaggerConfig);
+    SwaggerModule.setup(
+        `${globalPrefix}/docs`,
+        app, 
+        document,
+        {
+            swaggerOptions: {
+                persistAuthorization: true,
+                operationsSorter: 'alpha',
+                tagsSorter: 'alpha'
+            },
+            customSiteTitle: 'IMS API Docs'
+        }
+    );
+
     await app.listen(port);
 
     logger.log(`Application is running on: http://localhost:${port}/${globalPrefix}`);

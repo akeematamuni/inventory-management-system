@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsNotEmpty, Length } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { WarehouseEntity } from "../../domain";
+import { WarehouseEntity } from "../../domain/entities/warehouse.entity";
 
 export class CreateWarehouseDto {
     @ApiProperty({ example: 'Texas Warehouse' })

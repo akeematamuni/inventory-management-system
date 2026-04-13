@@ -7,7 +7,7 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "pnpm exec swc libs/inventory/src -d dist --config-file .swcrc"
+                "command": "tsc -p libs/inventory/tsconfig.lib.json && tsc-alias -p libs/inventory/tsconfig.lib.json"
             }
         },
         "lint": {

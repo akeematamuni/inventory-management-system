@@ -7,12 +7,7 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
-                "commands": [
-                    "tsc -p apps/api/tsconfig.app.json --noEmit",
-                    "pnpm exec swc apps/api/src -d dist --config-file .swcrc",
-                    "pnpm exec esbuild dist/apps/api/src/main.js --bundle --platform=node --outfile=dist/apps/api/main.js --external:node_modules/* --external:@nestjs --sourcemap"
-                ],
-                "parallel": false
+                "command": "node build.api.js"
             }
         },
         "lint": {

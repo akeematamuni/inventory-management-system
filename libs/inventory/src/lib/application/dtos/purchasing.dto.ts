@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, ValidateNested, Mi
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { PurchaseOrderEntity, PurchaseOrderStatus } from '../../domain';
+import { PurchaseOrderEntity, PurchaseOrderStatus } from '../../domain/entities/purchase-order.entity';
 
 export class CreatePurchaseOrderLineDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -38,7 +38,7 @@ export class CreatePurchaseOrderDto {
     @IsNotEmpty()
     supplierName!: string;
 
-    @ApiProperty({ type: [CreatePurchaseOrderLineDto] })
+    @ApiProperty({ type: () => [CreatePurchaseOrderLineDto] })
     @IsArray()
     @Type(() => CreatePurchaseOrderLineDto)
     @ValidateNested({ each: true })
@@ -63,7 +63,7 @@ export class GoodsReceiptLineDto {
 }
 
 export class ConfirmGoodsReceiptDto {
-    @ApiProperty({ type: [GoodsReceiptLineDto] })
+    @ApiProperty({ type: () => [GoodsReceiptLineDto] })
     @IsArray()
     @Type(() => GoodsReceiptLineDto)
     @ValidateNested({ each: true })
@@ -91,10 +91,10 @@ export class PurchaseOrderResponseDto {
     @ApiProperty() 
     supplierName!: string;
 
-    @ApiProperty() 
+    @ApiProperty({ enum: PurchaseOrderStatus }) 
     status!: PurchaseOrderStatus;
 
-    @ApiProperty({ type: [PurchaseOrderLineResponseDto] })
+    @ApiProperty({ type: () => [PurchaseOrderLineResponseDto] })
     lines!: PurchaseOrderLineResponseDto[];
 
     @ApiPropertyOptional() 

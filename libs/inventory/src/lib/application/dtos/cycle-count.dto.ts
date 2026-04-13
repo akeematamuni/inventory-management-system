@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, ValidateNested, Mi
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 
-import { CycleCountEntity, CycleCountStatus } from "../../domain";
+import { CycleCountEntity, CycleCountStatus } from "../../domain/entities/cycle-count.entity";
 
 export class CreateCycleCountLineDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -22,7 +22,7 @@ export class CreateCycleCountDto {
     @IsNotEmpty()
     warehouseId!: string;
 
-    @ApiProperty({ type: [CreateCycleCountLineDto] })
+    @ApiProperty({ type: () => [CreateCycleCountLineDto] })
     @IsArray()
     @ValidateNested({ each: true })
     @Type(() => CreateCycleCountLineDto)
@@ -52,7 +52,7 @@ export class SubmitCycleCountDto {
     @IsNotEmpty()
     cycleCountId!: string;
 
-    @ApiProperty({ type: [SubmitCycleCountLineDto] })
+    @ApiProperty({ type: () => [SubmitCycleCountLineDto] })
     @IsArray()
     @Type(() => SubmitCycleCountLineDto)
     @ValidateNested({ each: true })
@@ -79,7 +79,7 @@ export class CycleCountResponseDto {
     @ApiProperty() id!: string;
     @ApiProperty() warehouseId!: string;
     @ApiProperty() status!: CycleCountStatus;
-    @ApiProperty({ type: [CycleCountLineResponseDto] })
+    @ApiProperty({ type: () => [CycleCountLineResponseDto] })
     lines!: CycleCountLineResponseDto[];
     @ApiPropertyOptional() approvedBy?: string | null;
     @ApiPropertyOptional() notes?: string | null;

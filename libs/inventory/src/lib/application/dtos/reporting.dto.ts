@@ -1,9 +1,9 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
-import {
-    StockBalanceEntity, StockLedgerEntryEntity, 
-    StockAlertEntity, StockAlertStatus, MovementType
-} from '../../domain';
+import { MovementType } from "../../domain/value-objects/movement-type.vo";
+import { StockBalanceEntity } from "../../domain/entities/stock-balance.entity";
+import { StockLedgerEntryEntity } from "../../domain/entities/stock-ledger-entry.entity";
+import { StockAlertEntity, StockAlertStatus } from '../../domain/entities/stock-alert.entity';
 
 export enum ValuationMethod {
     FIFO = 'FIFO',
@@ -32,7 +32,7 @@ export class MovementHistoryResponseDto {
     @ApiProperty() id!: string;
     @ApiProperty() productId!: string;
     @ApiProperty() warehouseId!: string;
-    @ApiProperty() movementType!: MovementType;
+    @ApiProperty({ enum: MovementType }) movementType!: MovementType;
     @ApiProperty() quantityChange!: number;
     @ApiProperty() balanceAfter!: number;
     @ApiProperty() referenceId!: string;
@@ -65,7 +65,7 @@ export class StockAlertResponseDto {
     @ApiProperty() warehouseId!: string;
     @ApiProperty() currentBalance!: number;
     @ApiProperty() reorderPoint!: number;
-    @ApiProperty() status!: StockAlertStatus;
+    @ApiProperty({ enum: StockAlertStatus }) status!: StockAlertStatus;
     @ApiPropertyOptional() resolvedAt?: Date | null;
     @ApiProperty() createdAt!: Date;
 

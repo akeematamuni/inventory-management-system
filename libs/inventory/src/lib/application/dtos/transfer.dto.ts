@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, ValidateNested, Mi
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 
-import { StockTransferStatus, StockTransferEntity } from "../../domain";
+import { StockTransferStatus, StockTransferEntity } from "../../domain/entities/stock-transfer.entity"
 
 export class CreateStockTransferLineDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -27,7 +27,7 @@ export class CreateStockTransferDto {
     @IsNotEmpty()
     destinationWarehouseId!: string;
 
-    @ApiProperty({ type: [CreateStockTransferLineDto] })
+    @ApiProperty({ type: () => [CreateStockTransferLineDto] })
     @IsArray()
     @Type(() => CreateStockTransferLineDto)
     @ValidateNested({ each: true })
@@ -52,7 +52,7 @@ export class ReceiveTransferLineDto {
 }
 
 export class ReceiveTransferDto {
-    @ApiProperty({ type: [ReceiveTransferLineDto] })
+    @ApiProperty({ type: () => [ReceiveTransferLineDto] })
     @IsArray()
     @Type(() => ReceiveTransferLineDto)
     @ValidateNested({ each: true })
@@ -73,8 +73,8 @@ export class StockTransferResponseDto {
     @ApiProperty() id!: string;
     @ApiProperty() sourceWarehouseId!: string;
     @ApiProperty() destinationWarehouseId!: string;
-    @ApiProperty() status!: StockTransferStatus;
-    @ApiProperty({ type: [StockTransferLineResponseDto] })
+    @ApiProperty({ enum: StockTransferStatus }) status!: StockTransferStatus;
+    @ApiProperty({ type: () => [StockTransferLineResponseDto] })
     lines!: StockTransferLineResponseDto[];
     @ApiPropertyOptional() notes?: string | null;
     @ApiProperty() createdBy!: string;
