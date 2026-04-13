@@ -4,7 +4,7 @@
     "license": "MIT",
     "scripts": {
         "build": "nx build api",
-        "start": "node --enable-source-maps dist/apps/api/main.js",
+        "start": "node dist/apps/api/main.js",
         "seed": "tsx libs/database/src/lib/type-orm-config/system-seed.config.ts",
         "typeorm": "node -r @swc-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
         "migration:run": "tsx libs/database/src/lib/type-orm-config/migrations.config.ts",
@@ -81,12 +81,17 @@
         "nx": "22.5.4",
         "prettier": "~3.6.2",
         "ts-jest": "^29.4.0",
+        "ts-loader": "^9.5.7",
         "ts-node": "10.9.1",
+        "tsc-alias": "^1.8.16",
         "tsconfig-paths": "^4.2.0",
+        "tsconfig-paths-webpack-plugin": "^4.2.0",
         "tslib": "^2.3.0",
         "tsx": "^4.21.0",
         "typescript": "~5.9.2",
         "typescript-eslint": "^8.40.0",
-        "webpack-cli": "^5.1.4"
+        "webpack": "^5.106.1",
+        "webpack-cli": "^5.1.4",
+        "webpack-node-externals": "^3.0.0"
     }
 }
