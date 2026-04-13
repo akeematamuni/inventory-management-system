@@ -18,22 +18,26 @@ export class InventoryPublisherKafka implements IInventoryEventPublisher, OnModu
     //         }
     //     }
     // })
-    private readonly client: ClientKafka;
+    private readonly client: ClientKafka | null = null;
     private logger = new Logger(InventoryPublisherKafka.name);
 
     constructor(
         @Inject(ConfigService)
         private readonly configService: ConfigService
     ) {
-        this.client = new ClientKafka({
-            client: {
-                clientId: 'inventory',
-                brokers: [this.configService.getOrThrow('KAFKA_BROKER')]
-            },
-            producer: {
-                allowAutoTopicCreation: true
-            }
-        });
+        const kafkaEnabled = configService.get('KAFKA_ENABLED') === 'true';
+
+        if (kafkaEnabled) {
+            this.client = new ClientKafka({
+                client: {
+                    clientId: 'inventory',
+                    brokers: [this.configService.getOrThrow('KAFKA_BROKER')]
+                },
+                producer: {
+                    allowAutoTopicCreation: true
+                }
+            });
+        }
     }
 
     private resolveTopicName(event: InventoryDomainEvent): string {
@@ -66,14 +70,16 @@ export class InventoryPublisherKafka implements IInventoryEventPublisher, OnModu
         // ];
 
         // topics.forEach(topic => this.client.subscribeToResponseOf(topic));
-        await this.client.connect();
+        await this.client?.connect();
     }
 
     async onModuleDestroy(): Promise<void> {
-        await this.client.close();
+        await this.client?.close();
     }
 
     async publish(event: InventoryDomainEvent): Promise<void> {
+        if (!this.client) return;
+        
         const topic = this.resolveTopicName(event);
         const payload = { 
             key: this.resolveKey(event), 
