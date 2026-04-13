@@ -13,5 +13,7 @@ export const configSchema = z.object({
     DATABASE_URL: z.coerce.string(),
     MONGO_URI: z.coerce.string(),
 
+    KAFKA_ENABLED: z.coerce.boolean().default(false),
+
     NODE_ENV: z.coerce.string().default('production')
 });
