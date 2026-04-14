@@ -6,7 +6,7 @@ import { ManualBody, CurrentUser } from "@inventory/core/decorators";
 
 import { SetOpeningStockCommand, SetOpeningStockDto } from "../../application";
 
-@ApiTags('opening-stock')
+@ApiTags('Opening-Stock')
 @Controller('opening-stock')
 export class OpeningStockController {
     constructor(private readonly commandBus: CommandBus) {}

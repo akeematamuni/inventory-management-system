@@ -11,7 +11,7 @@ import {
 } from '../../application';
 
 
-@ApiTags('reporting')
+@ApiTags('Reporting')
 @Controller('reporting')
 export class ReportingController {
     constructor(@Inject(QueryBus) private readonly queryBus: QueryBus) {}

@@ -10,7 +10,7 @@ import {
     GetAllProductsQuery, ActivateProductCommand, DeactivateProductCommand
 } from "../../application";
 
-@ApiTags('products')
+@ApiTags('Products')
 @Controller('products')
 export class ProductController {
     constructor(

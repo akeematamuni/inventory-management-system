@@ -12,7 +12,7 @@ import {
     ConfirmGoodsReceiptDto, GoodsReceiptLine
 } from "../../application";
 
-@ApiTags('purchasing')
+@ApiTags('Purchasing')
 @Controller('purchasing')
 export class PurchaseController {
     constructor(

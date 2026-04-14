@@ -14,7 +14,7 @@ import {
 
 import { CycleCountStatus } from "../../domain";
 
-@ApiTags('cycle-counts')
+@ApiTags('Cycle-Counts')
 @Controller('cycle-counts')
 export class CycleCountController {
     constructor(

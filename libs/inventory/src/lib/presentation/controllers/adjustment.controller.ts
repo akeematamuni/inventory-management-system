@@ -9,7 +9,7 @@ import {
     GetAdjustmentQuery, GetAllAdjustmentsQuery
 } from "../../application";
 
-@ApiTags('adjustments')
+@ApiTags('Adjustments')
 @Controller('adjustments')
 export class AdjustmentController {
     constructor(

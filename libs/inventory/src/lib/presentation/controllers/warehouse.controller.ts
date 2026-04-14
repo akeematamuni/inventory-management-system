@@ -10,7 +10,7 @@ import {
     GetAllWarehousesQuery, DeactivateWarehouseCommand
 } from "../../application";
 
-@ApiTags('warehouses')
+@ApiTags('Warehouses')
 @Controller('warehouses')
 export class WarehouseController {
     constructor(

@@ -13,7 +13,7 @@ import {
 
 import { StockTransferStatus } from "../../domain";
 
-@ApiTags('stock-transfers')
+@ApiTags('Stock-Transfers')
 @Controller('stock-transfers')
 export class StockTransferController {
     constructor(
