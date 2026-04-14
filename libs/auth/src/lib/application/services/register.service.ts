@@ -51,16 +51,7 @@ export class RegisterService {
 
         await this.refreshTokenRepo.save(refreshTokenEntity);
 
-        return {
-            accessToken, 
-            refreshToken, 
-            user: {
-                firstName: adminUser.firstName,
-                lastName: adminUser.lastName,
-                email: adminUser.email.value,
-                emailVerified: adminUser.emailVerified
-            }
-        };
+        return { accessToken, refreshToken };
 
     }
 }
