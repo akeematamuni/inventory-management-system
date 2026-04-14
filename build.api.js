@@ -12,7 +12,7 @@ const config = {
     mode: 'production',
     entry: path.join(workspaceRoot, 'apps/api/src/main.ts'),
     output: {
-        path: path.join(workspaceRoot, 'dist/apps/api'),
+        path: path.join(workspaceRoot, 'dist/ims'),
         filename: 'main.js',
     },
     module: {
