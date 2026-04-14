@@ -28,19 +28,20 @@ async function bootstrap() {
         .setTitle('Inventory Management System')
         .setDescription(
             'IMS API developed with DDD + Polyglot Architecture & Persistence + CQRS.\n\n' +
-            'Built for Chizoba Supply Co., a West African PPE distributor.\n\n' +
-            'Run the migrations and seed script first to populate demo data.'
+            'Run the migration and seed scripts first to populate demo data.\n\n' +
+            'Please start from registration or login if demo data is seeded.'
         )
         .setVersion('1.0.0')
         .addBearerAuth()
-        .addTag('warehouses', 'Warehouse management')
-        .addTag('products', 'Product catalogue')
-        .addTag('opening-stock', 'Initial stock seeding')
-        .addTag('purchasing', 'Purchase orders and goods receipt')
-        .addTag('stock-transfers', 'Inter-warehouse stock transfers')
-        .addTag('adjustments', 'Manual stock adjustments')
-        .addTag('cycle-counts', 'Periodic counting and stocktakes')
-        .addTag('reporting', 'Stock levels, history, alerts, valuation')
+        .addTag('Authentication', 'User authentication and management')
+        .addTag('Warehouses', 'Warehouse management')
+        .addTag('Products', 'Product catalogue')
+        .addTag('Opening-Stock', 'Initial stock seeding')
+        .addTag('Purchasing', 'Purchase orders and goods receipt')
+        .addTag('Stock-Transfers', 'Inter-warehouse stock transfers')
+        .addTag('Adjustments', 'Manual stock adjustments')
+        .addTag('Cycle-Counts', 'Periodic counting and stocktakes')
+        .addTag('Reporting', 'Stock levels, history, alerts, valuation')
         .build();
 
     const document = SwaggerModule.createDocument(app, swaggerConfig);
