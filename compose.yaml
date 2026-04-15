@@ -127,6 +127,7 @@ services:
     env_file: [".env"]
     volumes:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
       - inventory_grafana_data:/var/lib/grafana
 
 volumes:

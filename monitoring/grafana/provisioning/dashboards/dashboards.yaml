@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'NestJS Dashboards'
+    orgId: 1
+    folder: 'Inventory Management System'
+    type: file
+    disableDeletion: false
+    editable: true
+    options:
+      path: /var/lib/grafana/dashboards
