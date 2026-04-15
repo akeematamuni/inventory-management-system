@@ -14,6 +14,8 @@ export const configSchema = z.object({
     MONGO_URI: z.coerce.string(),
 
     KAFKA_ENABLED: z.coerce.boolean().default(false),
+    LOKI_ENABLED: z.coerce.boolean().default(false),
+    LOKI_HOST: z.coerce.string(),
 
     NODE_ENV: z.coerce.string().default('production')
 });
