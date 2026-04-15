@@ -12,9 +12,11 @@ config();
 
 async function bootstrap() {
     populateRegistry();
+    
+    const winstonLogger = WinstonModule.createLogger({ instance: baseLogger});
 
     const app = await NestFactory.create(
-        AppModule, { logger: WinstonModule.createLogger({ instance: baseLogger}) }
+        AppModule, { logger: winstonLogger, bufferLogs: true }
     );
 
     const logger = new Logger('Bootstrap');
