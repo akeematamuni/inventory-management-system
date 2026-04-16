@@ -1,7 +1,7 @@
 import { Entity, Column, PrimaryColumn, Index, CreateDateColumn } from 'typeorm';
 import { MovementType } from '../../../domain';
 
-@Entity('stock_ledger_entry')
+@Entity('stock_ledger_entries')
 export class StockLedgerEntryEntityTypeOrm {
     @PrimaryColumn('uuid')
     id!: string;
