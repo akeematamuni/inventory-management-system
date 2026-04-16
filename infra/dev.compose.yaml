@@ -1,0 +1,47 @@
+networks:
+  dev_inventory_network:
+    driver: bridge
+
+services:
+  # --- Databases (Profile: core) ---
+  postgres:
+    image: postgres:16
+    container_name: dev_inventory_pg_db
+    env_file: ["../.env"]
+    ports: ["5434:5432"]
+    networks: ["dev_inventory_network"]
+    volumes: ["dev_inventory_pg_data:/var/lib/postgresql/data"]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mongodb:
+    image: mongo:8
+    container_name: dev_inventory_mongodb
+    env_file: ["../.env"]
+    ports: ["27017:27017"]
+    networks: ["dev_inventory_network"]
+    volumes: ["dev_inventory_mongodb_data:/data/db"]
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7
+    container_name: dev_inventory_redis
+    profiles: ["core"]
+    ports: ["6379:6379"]
+    networks: ["dev_inventory_network"]
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  dev_inventory_pg_data:
+  dev_inventory_mongodb_data:

@@ -1,17 +1,17 @@
 networks:
-  inventory_network:
+  staging_inventory_network:
     driver: bridge
 
 services:
   # --- Databases (Profile: core) ---
   postgres:
     image: postgres:16
-    container_name: inventory_pg_db
+    container_name: staging_inventory_pg_db
     profiles: ["core"]
-    env_file: [".env"]
+    env_file: ["../.env"]
     ports: ["5434:5432"]
-    networks: ["inventory_network"]
-    volumes: ["inventory_pg_data:/var/lib/postgresql/data"]
+    networks: ["staging_inventory_network"]
+    volumes: ["staging_inventory_pg_data:/var/lib/postgresql/data"]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
@@ -20,12 +20,12 @@ services:
 
   mongodb:
     image: mongo:8
-    container_name: inventory_mongodb
+    container_name: staging_inventory_mongodb
     profiles: ["core"]
-    env_file: [".env"]
+    env_file: ["../.env"]
     ports: ["27017:27017"]
-    networks: ["inventory_network"]
-    volumes: ["inventory_mongodb_data:/data/db"]
+    networks: ["staging_inventory_network"]
+    volumes: ["staging_inventory_mongodb_data:/data/db"]
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', 'db.adminCommand("ping")']
       interval: 10s
@@ -34,11 +34,11 @@ services:
 
   redis:
     image: redis:7
-    container_name: inventory_redis
+    container_name: staging_inventory_redis
     profiles: ["core"]
     ports: ["6379:6379"]
-    networks: ["inventory_network"]
-    # volumes: ["inventory_redis_data:/data"]
+    networks: ["staging_inventory_network"]
+    # volumes: ["staging_inventory_redis_data:/data"]
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -48,14 +48,14 @@ services:
   # --- Messaging (Profile: kafka) ---
   zookeeper:
     image: confluentinc/cp-zookeeper:7.7.8
-    container_name: inventory_zookeeper
+    container_name: staging_inventory_zookeeper
     profiles: ["kafka"]
-    env_file: [".env"]
+    env_file: ["../.env"]
     ports: ["2181:2181"]
-    networks: ["inventory_network"]
-    # volumes:
-    #   - inventory_zk_data:/var/lib/zookeeper/data
-    #   - inventory_zk_log:/var/lib/zookeeper/log
+    networks: ["staging_inventory_network"]
+    volumes:
+      - staging_inventory_zk_data:/var/lib/zookeeper/data
+      - staging_inventory_zk_log:/var/lib/zookeeper/log
     healthcheck:
       test: ["CMD-SHELL", "echo ruok | nc localhost 2181 || exit 1"]
       interval: 10s
@@ -64,15 +64,15 @@ services:
 
   kafka:
     image: confluentinc/cp-kafka:7.7.8
-    container_name: inventory_kafka
+    container_name: staging_inventory_kafka
     profiles: ["kafka"]
     depends_on:
       zookeeper:
         condition: service_healthy
-    env_file: [".env"]
+    env_file: ["../.env"]
     ports: ["9092:9092", "29092:29092"]
-    networks: ["inventory_network"]
-    # volumes: ["inventory_kafka_data:/var/lib/kafka/data"]
+    networks: ["staging_inventory_network"]
+    volumes: ["staging_inventory_kafka_data:/var/lib/kafka/data"]
     healthcheck:
       test: ["CMD", "kafka-topics", "--bootstrap-server", "localhost:9092", "--list"]
       interval: 25s
@@ -81,41 +81,41 @@ services:
 
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
-    container_name: inventory_kafka_ui
+    container_name: staging_inventory_kafka_ui
     profiles: ["kafka"]
     depends_on:
       kafka:
         condition: service_healthy
-    env_file: [".env"]
+    env_file: ["../.env"]
     ports: ["8081:8080"]
-    networks: ["inventory_network"]
+    networks: ["staging_inventory_network"]
 
   # --- Monitoring (Profile: monitoring) ---
   loki:
     image: grafana/loki:latest
-    container_name: inventory_loki
+    container_name: staging_inventory_loki
     profiles: ["monitoring"]
     ports: ["3100:3100"]
-    networks: ["inventory_network"]
+    networks: ["staging_inventory_network"]
     command: -config.file=/etc/loki/local-config.yaml
     volumes:
       - ./monitoring/loki/loki-config.yaml:/etc/loki/local-config.yaml:ro
-      - inventory_loki_data:/loki
+      - staging_inventory_loki_data:/loki
 
   prometheus:
     image: prom/prometheus:latest
-    container_name: inventory_prometheus
+    container_name: staging_inventory_prometheus
     profiles: ["monitoring"]
     ports: ["9090:9090"]
-    networks: ["inventory_network"]
+    networks: ["staging_inventory_network"]
     extra_hosts: ["host.docker.internal:host-gateway"]
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - inventory_prometheus_data:/prometheus
+      - staging_inventory_prometheus_data:/prometheus
 
   grafana:
     image: grafana/grafana:latest
-    container_name: inventory_grafana
+    container_name: staging_inventory_grafana
     profiles: ["monitoring"]
     depends_on:
       prometheus:
@@ -123,20 +123,20 @@ services:
       loki:
         condition: service_started
     ports: ["4000:3000"]
-    networks: ["inventory_network"]
-    env_file: [".env"]
+    networks: ["staging_inventory_network"]
+    env_file: ["../.env"]
     volumes:
       - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
       - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - inventory_grafana_data:/var/lib/grafana
+      - staging_inventory_grafana_data:/var/lib/grafana
 
 volumes:
-  inventory_pg_data:
-  inventory_mongodb_data:
-  # inventory_redis_data:
-  # inventory_zk_data:
-  # inventory_zk_log:
-  # inventory_kafka_data:
-  inventory_loki_data:
-  inventory_prometheus_data:
-  inventory_grafana_data:
+  staging_inventory_pg_data:
+  staging_inventory_mongodb_data:
+  # staging_inventory_redis_data:
+  staging_inventory_zk_data:
+  staging_inventory_zk_log:
+  staging_inventory_kafka_data:
+  staging_inventory_loki_data:
+  staging_inventory_prometheus_data:
+  staging_inventory_grafana_data:

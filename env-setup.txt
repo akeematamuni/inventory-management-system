@@ -1,0 +1,61 @@
+# TAKE NOTE>>>>>>>>>>
+
+# Each environment variable needs to be adapted to the infrastructure setup.
+# When the infrastructure position using docker is dev, staging, or prod,
+# each variable particularly the database credentials and urls should point to the accurate info.
+
+# Some of the variables are left with the defaults and are usable, if changes are made, then they must be adapted accordingly.
+
+# Databases
+POSTGRES_USER=
+POSTGRES_PASSWORD=
+POSTGRES_DB=
+
+DATABASE_URL=
+
+MONGO_INITDB_ROOT_USERNAME=
+MONGO_INITDB_ROOT_PASSWORD=
+MONGO_INITDB_DATABASE=
+
+MONGO_USERNAME=
+MONGO_PASSWORD=
+MONGO_DB_NAME=
+
+MONGO_URI=  # Remember to add "?authSource"
+
+# Messaging
+ZOOKEEPER_CLIENT_PORT=2181
+ZOOKEEPER_TICK_TIME=2000
+
+KAFKA_BROKER_ID=1
+KAFKA_BROKER=localhost:9092
+KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181
+KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=PLAINTEXT:PLAINTEXT,PLAINTEXT_INTERNAL:PLAINTEXT
+KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092,PLAINTEXT_INTERNAL://kafka:29092
+KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+KAFKA_AUTO_CREATE_TOPICS_ENABLE=true
+
+KAFKA_CLUSTERS_0_NAME=local
+KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
+# Pointing UI to the internal network name above, check compose to verify.
+KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
+
+# Monitoring
+GF_SECURITY_ADMIN_USER=
+GF_SECURITY_ADMIN_PASSWORD=
+GF_USERS_ALLOW_SIGN_UP=false
+
+LOKI_HOST=http://localhost:3100 # This is the default based on the compose setup
+
+# App
+PORT=
+GLOBAL_PREFIX=api # Change all necessary config tied to the global prefix once changed
+NODE_ENV=production
+LOKI_ENABLED=false # Change to use Loki
+KAFKA_ENABLED=false # Change to use Kafka
+
+JWT_SECRET= # Ensure the secret is truly secure
+JWT_EXPIRES='15m'
+
+JWT_REFRESH_SECRET= # Use a different one for best practice
+JWT_REFRESH_EXPIRES='48h'
