@@ -92,7 +92,7 @@ services:
 
   # --- Monitoring (Profile: monitoring) ---
   loki:
-    image: grafana/loki:2.9.0
+    image: grafana/loki:latest
     container_name: inventory_loki
     profiles: ["monitoring"]
     ports: ["3100:3100"]
@@ -103,7 +103,7 @@ services:
       - inventory_loki_data:/loki
 
   prometheus:
-    image: prom/prometheus:v2.48.0
+    image: prom/prometheus:latest
     container_name: inventory_prometheus
     profiles: ["monitoring"]
     ports: ["9090:9090"]
@@ -114,7 +114,7 @@ services:
       - inventory_prometheus_data:/prometheus
 
   grafana:
-    image: grafana/grafana:10.2.0
+    image: grafana/grafana:latest
     container_name: inventory_grafana
     profiles: ["monitoring"]
     depends_on:
