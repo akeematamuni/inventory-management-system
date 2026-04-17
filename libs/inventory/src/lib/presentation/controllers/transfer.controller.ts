@@ -1,5 +1,5 @@
 import { Controller, Inject, Get, Post, Patch, Param, Query, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiResponse, ApiQuery, ApiOperation } from "@nestjs/swagger";
+import { ApiTags, ApiResponse, ApiQuery, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -14,6 +14,7 @@ import {
 import { StockTransferStatus } from "../../domain";
 
 @ApiTags('Stock-Transfers')
+@ApiBearerAuth()
 @Controller('stock-transfers')
 export class StockTransferController {
     constructor(

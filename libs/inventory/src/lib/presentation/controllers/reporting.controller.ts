@@ -1,5 +1,5 @@
 import { Controller, Inject, Get, Query } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
 import { QueryBus } from "@nestjs/cqrs";
 
 import { MovementType, StockAlertStatus } from '../../domain';
@@ -12,6 +12,7 @@ import {
 
 
 @ApiTags('Reporting')
+@ApiBearerAuth()
 @Controller('reporting')
 export class ReportingController {
     constructor(@Inject(QueryBus) private readonly queryBus: QueryBus) {}

@@ -1,5 +1,5 @@
 import { Controller, Post, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -7,6 +7,7 @@ import { ManualBody, CurrentUser } from "@inventory/core/decorators";
 import { SetOpeningStockCommand, SetOpeningStockDto } from "../../application";
 
 @ApiTags('Opening-Stock')
+@ApiBearerAuth()
 @Controller('opening-stock')
 export class OpeningStockController {
     constructor(private readonly commandBus: CommandBus) {}

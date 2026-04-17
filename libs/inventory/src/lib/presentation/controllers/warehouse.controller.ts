@@ -1,5 +1,5 @@
 import { Controller, Inject, Post, Get, Patch, HttpCode, HttpStatus, Param, Delete } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiParam } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -11,6 +11,7 @@ import {
 } from "../../application";
 
 @ApiTags('Warehouses')
+@ApiBearerAuth()
 @Controller('warehouses')
 export class WarehouseController {
     constructor(

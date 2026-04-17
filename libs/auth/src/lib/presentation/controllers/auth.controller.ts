@@ -6,8 +6,10 @@ import { RefreshTokenDto } from "../dtos/refresh-token.dto";
 import { RegisterService, LoginService, RefreshTokenService, ProfileService } from '../../application';
 import { Public, ManualBody, CurrentUserEmail } from "@inventory/core/decorators";
 import { AccessDeniedException } from "@inventory/core/errors";
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('Authentication')
+@ApiBearerAuth()
 @Controller('auth')
 export class AuthController {
     constructor(

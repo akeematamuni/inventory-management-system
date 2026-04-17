@@ -1,5 +1,5 @@
 import { Controller, Inject, Get, Post, Patch, Param, Query, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -15,6 +15,7 @@ import {
 import { CycleCountStatus } from "../../domain";
 
 @ApiTags('Cycle-Counts')
+@ApiBearerAuth()
 @Controller('cycle-counts')
 export class CycleCountController {
     constructor(

@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Param, Query, HttpCode, HttpStatus, Inject } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -10,6 +10,7 @@ import {
 } from "../../application";
 
 @ApiTags('Adjustments')
+@ApiBearerAuth()
 @Controller('adjustments')
 export class AdjustmentController {
     constructor(
