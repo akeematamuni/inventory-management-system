@@ -7,7 +7,7 @@
         "build": {
             "executor": "nx:run-commands",
             "options": {
-                "command": "node build.api.js"
+                "command": "node scripts/build.api.js"
             }
         },
         "lint": {

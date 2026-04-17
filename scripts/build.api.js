@@ -5,7 +5,7 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const TsConfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 
-const workspaceRoot = path.resolve(__dirname);
+const workspaceRoot = path.resolve(__dirname, '..');
 
 const config = {
     target: 'node',
