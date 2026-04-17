@@ -5,10 +5,9 @@ import { config } from 'dotenv';
 import { parsed } from '@inventory/core';
 import { publicDataSourceConfig } from './datasource.config';
 import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 config();
-
-const currency = 'USD';
 
 // Fixed IDs so seed is safe to run multiple times (idempotent)
 const IDS = {
@@ -41,6 +40,15 @@ const IDS = {
     },
 }
 
+const currency = 'USD';
+
+const usersToSeed = [
+    { id: IDS.users.sammy, firstName: 'Sammy', email: 'sammy@example.com' },
+    { id: IDS.users.jason, firstName: 'Jason', email: 'jason@example.com' },
+    { id: IDS.users.adam, firstName: 'Adam', email: 'adam@example.com' },
+    { id: IDS.users.kate, firstName: 'Kate', email: 'kate@example.com' },
+];
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 async function seedMongo(connection: Connection): Promise<void> {
     console.log('Seeding warehouses and products in MongoDB');
@@ -49,12 +57,13 @@ async function seedMongo(connection: Connection): Promise<void> {
     const productCol = connection.collection('products');
 
     // Delete existing seed data before reinserting
-    await warehouseCol.deleteMany({
-        _id: { $in: Object.values(IDS.warehouses) as any },
-    });
-    await productCol.deleteMany({
-        _id: { $in: Object.values(IDS.products) as any },
-    });
+    const warehouseIds = Object.values(IDS.warehouses);
+    const productIds = Object.values(IDS.products).map(p => p.id);
+
+    await Promise.all([
+        warehouseCol.deleteMany({ _id: { $in: warehouseIds as any } }),
+        productCol.deleteMany({ _id: { $in: productIds as any } })
+    ]);
 
     // Warehouses
     await warehouseCol.insertMany([
@@ -189,9 +198,34 @@ async function seedMongo(connection: Connection): Promise<void> {
 
 
 async function seedPostgres(dataSource: DataSource): Promise<void> {
-    console.log('Seeding PostgreSQL (settings, balances, ledger, orders)...');
+    console.log('Seeding PostgreSQL (users, settings, balances, ledgers, orders)...');
 
     await dataSource.transaction(async manager => {
+        // 0. Users
+        await manager.query(
+            `DELETE FROM "users" WHERE "id" = ANY($1::uuid[])`, 
+            [Object.values(IDS.users)]
+        );
+
+        const passwordHash = await bcrypt.hash('Password123$', 12);
+
+        for (const user of usersToSeed) {
+            await manager.query(
+                `
+                INSERT INTO "users"
+                    ("id", "first_name", "email", "password_hash", "created_at", "updated_at")
+                VALUES
+                    ($1, $2, $3, $4, now(), now())
+                `,
+                [
+                    user.id,
+                    user.firstName,
+                    user.email,
+                    passwordHash
+                ]
+            );
+        }
+
         // 1. Settings
         await manager.query(
             `DELETE FROM "product_settings" WHERE "id" = ANY($1::uuid[])`, 
@@ -257,7 +291,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
 
         // Delete existing ledger entries for warehouses
         await manager.query(
-            `DELETE FROM "stock_ledger_entry" WHERE "warehouse_id" = ANY($1::uuid[])`, 
+            `DELETE FROM "stock_ledger_entries" WHERE "warehouse_id" = ANY($1::uuid[])`, 
             [[IDS.warehouses.war, IDS.warehouses.lag]]
         );
 
@@ -357,11 +391,11 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
         );
 
         const alerts = [
-            { product: IDS.products.aprons, warehouse: IDS.warehouses.war, balance: 100, reorder: 150 },
-            { product: IDS.products.boots, warehouse: IDS.warehouses.lag, balance: 28, reorder: 30 },
-            { product: IDS.products.vest, warehouse: IDS.warehouses.lag, balance: 80, reorder: 100 },
-            { product: IDS.products.earmuffs, warehouse: IDS.warehouses.lag, balance: 55, reorder: 60 },
-            { product: IDS.products.harness, warehouse: IDS.warehouses.lag, balance: 8, reorder: 10 },
+            { product: IDS.products.aprons.id, warehouse: IDS.warehouses.war, balance: 100, reorder: 150 },
+            { product: IDS.products.boots.id, warehouse: IDS.warehouses.lag, balance: 28, reorder: 30 },
+            { product: IDS.products.vest.id, warehouse: IDS.warehouses.lag, balance: 80, reorder: 100 },
+            { product: IDS.products.earmuffs.id, warehouse: IDS.warehouses.lag, balance: 55, reorder: 60 },
+            { product: IDS.products.harness.id, warehouse: IDS.warehouses.lag, balance: 8, reorder: 10 },
         ];
 
         for (const alert of alerts) {
@@ -414,7 +448,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     "purchase_order_id", 
                     "product_id", 
                     "quantity_ordered", 
-                    "quantity_received", 
+                    "quantity_recieved", 
                     "unit_cost_at_order", 
                     "currency"
                 )
@@ -447,7 +481,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     "purchase_order_id", 
                     "product_id", 
                     "quantity_ordered", 
-                    "quantity_received", 
+                    "quantity_recieved", 
                     "unit_cost_at_order", 
                     "currency"
                 )
@@ -462,10 +496,10 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
         );
 
         // 5. Stock transfer, dispatched, awaiting receipt
-        await manager.query(
-            `DELETE FROM "stock_transfer_lines" WHERE "stock_transfer_id" = $1`, 
-            [IDS.stockTransfers.tr001]
-        );
+        // await manager.query(
+        //     `DELETE FROM "stock_transfer_lines" WHERE "stock_transfer_id" = $1`, 
+        //     [IDS.stockTransfers.tr001]
+        // );
 
         await manager.query(
             `DELETE FROM "stock_transfers" WHERE "id" = $1`, 
@@ -479,7 +513,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     "id", 
                     "source_warehouse_id", 
                     "destination_warehouse_id",
-                    "status", 
+                    "stock_transfer_status", 
                     "notes", 
                     "created_by", 
                     "created_at", 
@@ -500,7 +534,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     "product_id",
                     "quantity_requested", 
                     "quantity_dispatched", 
-                    "quantity_received"
+                    "quantity_recieved"
                 )
             VALUES
                 ($1, $2, $3, 100, 100, 0),
@@ -513,7 +547,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
         );
     });
 
-    console.log('PostgreSQL seeded with settings, balances, ledger, purchase orders, transfer, alerts');
+    console.log('PostgreSQL seeded with users, settings, balances, ledger, purchase orders, transfers, alerts');
 }
 
 export async function seedDatabase(): Promise<void> {
