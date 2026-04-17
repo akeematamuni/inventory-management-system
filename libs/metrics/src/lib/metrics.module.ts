@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { PrometheusModule, makeCounterProvider, makeHistogramProvider } from '@willsoto/nestjs-prometheus';
+import { MetricsController } from './metrics.controller';
 
 @Module({
     imports: [
@@ -38,6 +39,7 @@ import { PrometheusModule, makeCounterProvider, makeHistogramProvider } from '@w
             labelNames: ['movement_type', 'warehouse_id'],
         }),
     ],
+    controllers: [MetricsController],
     exports: [PrometheusModule],
 })
 export class MetricsModule {}
