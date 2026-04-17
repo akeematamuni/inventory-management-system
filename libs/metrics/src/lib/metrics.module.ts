@@ -1,15 +1,10 @@
 import { Module } from '@nestjs/common';
 import { PrometheusModule, makeCounterProvider, makeHistogramProvider } from '@willsoto/nestjs-prometheus';
-import { parsed } from '@inventory/core';
-
-const metricsPath = parsed.data?.GLOBAL_PREFIX
-    ? `/${parsed.data.GLOBAL_PREFIX}/metrics`
-    : '/metrics';
 
 @Module({
     imports: [
         PrometheusModule.register({
-            path: metricsPath,
+            path: '/metrics',
             defaultMetrics: { enabled: true }
         }),
     ],
