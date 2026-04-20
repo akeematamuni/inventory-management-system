@@ -134,12 +134,12 @@ http://localhost:8000/api/docs
 
 | ADR | Decision |
 |---|---|
-| [ADR-001](docs/adr/001-immutable-ledger.md) | Immutable append-only stock ledger |
-| [ADR-002](docs/adr/002-polyglot-persistence.md) | PostgreSQL + MongoDB polyglot persistence |
-| [ADR-003](docs/adr/003-hexagonal-architecture.md) | Hexagonal architecture with ports and adapters |
-| [ADR-004](docs/adr/004-event-driven-side-effects.md) | Event-driven balance updates and alerts |
-| [ADR-005](docs/adr/005-cqrs.md) | CQRS with @nestjs/cqrs |
-| [ADR-006](docs/adr/006-kafka-transport.md) | Kafka as optional event transport |
+| [ADR-001](docs/001-immutable-ledger.md) | Immutable append-only stock ledger |
+| [ADR-002](docs/002-polyglot-persistence.md) | PostgreSQL + MongoDB polyglot persistence |
+| [ADR-003](docs/003-hexagonal-architecture.md) | Hexagonal architecture with ports and adapters |
+| [ADR-004](docs/004-event-driven-side-effects.md) | Event-driven balance updates and alerts |
+| [ADR-005](docs/005-cqrs.md) | CQRS with @nestjs/cqrs |
+| [ADR-006](docs/006-kafka-transport.md) | Kafka as optional event transport |
 
 ---
 
