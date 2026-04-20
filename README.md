@@ -16,3 +16,4 @@ This system solves the problem of managing stocks via Excel spreadsheets and Wha
 ---
 
 ## Architecture Overview
+![Architecture Overview](assets/architecture-overview.png)
