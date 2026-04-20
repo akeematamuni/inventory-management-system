@@ -11,7 +11,6 @@
 ## Business Context
 
 Company is an industrial PPE distributor operating two warehouses in Lagos and Warri, with 4,000+ SKUs.  
-
 This system solves the problem of managing stocks via Excel spreadsheets and WhatsApp messages, monthly variances costing significantly, unplanned stockouts, and lack of reliable audit trail.
 
 ---
