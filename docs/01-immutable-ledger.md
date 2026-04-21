@@ -2,7 +2,7 @@
 
 **Date:** January 2026  
 **Status:** Accepted  
-**Author:** [Akeem Amuni]
+**Author:** Akeem Amuni
 
 ---
 
@@ -26,13 +26,13 @@ The naive approach is to maintain a single quantity field per product per wareho
 
 Implement an **immutable append-only stock ledger**.
 
-Every stock movement — receipts, transfers, adjustments, cycle count corrections, opening stock — creates a new row in `stock_ledger_entries`. This row is never updated and never deleted. Corrections are made by creating new entries in the opposite direction, not by modifying existing ones.
+Every stock movement; receipts, transfers, adjustments, cycle count corrections, opening stock, creates a new row in `stock_ledger_entries`. This row is never updated and never deleted. Corrections are made by creating new entries in the opposite direction, not by modifying existing ones.
 
-Each entry also stores `balance_after` — a snapshot of the balance at the time of writing. This means the balance at any historical date can be read directly from the ledger without recalculation.
+Each entry also stores `balance_after`, a snapshot of the balance at the time of writing. This means the balance at any historical date can be read directly from the ledger without recalculation.
 
-A separate `stock_balances` table maintains the materialised current total per product per warehouse. This exists purely for fast reads — querying the current balance does not require summing the entire ledger. The balance is updated atomically alongside every ledger write inside a single database transaction.
+A separate `stock_balances` table maintains the materialised current total per product per warehouse. This exists purely for fast reads, querying the current balance does not require summing the entire ledger. The balance is updated atomically alongside every ledger write inside a single database transaction.
 
-The domain entity `StockLedgerEntry` enforces immutability at the code level — it has no `update()` method and no setters. The repository port has no `update()` or `delete()` method. The database table has no UPDATE or DELETE permissions granted to the application role.
+The domain entity `StockLedgerEntryEntity` enforces immutability at the code level, it has no `update()` method and no setters. The repository port has no `update()` or `delete()` method. The database table has no UPDATE or DELETE permissions granted to the application role.
 
 ---
 
