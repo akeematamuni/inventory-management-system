@@ -88,7 +88,7 @@ touch .env
 ### 3. Start infrastructure
 
 ```bash
-docker-compose -f ./infra/prod.compose.yaml --profile core --profile kafka --profile monitoring up -d
+docker compose -f ./infra/prod.compose.yaml --profile core --profile kafka --profile monitoring up -d
 # Starts: PostgreSQL, MongoDB, Redis, Kafka, Zookeeper, Kafka UI, Loki, Prometheus, and Grafana
 ```
 
