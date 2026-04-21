@@ -1,4 +1,4 @@
-# ADR-001: Immutable Append-Only Stock Ledger
+# ADR-01: Immutable Append-Only Stock Ledger
 
 **Date:** January 2026  
 **Status:** Accepted  
