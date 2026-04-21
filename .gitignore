@@ -9,7 +9,6 @@ out-tsc
 node_modules
 logs
 .env
-pnpm-lock.yaml
 todo.txt
 
 # IDEs and editors
