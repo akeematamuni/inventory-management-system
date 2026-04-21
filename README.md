@@ -3,7 +3,7 @@
 > Built with **NestJS**, **Domain-Driven Design**, **Hexagonal Architecture**, **Event-Driven Architecture**, and **CQRS**.  
 > Reference implementation of a client's work. MIT License. Open source.
 
-[![CI](https://img.shields.io/badge/CI-Build-blue.svg)](https://github.com/akeematamuni/inventory-management-system/github/workflows/ci.yml)
+[![CI](https://img.shields.io/badge/CI-PIPELINE-blue.svg)](https://github.com/akeematamuni/inventory-management-system/github/workflows/ci-cd.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
