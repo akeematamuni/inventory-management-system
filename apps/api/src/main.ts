@@ -7,6 +7,7 @@ import { WinstonModule } from 'nest-winston';
 import { baseLogger } from '@inventory/core/logging';
 import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { parsed } from '@inventory/core';
 
 config();
 
@@ -45,21 +46,31 @@ async function bootstrap() {
         .addTag('Cycle-Counts', 'Periodic counting and stocktakes')
         .addTag('Reporting', 'Stock levels, history, alerts, valuation')
         .build();
+    
+    if (parsed.data && parsed.data.SWAGGER) {
+        console.log('Creating swagger documentation...');
 
-    const document = SwaggerModule.createDocument(app, swaggerConfig);
-    SwaggerModule.setup(
-        `${globalPrefix}/docs`,
-        app, 
-        document,
-        {
-            swaggerOptions: {
-                persistAuthorization: true,
-                operationsSorter: 'alpha',
-                tagsSorter: 'alpha'
-            },
-            customSiteTitle: 'IMS API Docs'
+        try {
+            const document = SwaggerModule.createDocument(app, swaggerConfig);
+            SwaggerModule.setup(
+                `${globalPrefix}/docs`,
+                app, 
+                document,
+                {
+                    swaggerOptions: {
+                        persistAuthorization: true,
+                        operationsSorter: 'alpha',
+                        tagsSorter: 'alpha'
+                    },
+                    customSiteTitle: 'IMS API Docs'
+                }
+            );
+
+        } catch (error) {
+            console.error('Swagger failed on:', error.message);
+            console.error(error.stack);
         }
-    );
+    }
 
     await app.listen(port);
 

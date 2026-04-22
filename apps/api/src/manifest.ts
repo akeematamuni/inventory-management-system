@@ -26,6 +26,19 @@ import {
 // Import all entities
 import { UserEntityTypeOrm } from "@inventory/user/infrastructure";
 import { RefreshTokenEntityTypeOrm } from "@inventory/auth/infrastructure";
+import {
+    AdjustmentEntityTypeOrm, 
+    CycleCountLineEntityTypeOrm, 
+    CycleCountEntityTypeOrm,
+    PurchaseOrderLineEntityTypeOrm, 
+    PurchaseOrderEntityTypeOrm, 
+    ProductSettingsEntityTypeOrm,
+    StockAlertEntityTypeOrm, 
+    StockBalanceEntityTypeOrm, 
+    StockLedgerEntryEntityTypeOrm,
+    StockTransferLineEntityTypeOrm, 
+    StockTransferEntityTypeOrm,
+} from '@inventory/inventory/infrastructure';
 
 /** Function to populate registry */
 export const populateRegistry = () => {
@@ -51,7 +64,19 @@ export const populateRegistry = () => {
     ]);
 
     GlobalRegistry.addEntities([
-        UserEntityTypeOrm, RefreshTokenEntityTypeOrm
+        UserEntityTypeOrm, 
+        RefreshTokenEntityTypeOrm,
+        AdjustmentEntityTypeOrm,
+        // CycleCountLineEntityTypeOrm,
+        // CycleCountEntityTypeOrm,
+        // PurchaseOrderLineEntityTypeOrm,
+        // PurchaseOrderEntityTypeOrm,
+        // ProductSettingsEntityTypeOrm,
+        // StockAlertEntityTypeOrm,
+        // StockBalanceEntityTypeOrm,
+        // StockLedgerEntryEntityTypeOrm,
+        // StockTransferLineEntityTypeOrm,
+        // StockTransferEntityTypeOrm
     ]);
 
     console.log("Finished polpulating global registry");
