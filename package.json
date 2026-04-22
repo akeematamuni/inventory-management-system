@@ -5,12 +5,17 @@
     "scripts": {
         "build": "nx build api",
         "lint": "nx run-many -t lint --all",
-        "start:dev": "node dist/ims/main.js",
+        "start:built": "node dist/ims/main.js",
+        "start:dev": "tsx apps/api/src/main.ts",
         "seed": "tsx libs/database/src/lib/type-orm-config/system-seed.config.ts",
         "typeorm": "node -r @swc-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js",
         "migration:run": "tsx libs/database/src/lib/type-orm-config/migrations.config.ts",
         "migration:revert": "pnpm typeorm migration:revert",
-        "migration:gen": "pnpm typeorm migration:generate"
+        "migration:gen": "pnpm typeorm migration:generate",
+        "infra:core": "docker compose -f ./infra/prod.compose.yaml --profile core up -d",
+        "infra:kafka": "docker compose -f ./infra/prod.compose.yaml --profile core --profile kafka up -d",
+        "infra:up": "docker compose -f ./infra/prod.compose.yaml --profile core --profile kafka --profile monitoring up -d",
+        "infra:down": "docker compose -f ./infra/prod.compose.yaml --profile core --profile kafka --profile monitoring down"
     },
     "private": true,
     "dependencies": {

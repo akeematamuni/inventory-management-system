@@ -51,6 +51,7 @@ LOKI_HOST=http://localhost:3100 # This is the default based on the compose setup
 PORT=
 GLOBAL_PREFIX=api # Change all necessary config tied to the global prefix once changed
 NODE_ENV=production
+SWAGGER=true # Change to disable swagger docs
 LOKI_ENABLED=false # Change to use Loki
 KAFKA_ENABLED=false # Change to use Kafka
 
