@@ -27,7 +27,7 @@ export class StockTransferController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Creates a stock transfer request' })
-    @ApiResponse({ status: 201, type: StockTransferResponseDto })
+    @ApiResponse({ status: 201, type: () => StockTransferResponseDto })
     async create(
         @CurrentUser() user: string,
         @ManualBody(CreateStockTransferDto) dto: CreateStockTransferDto
@@ -47,7 +47,7 @@ export class StockTransferController {
 
     @Patch(':id/dispatch')
     @ApiOperation({ summary: 'Dispatch pendin  transfer' })
-    @ApiResponse({ status: 200, type: StockTransferResponseDto })
+    @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     async dispatch(
         @Param('id') id: string,
         @CurrentUser() user: string
@@ -61,7 +61,7 @@ export class StockTransferController {
 
     @Patch(':id/receive')
     @ApiOperation({ summary: 'Receive dispatched transfer' })
-    @ApiResponse({ status: 200, type: StockTransferResponseDto })
+    @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     async receive(
         @Param('id') id: string,
         @CurrentUser() user: string,
@@ -80,7 +80,7 @@ export class StockTransferController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Get stock transfer by ID' })
-    @ApiResponse({ status: 200, type: StockTransferResponseDto })
+    @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     @ApiResponse({ status: 404, description: 'Transfer not found' })
     async get(@Param('id') id: string): Promise<StockTransferResponseDto> {
         return this.queryBus.execute(new GetStockTransferQuery(id));
@@ -90,7 +90,7 @@ export class StockTransferController {
     @ApiOperation({ summary: 'Get all stock transfers' })
     @ApiQuery({ name: 'status', required: false, enum: StockTransferStatus })
     @ApiQuery({ name: 'warehouseId', required: false, type: String })
-    @ApiResponse({ status: 200, type: [StockTransferResponseDto] })
+    @ApiResponse({ status: 200, type: () => [StockTransferResponseDto] })
     async getAll(
         @Query('status') status?: StockTransferStatus,
         @Query('warehouseId') warehouseId?: string,

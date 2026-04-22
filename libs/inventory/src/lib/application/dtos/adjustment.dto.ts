@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsEnum, Min } from "class-v
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 import { MovementType } from "../../domain/value-objects/movement-type.vo";
-import { AdjustmentEntity } from "../../domain/entities/adjustment.entity";
+import type { AdjustmentEntity } from "../../domain/entities/adjustment.entity";
 import { AdjustmentReasonCode } from "../../domain/value-objects/adjustment-reason.vo";
 
 export class CreateAdjustmentDto {
@@ -41,16 +41,16 @@ export class CreateAdjustmentDto {
 }
 
 export class AdjustmentResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() productId!: string;
-    @ApiProperty() warehouseId!: string;
-    @ApiProperty() quantity!: number;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: String }) warehouseId!: string;
+    @ApiProperty({ type: Number }) quantity!: number;
     @ApiProperty({ enum: MovementType }) movementType!: MovementType;
     @ApiProperty({ enum: AdjustmentReasonCode }) reasonCode!: AdjustmentReasonCode;
-    @ApiPropertyOptional() reasonNotes?: string | null;
-    @ApiProperty() performedBy!: string;
-    @ApiPropertyOptional() notes?: string | null;
-    @ApiProperty() createdAt!: Date;
+    @ApiPropertyOptional({ type: String }) reasonNotes?: string | null;
+    @ApiProperty({ type: String }) performedBy!: string;
+    @ApiPropertyOptional({ type: String }) notes?: string | null;
+    @ApiProperty({ type: String, format: 'date-time' }) createdAt!: Date;
 
     static fromDomain(adjustment: AdjustmentEntity): AdjustmentResponseDto {
         const dto = new AdjustmentResponseDto();

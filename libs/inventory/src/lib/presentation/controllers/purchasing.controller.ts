@@ -24,7 +24,7 @@ export class PurchaseController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Create a purchase order' })
-    @ApiResponse({ status: 201, type: PurchaseOrderResponseDto })
+    @ApiResponse({ status: 201, type: () => PurchaseOrderResponseDto })
     async create(
         @CurrentUser() user: string,
         @ManualBody(CreatePurchaseOrderDto) dto: CreatePurchaseOrderDto
@@ -47,7 +47,7 @@ export class PurchaseController {
 
     @Patch(':id/confirm')
     @ApiOperation({ summary: 'Confirm a draft purchase order' })
-    @ApiResponse({ status: 200, type: PurchaseOrderResponseDto })
+    @ApiResponse({ status: 200, type: () => PurchaseOrderResponseDto })
     async confirm(
         @Param('id') id: string,
         @CurrentUser() user: string
@@ -58,7 +58,7 @@ export class PurchaseController {
 
     @Patch(':id/receive')
     @ApiOperation({ summary: 'Confirm goods for a purchase order' })
-    @ApiResponse({ status: 200, type: PurchaseOrderResponseDto })
+    @ApiResponse({ status: 200, type: () => PurchaseOrderResponseDto })
     async confirmGoods(
         @Param('id') id: string,
         @CurrentUser() user: string,
@@ -87,7 +87,7 @@ export class PurchaseController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Get purchase order by ID' })
-    @ApiResponse({ status: 200, type: PurchaseOrderResponseDto })
+    @ApiResponse({ status: 200, type: () => PurchaseOrderResponseDto })
     @ApiResponse({ status: 404, description: 'Purchase order not found' })
     async get(@Param('id') id: string): Promise<PurchaseOrderResponseDto> {
         return await this.queryBus.execute(new GetPurchaseOrderQuery(id));
@@ -96,7 +96,7 @@ export class PurchaseController {
     @Get()
     @ApiOperation({ summary: 'Get all purchase orders' })
     @ApiQuery({ name: 'status', required: false, enum: PurchaseOrderStatus })
-    @ApiResponse({ status: 200, type: [PurchaseOrderResponseDto] })
+    @ApiResponse({ status: 200, type: () => [PurchaseOrderResponseDto] })
     async getAll(
         @Query('status') status?: PurchaseOrderStatus,
     ): Promise<PurchaseOrderResponseDto[]> {

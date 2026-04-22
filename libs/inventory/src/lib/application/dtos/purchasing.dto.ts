@@ -2,7 +2,8 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, ValidateNested, Mi
 import { Type } from 'class-transformer';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-import { PurchaseOrderEntity, PurchaseOrderStatus } from '../../domain/entities/purchase-order.entity';
+import { PurchaseOrderStatus } from '../../domain/entities/purchase-order.entity';
+import type { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity';
 
 export class CreatePurchaseOrderLineDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -71,24 +72,24 @@ export class ConfirmGoodsReceiptDto {
 }
 
 export class PurchaseOrderLineResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() productId!: string;
-    @ApiProperty() quantityOrdered!: number;
-    @ApiProperty() quantityReceived!: number;
-    @ApiProperty() unitCostAtOrder!: number;
-    @ApiProperty() currency!: string;
-    @ApiProperty() isFullyReceived!: boolean;
-    @ApiProperty() remainingQuantity!: number;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: Number }) quantityOrdered!: number;
+    @ApiProperty({ type: Number }) quantityReceived!: number;
+    @ApiProperty({ type: Number }) unitCostAtOrder!: number;
+    @ApiProperty({ type: String }) currency!: string;
+    @ApiProperty({ type: Boolean }) isFullyReceived!: boolean;
+    @ApiProperty({ type: Number }) remainingQuantity!: number;
 }
 
 export class PurchaseOrderResponseDto {
-    @ApiProperty() 
+    @ApiProperty({ type: String }) 
     id!: string;
 
-    @ApiProperty() 
+    @ApiProperty({ type: String }) 
     warehouseId!: string;
 
-    @ApiProperty() 
+    @ApiProperty({ type: String }) 
     supplierName!: string;
 
     @ApiProperty({ enum: PurchaseOrderStatus }) 
@@ -97,16 +98,16 @@ export class PurchaseOrderResponseDto {
     @ApiProperty({ type: () => [PurchaseOrderLineResponseDto] })
     lines!: PurchaseOrderLineResponseDto[];
 
-    @ApiPropertyOptional() 
+    @ApiPropertyOptional({ type: String }) 
     notes?: string | null;
 
-    @ApiProperty() 
+    @ApiProperty({ type: String }) 
     createdBy!: string;
 
-    @ApiProperty() 
+    @ApiProperty({ type: String, format: 'date-time' }) 
     createdAt!: Date;
 
-    @ApiProperty() 
+    @ApiProperty({ type: String, format: 'date-time' })
     updatedAt!: Date;
 
     public static fromDomain(entity: PurchaseOrderEntity): PurchaseOrderResponseDto {

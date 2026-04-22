@@ -5,6 +5,9 @@ import { publicDataSourceConfig } from './type-orm-config/datasource.config';
 import { GlobalRegistry } from '@inventory/shared/registry';
 import { parsed } from '@inventory/core';
 
+const entities = [...GlobalRegistry.entities];
+console.log('Populated entities for database:', entities);
+
 @Global()
 @Module({
     imports: [
@@ -12,7 +15,7 @@ import { parsed } from '@inventory/core';
             useFactory: async () => {
                 return {
                     ...publicDataSourceConfig,
-                    entities: GlobalRegistry.entities,
+                    entities
                 }
             }
         }),

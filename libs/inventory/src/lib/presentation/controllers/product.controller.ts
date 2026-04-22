@@ -24,7 +24,7 @@ export class ProductController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Create a new product' })
-    @ApiResponse({ status: 201, type: ProductResponseDto })
+    @ApiResponse({ status: 201, type: () => ProductResponseDto })
     @ApiResponse({ status: 409, description: 'SKU already exists' })
     async create(
         @CurrentUser() user: string,
@@ -46,7 +46,7 @@ export class ProductController {
 
     @Patch(':id')
     @ApiOperation({ summary: 'Update product details' })
-    @ApiResponse({ status: 200, type: ProductResponseDto })
+    @ApiResponse({ status: 200, type: () => ProductResponseDto })
     async update(
         @Param('id') id: string,
         @CurrentUser() user: string,
@@ -68,7 +68,7 @@ export class ProductController {
 
     @Patch('activate/:id')
     @ApiOperation({ summary: 'Reactivate a deactivated product' })
-    @ApiResponse({ status: 200, type: ProductResponseDto })
+    @ApiResponse({ status: 200, type: () => ProductResponseDto })
     async activate(
         @Param('id') id: string,
         @CurrentUser() user: string
@@ -89,7 +89,7 @@ export class ProductController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Get product by ID' })
-    @ApiResponse({ status: 200, type: ProductResponseDto })
+    @ApiResponse({ status: 200, type: () => ProductResponseDto })
     @ApiResponse({ status: 404, description: 'Product not found' })
     async get(@Param('id') id: string): Promise<ProductResponseDto> {
         return await this.queryBus.execute(new GetProductQuery(id));
@@ -99,7 +99,7 @@ export class ProductController {
     @ApiOperation({ summary: 'Get all products' })
     @ApiQuery({ name: 'activeOnly', required: false, type: Boolean })
     @ApiQuery({ name: 'search', required: false, type: String })
-    @ApiResponse({ status: 200, type: [ProductResponseDto] })
+    @ApiResponse({ status: 200, type: () => [ProductResponseDto] })
     async getAll(
         @Query('activeOnly') activeOnly?: string,
         @Query('search') search?: string,

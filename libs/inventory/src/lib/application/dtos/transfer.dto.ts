@@ -2,7 +2,8 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, ValidateNested, Mi
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 
-import { StockTransferStatus, StockTransferEntity } from "../../domain/entities/stock-transfer.entity"
+import { StockTransferStatus } from "../../domain/entities/stock-transfer.entity";
+import type { StockTransferEntity } from "../../domain/entities/stock-transfer.entity";
 
 export class CreateStockTransferLineDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -33,7 +34,7 @@ export class CreateStockTransferDto {
     @ValidateNested({ each: true })
     lines!: CreateStockTransferLineDto[];
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     notes?: string;
@@ -60,26 +61,26 @@ export class ReceiveTransferDto {
 }
 
 export class StockTransferLineResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() productId!: string;
-    @ApiProperty() quantityRequested!: number;
-    @ApiProperty() quantityDispatched!: number;
-    @ApiProperty() quantityReceived!: number;
-    @ApiProperty() variance!: number;
-    @ApiProperty() isFullyReceived!: boolean;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: Number }) quantityRequested!: number;
+    @ApiProperty({ type: Number }) quantityDispatched!: number;
+    @ApiProperty({ type: Number }) quantityReceived!: number;
+    @ApiProperty({ type: Number }) variance!: number;
+    @ApiProperty({ type: Boolean }) isFullyReceived!: boolean;
 }
 
 export class StockTransferResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() sourceWarehouseId!: string;
-    @ApiProperty() destinationWarehouseId!: string;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) sourceWarehouseId!: string;
+    @ApiProperty({ type: String }) destinationWarehouseId!: string;
     @ApiProperty({ enum: StockTransferStatus }) status!: StockTransferStatus;
     @ApiProperty({ type: () => [StockTransferLineResponseDto] })
     lines!: StockTransferLineResponseDto[];
-    @ApiPropertyOptional() notes?: string | null;
-    @ApiProperty() createdBy!: string;
-    @ApiProperty() createdAt!: Date;
-    @ApiProperty() updatedAt!: Date;
+    @ApiPropertyOptional({ type: String }) notes?: string | null;
+    @ApiProperty({ type: String }) createdBy!: string;
+    @ApiProperty({ type: String, format: 'date-time' }) createdAt!: Date;
+    @ApiProperty({ type: String, format: 'date-time' }) updatedAt!: Date;
 
     static fromDomain(transfer: StockTransferEntity): StockTransferResponseDto {
         const dto = new StockTransferResponseDto();

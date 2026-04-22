@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsNotEmpty, Length } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { WarehouseEntity } from "../../domain/entities/warehouse.entity";
+import type { WarehouseEntity } from "../../domain/entities/warehouse.entity";
 
 export class CreateWarehouseDto {
     @ApiProperty({ example: 'Texas Warehouse' })
@@ -40,13 +40,13 @@ export class UpdateWarehouseDto {
 }
 
 export class WarehouseResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() name!: string;
-    @ApiProperty() code!: string;
-    @ApiPropertyOptional() address?: string | null;
-    @ApiProperty() isActive!: boolean;
-    @ApiProperty() createdAt!: Date;
-    @ApiProperty() updatedAt!: Date;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) name!: string;
+    @ApiProperty({ type: String }) code!: string;
+    @ApiPropertyOptional({ type: String }) address?: string | null;
+    @ApiProperty({ type: Boolean }) isActive!: boolean;
+    @ApiProperty({ type: String, format: 'date-time' }) createdAt!: Date;
+    @ApiProperty({ type: String, format: 'date-time' }) updatedAt!: Date;
 
     static fromDomain(warehouse: WarehouseEntity): WarehouseResponseDto {
         const dto = new WarehouseResponseDto();

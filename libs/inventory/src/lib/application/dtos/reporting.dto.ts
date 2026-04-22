@@ -1,9 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 import { MovementType } from "../../domain/value-objects/movement-type.vo";
-import { StockBalanceEntity } from "../../domain/entities/stock-balance.entity";
-import { StockLedgerEntryEntity } from "../../domain/entities/stock-ledger-entry.entity";
-import { StockAlertEntity, StockAlertStatus } from '../../domain/entities/stock-alert.entity';
+import type { StockBalanceEntity } from "../../domain/entities/stock-balance.entity";
+import type { StockLedgerEntryEntity } from "../../domain/entities/stock-ledger-entry.entity";
+import type { StockAlertEntity } from '../../domain/entities/stock-alert.entity';
+import { StockAlertStatus } from '../../domain/entities/stock-alert.entity';
 
 export enum ValuationMethod {
     FIFO = 'FIFO',
@@ -12,10 +13,10 @@ export enum ValuationMethod {
 
 // Deals with balance
 export class StockLevelResponseDto {
-    @ApiProperty() productId!: string;
-    @ApiProperty() warehouseId!: string;
-    @ApiProperty() quantity!: number;
-    @ApiProperty() updatedAt!: Date;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: String }) warehouseId!: string;
+    @ApiProperty({ type: Number }) quantity!: number;
+    @ApiProperty({ type: String, format: 'date-time' }) updatedAt!: Date;
 
     static fromDomain(balance: StockBalanceEntity): StockLevelResponseDto {
         const dto = new StockLevelResponseDto();
@@ -29,17 +30,17 @@ export class StockLevelResponseDto {
 
 // Deals with ledger
 export class MovementHistoryResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() productId!: string;
-    @ApiProperty() warehouseId!: string;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: String }) warehouseId!: string;
     @ApiProperty({ enum: MovementType }) movementType!: MovementType;
-    @ApiProperty() quantityChange!: number;
-    @ApiProperty() balanceAfter!: number;
-    @ApiProperty() referenceId!: string;
-    @ApiProperty() referenceType!: string;
-    @ApiProperty() performedBy!: string;
-    @ApiPropertyOptional() notes?: string | null;
-    @ApiProperty() occurredAt!: Date;
+    @ApiProperty({ type: Number }) quantityChange!: number;
+    @ApiProperty({ type: Number }) balanceAfter!: number;
+    @ApiProperty({ type: String }) referenceId!: string;
+    @ApiProperty({ type: String }) referenceType!: string;
+    @ApiProperty({ type: String }) performedBy!: string;
+    @ApiPropertyOptional({ type: String }) notes?: string | null;
+    @ApiProperty({ type: String, format: 'date-time' }) occurredAt!: Date;
 
     static fromDomain(entry: StockLedgerEntryEntity): MovementHistoryResponseDto {
         const dto = new MovementHistoryResponseDto();
@@ -60,14 +61,14 @@ export class MovementHistoryResponseDto {
 
 // Deals with alert
 export class StockAlertResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() productId!: string;
-    @ApiProperty() warehouseId!: string;
-    @ApiProperty() currentBalance!: number;
-    @ApiProperty() reorderPoint!: number;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: String }) warehouseId!: string;
+    @ApiProperty({ type: Number }) currentBalance!: number;
+    @ApiProperty({ type: Number }) reorderPoint!: number;
     @ApiProperty({ enum: StockAlertStatus }) status!: StockAlertStatus;
-    @ApiPropertyOptional() resolvedAt?: Date | null;
-    @ApiProperty() createdAt!: Date;
+    @ApiPropertyOptional({ type: String, format: 'date-time' }) resolvedAt?: Date | null;
+    @ApiProperty({ type: String, format: 'date-time' }) createdAt!: Date;
 
     static fromDomain(alert: StockAlertEntity): StockAlertResponseDto {
         const dto = new StockAlertResponseDto();
@@ -85,11 +86,11 @@ export class StockAlertResponseDto {
 
 // Deals with valuation
 export class InventoryValuationResponseDto {
-    @ApiProperty() productId: string;
-    @ApiProperty() warehouseId: string;
-    @ApiProperty() currentBalance: number;
-    @ApiProperty() totalValue: number;
-    @ApiProperty() valuationMethod: ValuationMethod;
+    @ApiProperty({ type: String }) productId: string;
+    @ApiProperty({ type: String }) warehouseId: string;
+    @ApiProperty({ type: Number }) currentBalance: number;
+    @ApiProperty({ type: Number }) totalValue: number;
+    @ApiProperty({ enum: ValuationMethod }) valuationMethod: ValuationMethod;
 
     constructor(
         productId: string,

@@ -23,7 +23,7 @@ export class AdjustmentController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Create a manual stock adjustment' })
-    @ApiResponse({ status: 201, type: AdjustmentResponseDto })
+    @ApiResponse({ status: 201, type: () => AdjustmentResponseDto })
     async create(
         @CurrentUser() user: string,
         @ManualBody(CreateAdjustmentDto) dto: CreateAdjustmentDto,
@@ -44,7 +44,7 @@ export class AdjustmentController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Get adjustment by ID' })
-    @ApiResponse({ status: 200, type: AdjustmentResponseDto })
+    @ApiResponse({ status: 200, type: () => AdjustmentResponseDto })
     @ApiResponse({ status: 404, description: 'Adjustment not found' })
     async get(@Param('id') id: string): Promise<AdjustmentResponseDto> {
         return await this.queryBus.execute(new GetAdjustmentQuery(id));
@@ -54,7 +54,7 @@ export class AdjustmentController {
     @ApiOperation({ summary: 'Get all adjustments' })
     @ApiQuery({ name: 'productId', required: false, type: String })
     @ApiQuery({ name: 'warehouseId', required: false, type: String })
-    @ApiResponse({ status: 200, type: [AdjustmentResponseDto] })
+    @ApiResponse({ status: 200, type: () => [AdjustmentResponseDto] })
     async getAll(
         @Query('productId') productId?: string,
         @Query('warehouseId') warehouseId?: string,

@@ -1,8 +1,8 @@
 import winston from 'winston';
-import loki from 'winston-loki';
+// import loki from 'winston-loki';
 import fs from 'fs-extra';
 import { join } from 'node:path';
-import { parsed } from '../core.module';
+// import { parsed } from '../core.module';
 
 // Paths for logs
 const combinedLogs = join(process.cwd(), 'logs/combined.log');
@@ -29,25 +29,26 @@ const transports: winston.transport[] = [
 ];
 
 // Loki transport for when LOKI_ENABLED=true
-if (parsed.data?.LOKI_ENABLED) {
-    try {
-        const lokiTransport = new loki({
-                host: parsed.data?.LOKI_HOST,
-                labels: {
-                    app: 'inventory-management-system',
-                    environment: parsed.data?.NODE_ENV,
-                },
-                json: true,
-                onConnectionError: (err: Error) => {
-                    console.error('Loki connection error:', err.message);
-                },
-            })
-        transports.push(lokiTransport);
+// if (parsed.data && parsed.data.LOKI_ENABLED) {
+//     try {
+//         const lokiTransport = new loki({
+//                 host: parsed.data.LOKI_HOST,
+//                 labels: {
+//                     app: 'inventory-management-system',
+//                     environment: parsed.data?.NODE_ENV,
+//                 },
+//                 json: true,
+//                 onConnectionError: (err: Error) => {
+//                     console.error('Loki connection error:', err.message);
+//                 },
+//             })
+//         transports.push(lokiTransport);
+//         console.log('Loki transport added for logging');
 
-    } catch {
-        console.warn('Could not add loki transport, it has been skipped');
-    }
-}
+//     } catch {
+//         console.warn('Could not add loki transport, it has been skipped');
+//     }
+// }
 
 // Base logger to be used in place of nest default logger
 export const baseLogger = winston.createLogger({

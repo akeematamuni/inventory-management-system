@@ -21,7 +21,7 @@ export class ReportingController {
     @ApiOperation({ summary: 'Get current stock levels' })
     @ApiQuery({ name: 'warehouseId', required: false, type: String })
     @ApiQuery({ name: 'productId', required: false, type: String })
-    @ApiResponse({ status: 200, type: [StockLevelResponseDto] })
+    @ApiResponse({ status: 200, type: () => [StockLevelResponseDto] })
     getStockLevels(
         @Query('warehouseId') warehouseId?: string,
         @Query('productId') productId?: string,
@@ -36,7 +36,7 @@ export class ReportingController {
     @ApiQuery({ name: 'movementType', required: false, enum: MovementType })
     @ApiQuery({ name: 'fromDate', required: false, type: String })
     @ApiQuery({ name: 'toDate', required: false, type: String })
-    @ApiResponse({ status: 200, type: [MovementHistoryResponseDto] })
+    @ApiResponse({ status: 200, type: () => [MovementHistoryResponseDto] })
     getMovementHistory(
         @Query('productId') productId?: string,
         @Query('warehouseId') warehouseId?: string,
@@ -58,7 +58,7 @@ export class ReportingController {
     @ApiQuery({ name: 'status', required: false, enum: StockAlertStatus })
     @ApiQuery({ name: 'warehouseId', required: false, type: String })
     @ApiQuery({ name: 'productId', required: false, type: String })
-    @ApiResponse({ status: 200, type: [StockAlertResponseDto] })
+    @ApiResponse({ status: 200, type: () => [StockAlertResponseDto] })
     getLowStockAlerts(
         @Query('status') status?: StockAlertStatus,
         @Query('warehouseId') warehouseId?: string,
@@ -72,7 +72,7 @@ export class ReportingController {
     @ApiQuery({ name: 'method', required: true, enum: ValuationMethod })
     @ApiQuery({ name: 'warehouseId', required: false, type: String })
     @ApiQuery({ name: 'productId', required: false, type: String })
-    @ApiResponse({ status: 200, type: [InventoryValuationResponseDto] })
+    @ApiResponse({ status: 200, type: () => [InventoryValuationResponseDto] })
     getValuation(
         @Query('method') method: ValuationMethod,
         @Query('warehouseId') warehouseId?: string,

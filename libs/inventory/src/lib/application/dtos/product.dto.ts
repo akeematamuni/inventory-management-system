@@ -1,6 +1,6 @@
 import { IsString, IsNumber, Length, IsOptional, IsNotEmpty, Min } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { ProductEntity } from "../../domain/entities/product.entity";
+import type { ProductEntity } from "../../domain/entities/product.entity";
 
 export class CreateProductDto {
     @ApiProperty({ example: 'Safety Jacket Type 1' })
@@ -33,7 +33,7 @@ export class CreateProductDto {
     @Min(0)
     reorderPoint?: number;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     @Length(0, 250)
@@ -46,42 +46,42 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto {
-    @ApiProperty()
+    @ApiProperty({ example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     id!: string;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     @Length(2, 100)
     name?: string | null;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsNumber()
     @Min(0)
     amount?: number | null;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     @Length(3, 3)
     currency?: string | null;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsNumber()
     @Min(0)
     reorderPoint?: number | null;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     @Length(0, 250)
     description?: string | null;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     @Length(0, 100)
@@ -94,17 +94,17 @@ export class UpdateProductDto {
 }
 
 export class ProductResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() name!: string;
-    @ApiProperty() sku!: string;
-    @ApiPropertyOptional() description?: string | null;
-    @ApiProperty() amount!: number;
-    @ApiProperty() currency!: string;
-    @ApiProperty() reorderPoint!: number;
-    @ApiPropertyOptional() barcode?: string | null;
-    @ApiProperty() isActive!: boolean;
-    @ApiProperty() createdAt!: Date;
-    @ApiProperty() updatedAt!: Date;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) name!: string;
+    @ApiProperty({ type: String }) sku!: string;
+    @ApiPropertyOptional({ type: String }) description?: string | null;
+    @ApiProperty({ type: Number }) amount!: number;
+    @ApiProperty({ type: String }) currency!: string;
+    @ApiProperty({ type: Number }) reorderPoint!: number;
+    @ApiPropertyOptional({ type: String }) barcode?: string | null;
+    @ApiProperty({ type: Boolean }) isActive!: boolean;
+    @ApiProperty({ type: String, format: 'date-time' }) createdAt!: Date;
+    @ApiProperty({ type: String, format: 'date-time' }) updatedAt!: Date;
 
     public static fromDomain(entity: ProductEntity): ProductResponseDto {
         const res = new ProductResponseDto();

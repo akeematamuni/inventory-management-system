@@ -2,7 +2,8 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, IsArray, ValidateNested, Mi
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Type } from "class-transformer";
 
-import { CycleCountEntity, CycleCountStatus } from "../../domain/entities/cycle-count.entity";
+import { CycleCountStatus } from "../../domain/entities/cycle-count.entity";
+import type { CycleCountEntity } from "../../domain/entities/cycle-count.entity";
 
 export class CreateCycleCountLineDto {
     @ApiProperty({ example: 'product-uuid' })
@@ -67,25 +68,25 @@ export class ApproveOrRejectCycleCountDto {
 }
 
 export class CycleCountLineResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() productId!: string;
-    @ApiProperty() systemQuantity!: number;
-    @ApiPropertyOptional() countedQuantity?: number | null;
-    @ApiPropertyOptional() variance?: number | null;
-    @ApiProperty() isCounted!: boolean;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) productId!: string;
+    @ApiProperty({ type: Number }) systemQuantity!: number;
+    @ApiPropertyOptional({ type: Number }) countedQuantity?: number | null;
+    @ApiPropertyOptional({ type: Number }) variance?: number | null;
+    @ApiProperty({ type: Boolean }) isCounted!: boolean;
 }
 
 export class CycleCountResponseDto {
-    @ApiProperty() id!: string;
-    @ApiProperty() warehouseId!: string;
-    @ApiProperty() status!: CycleCountStatus;
+    @ApiProperty({ type: String }) id!: string;
+    @ApiProperty({ type: String }) warehouseId!: string;
+    @ApiProperty({ enum: CycleCountStatus }) status!: CycleCountStatus;
     @ApiProperty({ type: () => [CycleCountLineResponseDto] })
     lines!: CycleCountLineResponseDto[];
-    @ApiPropertyOptional() approvedBy?: string | null;
-    @ApiPropertyOptional() notes?: string | null;
-    @ApiProperty() createdBy!: string;
-    @ApiProperty() createdAt!: Date;
-    @ApiProperty() updatedAt!: Date;
+    @ApiPropertyOptional({ type: String }) approvedBy?: string | null;
+    @ApiPropertyOptional({ type: String }) notes?: string | null;
+    @ApiProperty({ type: String }) createdBy!: string;
+    @ApiProperty({ type: String, format: 'date-time' }) createdAt!: Date;
+    @ApiProperty({ type: String, format: 'date-time' }) updatedAt!: Date;
 
     static fromDomain(cycleCount: CycleCountEntity): CycleCountResponseDto {
         const dto = new CycleCountResponseDto();

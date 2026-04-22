@@ -9,7 +9,6 @@ import {
     ApproveCycleCountCommand, RejectCycleCountCommand, SubmitCycleCountCommand,
     GetCycleCountQuery, CreateCycleCountLine, SubmitCycleCountDto,
     GetAllCycleCountsQuery, SubmitCycleCountLine
-
 } from "../../application";
 
 import { CycleCountStatus } from "../../domain";
@@ -26,7 +25,7 @@ export class CycleCountController {
     @Post()
     @HttpCode(HttpStatus.CREATED)
     @ApiOperation({ summary: 'Create a cycle count session' })
-    @ApiResponse({ status: 201, type: CycleCountResponseDto })
+    @ApiResponse({ status: 201, type: () => CycleCountResponseDto })
     async create(
         @CurrentUser() user: string,
         @ManualBody(CreateCycleCountDto) dto: CreateCycleCountDto
@@ -45,7 +44,7 @@ export class CycleCountController {
 
     @Patch(':id/submit')
     @ApiOperation({ summary: 'Submit counted quantities for lines' })
-    @ApiResponse({ status: 200, type: CycleCountResponseDto })
+    @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     async submit(
         @Param('id') id: string,
         @CurrentUser() user: string,
@@ -64,7 +63,7 @@ export class CycleCountController {
 
     @Patch(':id/approve')
     @ApiOperation({ summary: 'Approve a cycle count' })
-    @ApiResponse({ status: 200, type: CycleCountResponseDto })
+    @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     async approve(
         @Param('id') id: string,
         @CurrentUser() user: string
@@ -75,7 +74,7 @@ export class CycleCountController {
 
     @Patch(':id/reject')
     @ApiOperation({ summary: 'Reject a cycle count' })
-    @ApiResponse({ status: 200, type: CycleCountResponseDto })
+    @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     async reject(
         @Param('id') id: string,
         @CurrentUser() user: string
@@ -86,7 +85,7 @@ export class CycleCountController {
 
     @Get(':id')
     @ApiOperation({ summary: 'Get cycle count by ID' })
-    @ApiResponse({ status: 200, type: CycleCountResponseDto })
+    @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     @ApiResponse({ status: 404, description: 'Cycle count not found' })
     async get(@Param('id') id: string): Promise<CycleCountResponseDto> {
         return await this.queryBus.execute(new GetCycleCountQuery(id));
@@ -96,7 +95,7 @@ export class CycleCountController {
     @ApiOperation({ summary: 'Get all cycle counts' })
     @ApiQuery({ name: 'warehouseId', required: false, type: String })
     @ApiQuery({ name: 'status', required: false, enum: CycleCountStatus })
-    @ApiResponse({ status: 200, type: [CycleCountResponseDto] })
+    @ApiResponse({ status: 200, type: () => [CycleCountResponseDto] })
     async getAll(
         @Query('warehouseId') warehouseId?: string,
         @Query('status') status?: CycleCountStatus,
