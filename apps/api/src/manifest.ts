@@ -27,17 +27,17 @@ import {
 import { UserEntityTypeOrm } from "@inventory/user/infrastructure";
 import { RefreshTokenEntityTypeOrm } from "@inventory/auth/infrastructure";
 import {
-    AdjustmentEntityTypeOrm, 
-    CycleCountLineEntityTypeOrm, 
-    CycleCountEntityTypeOrm,
-    PurchaseOrderLineEntityTypeOrm, 
-    PurchaseOrderEntityTypeOrm, 
+    AdjustmentEntityTypeOrm,  
     ProductSettingsEntityTypeOrm,
     StockAlertEntityTypeOrm, 
     StockBalanceEntityTypeOrm, 
     StockLedgerEntryEntityTypeOrm,
-    StockTransferLineEntityTypeOrm, 
+    CycleCountEntityTypeOrm,
+    CycleCountLineEntityTypeOrm,
+    PurchaseOrderEntityTypeOrm,
+    PurchaseOrderLineEntityTypeOrm,
     StockTransferEntityTypeOrm,
+    StockTransferLineEntityTypeOrm, 
 } from '@inventory/inventory/infrastructure';
 
 /** Function to populate registry */
@@ -67,16 +67,16 @@ export const populateRegistry = () => {
         UserEntityTypeOrm, 
         RefreshTokenEntityTypeOrm,
         AdjustmentEntityTypeOrm,
-        // CycleCountLineEntityTypeOrm,
-        // CycleCountEntityTypeOrm,
-        // PurchaseOrderLineEntityTypeOrm,
-        // PurchaseOrderEntityTypeOrm,
-        // ProductSettingsEntityTypeOrm,
-        // StockAlertEntityTypeOrm,
-        // StockBalanceEntityTypeOrm,
-        // StockLedgerEntryEntityTypeOrm,
-        // StockTransferLineEntityTypeOrm,
-        // StockTransferEntityTypeOrm
+        ProductSettingsEntityTypeOrm,
+        StockAlertEntityTypeOrm,
+        StockBalanceEntityTypeOrm,
+        StockLedgerEntryEntityTypeOrm,
+        CycleCountEntityTypeOrm,
+        CycleCountLineEntityTypeOrm,
+        PurchaseOrderEntityTypeOrm,
+        PurchaseOrderLineEntityTypeOrm,
+        StockTransferEntityTypeOrm,
+        StockTransferLineEntityTypeOrm,
     ]);
 
     console.log("Finished polpulating global registry");
