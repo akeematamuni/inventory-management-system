@@ -39,7 +39,7 @@ Adopt an event-driven approach where the domain events ( `stock-received`, `stoc
 
 **Positive**
 
-**Independently testable side effects:**  Alert listener are unit tested. It is fed with a mock event with no need to invioke the full command pipeline
+**Independently testable side effects:**  Alert listener are unit tested. It is fed with a mock event with no need to invoke the full command pipeline
 
 **Replayability:** With Kafka in production, if the balance projection gets corrupted or the alert service was down, you can replay events from a specific offset and recover state
 
