@@ -1,12 +1,11 @@
 import { Controller, Post, Inject, Get } from "@nestjs/common";
-import { ApiTags, ApiOperation } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiBearerAuth, ApiBody } from "@nestjs/swagger";
 import { LoginDto } from "../dtos/login.dto";
 import { RegisterDto } from "../dtos/register.dto";
 import { RefreshTokenDto } from "../dtos/refresh-token.dto";
 import { RegisterService, LoginService, RefreshTokenService, ProfileService } from '../../application';
 import { Public, ManualBody, CurrentUserEmail } from "@inventory/core/decorators";
 import { AccessDeniedException } from "@inventory/core/errors";
-import { ApiBearerAuth } from '@nestjs/swagger';
 
 @ApiTags('Authentication')
 @ApiBearerAuth()
@@ -21,6 +20,7 @@ export class AuthController {
 
     @Public()
     @Post('/login')
+    @ApiBody({ type: () => LoginDto })
     @ApiOperation({ summary: 'Login a valid user' })
     async login(@ManualBody(LoginDto) dto: LoginDto) {
         return await this.loginService.execute(dto);
@@ -28,6 +28,7 @@ export class AuthController {
     
     @Public()
     @Post('/refresh')
+    @ApiBody({ type: () => RefreshTokenDto })
     @ApiOperation({ summary: 'Get new token set using refresh token' })
     async refresh(@ManualBody(RefreshTokenDto) dto: RefreshTokenDto) {
         return await this.refreshTokenService.execute(dto.refreshToken);
@@ -35,6 +36,7 @@ export class AuthController {
 
     @Public()
     @Post('/register')
+    @ApiBody({ type: () => RegisterDto })
     @ApiOperation({ summary: 'Register a new user' })
     async registerTenant(@ManualBody(RegisterDto) dto: RegisterDto) {
         return await this.registerService.execute(dto);
