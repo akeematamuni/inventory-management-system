@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
-import type { CycleCountLineEntityTypeOrm } from "./cycle-count-line.entity";
+// import type { CycleCountLineEntityTypeOrm } from "./cycle-count-line.entity";
 import { CycleCountStatus } from "../../../domain";
 
 @Entity('cycle_counts')
@@ -28,10 +28,18 @@ export class CycleCountEntityTypeOrm {
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
     updatedAt!: Date;
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @OneToMany(
-        'CycleCountLineEntityTypeOrm', 
-        (y: CycleCountLineEntityTypeOrm) => y.cycleCount, 
-        { cascade: true, eager: false }
+        () => require('./cycle-count-line.entity').CycleCountLineEntityTypeOrm, 
+        (line: any) => line.cycleCount, 
+        { cascade: true }
     )
-    lines!: CycleCountLineEntityTypeOrm[];
+    lines!: any[]
+
+    // @OneToMany(
+    //     'CycleCountLineEntityTypeOrm', 
+    //     (y: CycleCountLineEntityTypeOrm) => y.cycleCount, 
+    //     { cascade: true, eager: false }
+    // )
+    // lines!: CycleCountLineEntityTypeOrm[];
 }

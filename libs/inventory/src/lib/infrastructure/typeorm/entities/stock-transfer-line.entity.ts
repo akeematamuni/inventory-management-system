@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import type { StockTransferEntityTypeOrm } from './stock-transfer.entity';
+// import type { StockTransferEntityTypeOrm } from './stock-transfer.entity';
 
 @Entity('stock_transfer_lines')
 export class StockTransferLineEntityTypeOrm {
@@ -21,11 +21,20 @@ export class StockTransferLineEntityTypeOrm {
     @Column({ name: 'stock_transfer_id', type: 'uuid' })
     stockTransferId!: string;
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @ManyToOne(
-        'StockTransferEntityTypeOrm', 
-        (x: StockTransferEntityTypeOrm) => x.lines,
+        () => require('./stock-transfer.entity').StockTransferEntityTypeOrm,
+        (_stockTransfer: any) => _stockTransfer.lines,
         { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
     )
     @JoinColumn({ name: 'stock_transfer_id' })
-    stockTransfer!: StockTransferEntityTypeOrm
+    stockTransfer!: any
+
+    // @ManyToOne(
+    //     'StockTransferEntityTypeOrm', 
+    //     (x: StockTransferEntityTypeOrm) => x.lines,
+    //     { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+    // )
+    // @JoinColumn({ name: 'stock_transfer_id' })
+    // stockTransfer!: StockTransferEntityTypeOrm
 }

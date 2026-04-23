@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
-import type { PurchaseOrderEntityTypeOrm } from './purchase-order.entity';
+// import type { PurchaseOrderEntityTypeOrm } from './purchase-order.entity';
 
 @Entity('purchase_order_lines')
 export class PurchaseOrderLineEntityTypeOrm {
@@ -24,11 +24,20 @@ export class PurchaseOrderLineEntityTypeOrm {
     @Column({ name: 'purchase_order_id', type: 'uuid' })
     purchaseOrderId!: string;
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @ManyToOne(
-        'PurchaseOrderEntityTypeOrm', 
-        (x: PurchaseOrderEntityTypeOrm) => x.lines,
+        () => require('./purchase-order.entity').PurchaseOrderEntityTypeOrm,
+        (_purchaseOrder: any) => _purchaseOrder.lines,
         { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
     )
     @JoinColumn({ name: 'purchase_order_id' })
-    purchaseOrder!: PurchaseOrderEntityTypeOrm
+    purchaseOrder!: any
+
+    // @ManyToOne(
+    //     'PurchaseOrderEntityTypeOrm', 
+    //     (x: PurchaseOrderEntityTypeOrm) => x.lines,
+    //     { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+    // )
+    // @JoinColumn({ name: 'purchase_order_id' })
+    // purchaseOrder!: PurchaseOrderEntityTypeOrm
 }

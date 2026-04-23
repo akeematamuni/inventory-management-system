@@ -1,6 +1,6 @@
 import { Entity, Column, PrimaryColumn, Index, CreateDateColumn, OneToMany, UpdateDateColumn } from 'typeorm';
 import { PurchaseOrderStatus } from '../../../domain';
-import type { PurchaseOrderLineEntityTypeOrm } from './purchase-order-line.entity';
+// import type { PurchaseOrderLineEntityTypeOrm } from './purchase-order-line.entity';
 
 @Entity('purchase_orders')
 export class PurchaseOrderEntityTypeOrm {
@@ -30,10 +30,18 @@ export class PurchaseOrderEntityTypeOrm {
     @UpdateDateColumn({ name: 'updated_at', type: 'timestamp' })
     updatedAt!: Date;
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @OneToMany(
-        'PurchaseOrderLineEntityTypeOrm', 
-        (y: PurchaseOrderLineEntityTypeOrm) => y.purchaseOrder, 
-        { cascade: true, eager: false }
+        () => require('./purchase-order-line.entity').PurchaseOrderLineEntityTypeOrm,
+        (line: any) => line.purchaseOrder,
+        { cascade: true }
     )
-    lines!: PurchaseOrderLineEntityTypeOrm[];
+    lines!: any[]
+
+    // @OneToMany(
+    //     'PurchaseOrderLineEntityTypeOrm', 
+    //     (y: PurchaseOrderLineEntityTypeOrm) => y.purchaseOrder, 
+    //     { cascade: true, eager: false }
+    // )
+    // lines!: PurchaseOrderLineEntityTypeOrm[];
 }

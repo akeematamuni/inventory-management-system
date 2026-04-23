@@ -1,5 +1,5 @@
 import { Entity, PrimaryColumn, Column, ManyToOne, JoinColumn } from "typeorm";
-import type { CycleCountEntityTypeOrm } from "./cycle-count.entity";
+// import type { CycleCountEntityTypeOrm } from "./cycle-count.entity";
 
 @Entity('cycle_count_lines')
 export class CycleCountLineEntityTypeOrm {
@@ -18,11 +18,20 @@ export class CycleCountLineEntityTypeOrm {
     @Column({ name: 'counted_quantity', type: 'int', nullable: true })
     countedQuantity!: number | null;
 
+    /* eslint-disable @typescript-eslint/no-explicit-any */
     @ManyToOne(
-        'CycleCountEntityTypeOrm', 
-        (x: CycleCountEntityTypeOrm) => x.lines,
+        () => require('./cycle-count.entity').CycleCountEntityTypeOrm,
+        (_cycleCount: any) => _cycleCount.lines,
         { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
     )
     @JoinColumn({ name: 'cycle_count_id' })
-    cycleCount!: CycleCountEntityTypeOrm;
+    cycleCount!: any;
+
+    // @ManyToOne(
+    //     'CycleCountEntityTypeOrm', 
+    //     (x: CycleCountEntityTypeOrm) => x.lines,
+    //     { onDelete: 'CASCADE', onUpdate: 'CASCADE' }
+    // )
+    // @JoinColumn({ name: 'cycle_count_id' })
+    // cycleCount!: CycleCountEntityTypeOrm;
 }
