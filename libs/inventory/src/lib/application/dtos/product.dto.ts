@@ -3,31 +3,31 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type { ProductEntity } from "../../domain/entities/product.entity";
 
 export class CreateProductDto {
-    @ApiProperty({ example: 'Safety Jacket Type 1' })
+    @ApiProperty({ type: String, example: 'Safety Jacket Type 1' })
     @IsString()
     @IsNotEmpty()
     @Length(2, 100)
     name!: string;
 
-    @ApiProperty({ example: 'PZX-001122' })
+    @ApiProperty({ type: String, example: 'PZX-001122' })
     @IsString()
     @IsNotEmpty()
     @Length(6, 20)
     sku!: string;
 
-    @ApiProperty({ example: 85.50 })
+    @ApiProperty({ type: Number, example: 85.50 })
     @IsNumber()
     @IsNotEmpty()
     @Min(0)
     amount!: number;
 
-    @ApiPropertyOptional({  example: 'USD', default: 'USD' })
+    @ApiPropertyOptional({ type: String, example: 'USD', default: 'USD' })
     @IsOptional()
     @IsString()
     @Length(3, 3)
     currency?: string;
 
-    @ApiPropertyOptional({ example: 100 })
+    @ApiPropertyOptional({ type: Number, example: 100 })
     @IsOptional()
     @IsNumber()
     @Min(0)
@@ -39,14 +39,14 @@ export class CreateProductDto {
     @Length(0, 250)
     description?: string | null;
 
-    @ApiPropertyOptional({ example: '60349701438255' })
+    @ApiPropertyOptional({ type: String, example: '60349701438255' })
     @IsOptional()
     @IsString()
     barcode?: string | null;
 }
 
 export class UpdateProductDto {
-    @ApiProperty({ example: 'product-uuid' })
+    @ApiProperty({ type: String, example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     id!: string;

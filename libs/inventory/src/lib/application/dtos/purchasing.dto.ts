@@ -6,22 +6,22 @@ import { PurchaseOrderStatus } from '../../domain/entities/purchase-order.entity
 import type { PurchaseOrderEntity } from '../../domain/entities/purchase-order.entity';
 
 export class CreatePurchaseOrderLineDto {
-    @ApiProperty({ example: 'product-uuid' })
+    @ApiProperty({ type: String, example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     productId!: string;
 
-    @ApiProperty({ example: 500 })
+    @ApiProperty({ type: Number, example: 500 })
     @IsNumber()
     @Min(1)
     quantityOrdered!: number;
 
-    @ApiProperty({ example: 85.50 })
+    @ApiProperty({ type: Number, example: 85.50 })
     @IsNumber()
     @Min(0)
     unitCostAtOrder!: number;
 
-    @ApiPropertyOptional({ example: 'USD', default: 'USD' })
+    @ApiPropertyOptional({ type: String, example: 'USD', default: 'USD' })
     @IsOptional()
     @IsString()
     @Length(3, 3)
@@ -29,12 +29,12 @@ export class CreatePurchaseOrderLineDto {
 }
 
 export class CreatePurchaseOrderDto {
-    @ApiProperty({ example: 'warehouse-uuid' })
+    @ApiProperty({ type: String, example: 'warehouse-uuid' })
     @IsString()
     @IsNotEmpty()
     warehouseId!: string;
 
-    @ApiProperty({ example: 'HeadWarmer Ltd' })
+    @ApiProperty({ type: String, example: 'HeadWarmer Ltd' })
     @IsString()
     @IsNotEmpty()
     supplierName!: string;
@@ -45,19 +45,19 @@ export class CreatePurchaseOrderDto {
     @ValidateNested({ each: true })
     lines!: CreatePurchaseOrderLineDto[];
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     notes?: string;
 }
 
 export class GoodsReceiptLineDto {
-    @ApiProperty({ example: 'line-uuid' })
+    @ApiProperty({ type: String, example: 'line-uuid' })
     @IsString()
     @IsNotEmpty()
     lineId!: string;
 
-    @ApiProperty({ example: 480 })
+    @ApiProperty({ type: Number, example: 480 })
     @IsNumber()
     @Min(0)
     quantityReceived!: number;

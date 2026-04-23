@@ -1,5 +1,5 @@
 import { Controller, Inject, Post, Get, Patch, HttpCode, HttpStatus, Param, Delete, Query } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth, ApiBody, ApiParam } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -23,6 +23,7 @@ export class ProductController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiBody({ type: () => CreateProductDto })
     @ApiOperation({ summary: 'Create a new product' })
     @ApiResponse({ status: 201, type: () => ProductResponseDto })
     @ApiResponse({ status: 409, description: 'SKU already exists' })
@@ -45,6 +46,8 @@ export class ProductController {
     }
 
     @Patch(':id')
+    @ApiParam({ name: 'id', type: String })
+    @ApiBody({ type: () => UpdateProductDto })
     @ApiOperation({ summary: 'Update product details' })
     @ApiResponse({ status: 200, type: () => ProductResponseDto })
     async update(
@@ -67,6 +70,7 @@ export class ProductController {
     }
 
     @Patch('activate/:id')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Reactivate a deactivated product' })
     @ApiResponse({ status: 200, type: () => ProductResponseDto })
     async activate(
@@ -79,6 +83,7 @@ export class ProductController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Deactivated a product' })
     async deactivate(
         @Param('id') id: string,
@@ -88,6 +93,7 @@ export class ProductController {
     }
 
     @Get(':id')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Get product by ID' })
     @ApiResponse({ status: 200, type: () => ProductResponseDto })
     @ApiResponse({ status: 404, description: 'Product not found' })

@@ -3,18 +3,18 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import type { WarehouseEntity } from "../../domain/entities/warehouse.entity";
 
 export class CreateWarehouseDto {
-    @ApiProperty({ example: 'Texas Warehouse' })
+    @ApiProperty({ type: String, example: 'Texas Warehouse' })
     @IsString()
     @Length(3, 20)
     name!: string;
 
-    @ApiProperty({ example: 'TXS001', description: '2-10 uppercase alphanumeric characters' })
+    @ApiProperty({ type: String, example: 'TXS001', description: '2-10 uppercase alphanumeric characters' })
     @IsString()
     @IsNotEmpty()
     @Length(2, 10)
     code!: string;
 
-    @ApiPropertyOptional({ example: '11 Industrial Avenue, Available Town.' })
+    @ApiPropertyOptional({ type: String, example: '11 Industrial Avenue, Available Town.' })
     @IsString()
     @IsOptional()
     @Length(1, 250)
@@ -26,13 +26,13 @@ export class UpdateWarehouseDto {
     // @IsString()
     // id!: string;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsString()
     @IsOptional()
     @Length(1, 100)
     name?: string;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsString()
     @IsOptional()
     @Length(1, 250)

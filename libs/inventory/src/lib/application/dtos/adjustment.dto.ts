@@ -6,17 +6,17 @@ import type { AdjustmentEntity } from "../../domain/entities/adjustment.entity";
 import { AdjustmentReasonCode } from "../../domain/value-objects/adjustment-reason.vo";
 
 export class CreateAdjustmentDto {
-    @ApiProperty({ example: 'product-uuid' })
+    @ApiProperty({ type: String, example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     productId!: string;
 
-    @ApiProperty({ example: 'warehouse-uuid' })
+    @ApiProperty({ type: String, example: 'warehouse-uuid' })
     @IsString()
     @IsNotEmpty()
     warehouseId!: string;
 
-    @ApiProperty({ example: 12 })
+    @ApiProperty({ type: Number, example: 12 })
     @IsNumber()
     @Min(1)
     quantity!: number;
@@ -29,12 +29,12 @@ export class CreateAdjustmentDto {
     @IsEnum(AdjustmentReasonCode)
     reasonCode!: AdjustmentReasonCode;
 
-    @ApiPropertyOptional({ example: 'Items found damaged on shelf 3B' })
+    @ApiPropertyOptional({ type: String, example: 'Items found damaged on shelf 3B' })
     @IsOptional()
     @IsString()
     reasonNotes?: string;
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     notes?: string;

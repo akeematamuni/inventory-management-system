@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Param, Query, HttpCode, HttpStatus, Inject } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth, ApiBody, ApiParam } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -22,6 +22,7 @@ export class AdjustmentController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiBody({ type: () => CreateAdjustmentDto })
     @ApiOperation({ summary: 'Create a manual stock adjustment' })
     @ApiResponse({ status: 201, type: () => AdjustmentResponseDto })
     async create(
@@ -43,6 +44,7 @@ export class AdjustmentController {
     }
 
     @Get(':id')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Get adjustment by ID' })
     @ApiResponse({ status: 200, type: () => AdjustmentResponseDto })
     @ApiResponse({ status: 404, description: 'Adjustment not found' })

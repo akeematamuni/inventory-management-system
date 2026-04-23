@@ -1,5 +1,5 @@
 import { Controller, Post, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from "@nestjs/swagger";
 import { CommandBus } from '@nestjs/cqrs';
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -14,6 +14,7 @@ export class OpeningStockController {
 
     @Post()
     @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiBody({ type: () => SetOpeningStockDto })
     @ApiOperation({
         summary: 'Set opening stock for a product in a warehouse',
         description: 'Used once on system go-live to seed initial balances.'

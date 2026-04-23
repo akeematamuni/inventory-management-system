@@ -2,28 +2,28 @@ import { IsString, IsNotEmpty, IsNumber, IsOptional, Min, Length } from "class-v
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
 export class SetOpeningStockDto {
-    @ApiProperty({ example: 'product-uuid' })
+    @ApiProperty({ type: String, example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     productId!: string;
 
-    @ApiProperty({ example: 'warehouse-uuid' })
+    @ApiProperty({ type: String, example: 'warehouse-uuid' })
     @IsString()
     @IsNotEmpty()
     warehouseId!: string;
 
-    @ApiProperty({ example: 500, description: 'Initial stock quantity on system going live' })
+    @ApiProperty({ type: String, example: 500, description: 'Initial stock quantity on system going live' })
     @IsNumber()
     @Min(1)
     quantity!: number;
 
-    @ApiPropertyOptional({ example: 85.50, description: 'Unit cost for valuation purposes' })
+    @ApiPropertyOptional({ type: String, example: 85.50, description: 'Unit cost for valuation purposes' })
     @IsOptional()
     @IsNumber()
     @Min(0)
     unitCost?: number;
 
-    @ApiPropertyOptional({ example: 'USD', default: 'USD' })
+    @ApiPropertyOptional({ type: String, example: 'USD', default: 'USD' })
     @IsOptional()
     @IsString()
     @Length(3, 3)

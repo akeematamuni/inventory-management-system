@@ -1,5 +1,5 @@
 import { Controller, Inject, Get, Post, Patch, Param, Query, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth, ApiBody, ApiParam } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -24,6 +24,7 @@ export class CycleCountController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiBody({ type: () => CreateCycleCountDto })
     @ApiOperation({ summary: 'Create a cycle count session' })
     @ApiResponse({ status: 201, type: () => CycleCountResponseDto })
     async create(
@@ -43,6 +44,8 @@ export class CycleCountController {
     }
 
     @Patch(':id/submit')
+    @ApiParam({ name: 'id', type: String })
+    @ApiBody({ type: () => SubmitCycleCountDto })
     @ApiOperation({ summary: 'Submit counted quantities for lines' })
     @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     async submit(
@@ -62,6 +65,7 @@ export class CycleCountController {
     }
 
     @Patch(':id/approve')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Approve a cycle count' })
     @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     async approve(
@@ -73,6 +77,7 @@ export class CycleCountController {
     }
 
     @Patch(':id/reject')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Reject a cycle count' })
     @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     async reject(
@@ -84,6 +89,7 @@ export class CycleCountController {
     }
 
     @Get(':id')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Get cycle count by ID' })
     @ApiResponse({ status: 200, type: () => CycleCountResponseDto })
     @ApiResponse({ status: 404, description: 'Cycle count not found' })

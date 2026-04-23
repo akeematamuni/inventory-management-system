@@ -6,24 +6,24 @@ import { StockTransferStatus } from "../../domain/entities/stock-transfer.entity
 import type { StockTransferEntity } from "../../domain/entities/stock-transfer.entity";
 
 export class CreateStockTransferLineDto {
-    @ApiProperty({ example: 'product-uuid' })
+    @ApiProperty({ type: String, example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     productId!: string;
 
-    @ApiProperty({ example: 100 })
+    @ApiProperty({ type: Number, example: 100 })
     @IsNumber()
     @Min(1)
     quantityRequested!: number;
 }
 
 export class CreateStockTransferDto {
-    @ApiProperty({ example: 'source-warehouse-uuid' })
+    @ApiProperty({ type: String, example: 'source-warehouse-uuid' })
     @IsString()
     @IsNotEmpty()
     sourceWarehouseId!: string;
 
-    @ApiProperty({ example: 'destination-warehouse-uuid' })
+    @ApiProperty({ type: String, example: 'destination-warehouse-uuid' })
     @IsString()
     @IsNotEmpty()
     destinationWarehouseId!: string;
@@ -41,12 +41,12 @@ export class CreateStockTransferDto {
 }
 
 export class ReceiveTransferLineDto {
-    @ApiProperty({ example: 'line-uuid' })
+    @ApiProperty({ type: String, example: 'line-uuid' })
     @IsString()
     @IsNotEmpty()
     lineId!: string;
 
-    @ApiProperty({ example: 98 })
+    @ApiProperty({ type: Number, example: 98 })
     @IsNumber()
     @Min(0)
     quantityReceived!: number;

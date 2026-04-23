@@ -1,5 +1,5 @@
 import { Controller, Inject, Get, Post, Patch, Param, Query, HttpCode, HttpStatus } from "@nestjs/common";
-import { ApiTags, ApiResponse, ApiQuery, ApiOperation, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiResponse, ApiQuery, ApiOperation, ApiBearerAuth, ApiParam, ApiBody } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -26,6 +26,7 @@ export class StockTransferController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiBody({ type: () => CreateStockTransferDto })
     @ApiOperation({ summary: 'Creates a stock transfer request' })
     @ApiResponse({ status: 201, type: () => StockTransferResponseDto })
     async create(
@@ -46,6 +47,7 @@ export class StockTransferController {
     }
 
     @Patch(':id/dispatch')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Dispatch pendin  transfer' })
     @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     async dispatch(
@@ -60,6 +62,8 @@ export class StockTransferController {
     }
 
     @Patch(':id/receive')
+    @ApiParam({ name: 'id', type: String })
+    // @ApiBody({ type: () => ReceiveTransferDto })
     @ApiOperation({ summary: 'Receive dispatched transfer' })
     @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     async receive(
@@ -79,6 +83,7 @@ export class StockTransferController {
     }
 
     @Get(':id')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Get stock transfer by ID' })
     @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     @ApiResponse({ status: 404, description: 'Transfer not found' })

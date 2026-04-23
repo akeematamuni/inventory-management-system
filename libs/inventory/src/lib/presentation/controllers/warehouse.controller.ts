@@ -1,5 +1,5 @@
 import { Controller, Inject, Post, Get, Patch, HttpCode, HttpStatus, Param, Delete } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiParam, ApiBearerAuth, ApiBody } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -23,6 +23,7 @@ export class WarehouseController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiBody({ type: () => CreateWarehouseDto })
     @ApiOperation({ summary: 'Create a new warehouse' })
     @ApiResponse({ status: 201, type: () => WarehouseResponseDto })
     @ApiResponse({ status: 409, description: 'Warehouse code already exists' })
@@ -42,8 +43,10 @@ export class WarehouseController {
     }
 
     @Patch(':id')
+    @ApiParam({ name: 'id', type: String })
+    @ApiBody({ type: () => UpdateWarehouseDto })
     @ApiOperation({ summary: 'Update warehouse name or address' })
-    // @ApiResponse({ status: 200, type: () => WarehouseResponseDto })
+    @ApiResponse({ status: 200, type: () => WarehouseResponseDto })
     async update(
         @Param('id') id: string,
         @CurrentUser() user: string,
@@ -61,6 +64,7 @@ export class WarehouseController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Deactivate a warehouse' })
     @ApiResponse({ status: 204, description: 'Warehouse deactivated' })
     async deactivate(
@@ -71,9 +75,9 @@ export class WarehouseController {
     }
 
     @Get(':id')
-    @ApiOperation({ summary: 'Get warehouse using ID' })
     @ApiParam({ name: 'id', type: String })
-    // @ApiResponse({ status: 200, type: () => WarehouseResponseDto })
+    @ApiOperation({ summary: 'Get warehouse using ID' })
+    @ApiResponse({ status: 200, type: () => WarehouseResponseDto })
     @ApiResponse({ status: 404, description: 'Warehouse not found' })
     async get(@Param('id') id: string): Promise<WarehouseResponseDto> {
         return await this.queryBus.execute(new GetWarehouseQuery(id));
@@ -81,7 +85,7 @@ export class WarehouseController {
 
     @Get()
     @ApiOperation({ summary: 'Get all warehouses' })
-    // @ApiResponse({ status: 200, type: () => [WarehouseResponseDto] })
+    @ApiResponse({ status: 200, type: () => [WarehouseResponseDto] })
     async getAll(): Promise<WarehouseResponseDto[]> {
         return await this.queryBus.execute(new GetAllWarehousesQuery());
     }

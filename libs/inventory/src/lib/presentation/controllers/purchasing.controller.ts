@@ -1,5 +1,5 @@
 import { Controller, Inject, Post, Get, Patch, HttpCode, HttpStatus, Param, Delete, Query } from "@nestjs/common";
-import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth } from "@nestjs/swagger";
+import { ApiTags, ApiOperation, ApiResponse, ApiQuery, ApiBearerAuth, ApiBody, ApiParam } from "@nestjs/swagger";
 import { CommandBus, QueryBus } from "@nestjs/cqrs";
 
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
@@ -23,6 +23,7 @@ export class PurchaseController {
 
     @Post()
     @HttpCode(HttpStatus.CREATED)
+    @ApiBody({ type: () => CreatePurchaseOrderDto })
     @ApiOperation({ summary: 'Create a purchase order' })
     @ApiResponse({ status: 201, type: () => PurchaseOrderResponseDto })
     async create(
@@ -46,6 +47,7 @@ export class PurchaseController {
     }
 
     @Patch(':id/confirm')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Confirm a draft purchase order' })
     @ApiResponse({ status: 200, type: () => PurchaseOrderResponseDto })
     async confirm(
@@ -57,6 +59,8 @@ export class PurchaseController {
     }
 
     @Patch(':id/receive')
+    @ApiParam({ name: 'id', type: String })
+    @ApiBody({ type: () => ConfirmGoodsReceiptDto })
     @ApiOperation({ summary: 'Confirm goods for a purchase order' })
     @ApiResponse({ status: 200, type: () => PurchaseOrderResponseDto })
     async confirmGoods(
@@ -77,6 +81,7 @@ export class PurchaseController {
 
     @Delete(':id')
     @HttpCode(HttpStatus.NO_CONTENT)
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Cancel a purchase order' })
     async cancel(
         @Param('id') id: string,
@@ -86,6 +91,7 @@ export class PurchaseController {
     }
 
     @Get(':id')
+    @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Get purchase order by ID' })
     @ApiResponse({ status: 200, type: () => PurchaseOrderResponseDto })
     @ApiResponse({ status: 404, description: 'Purchase order not found' })

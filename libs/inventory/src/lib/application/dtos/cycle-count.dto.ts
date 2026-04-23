@@ -6,19 +6,19 @@ import { CycleCountStatus } from "../../domain/entities/cycle-count.entity";
 import type { CycleCountEntity } from "../../domain/entities/cycle-count.entity";
 
 export class CreateCycleCountLineDto {
-    @ApiProperty({ example: 'product-uuid' })
+    @ApiProperty({ type: String, example: 'product-uuid' })
     @IsString()
     @IsNotEmpty()
     productId!: string;
 
-    @ApiProperty({ example: 300, description: 'Current system balance at time of count creation' })
+    @ApiProperty({ type: Number, example: 300, description: 'Current system balance at time of count creation' })
     @IsNumber()
     @Min(0)
     systemQuantity!: number;
 }
 
 export class CreateCycleCountDto {
-    @ApiProperty({ example: 'warehouse-uuid' })
+    @ApiProperty({ type: String, example: 'warehouse-uuid' })
     @IsString()
     @IsNotEmpty()
     warehouseId!: string;
@@ -29,26 +29,26 @@ export class CreateCycleCountDto {
     @Type(() => CreateCycleCountLineDto)
     lines!: CreateCycleCountLineDto[];
 
-    @ApiPropertyOptional()
+    @ApiPropertyOptional({ type: String })
     @IsOptional()
     @IsString()
     notes?: string;
 }
 
 export class SubmitCycleCountLineDto {
-    @ApiProperty({ example: 'line-uuid' })
+    @ApiProperty({ type: String, example: 'line-uuid' })
     @IsString()
     @IsNotEmpty()
     lineId!: string;
 
-    @ApiProperty({ example: 287, description: 'Physical count observed on the shelf' })
+    @ApiProperty({ type: Number, example: 287, description: 'Physical count observed on the shelf' })
     @IsNumber()
     @Min(0)
     countedQuantity!: number;
 }
 
 export class SubmitCycleCountDto {
-    @ApiProperty({ example: 'cycle-count-uuid' })
+    @ApiProperty({ type: String, example: 'cycle-count-uuid' })
     @IsString()
     @IsNotEmpty()
     cycleCountId!: string;
@@ -61,7 +61,7 @@ export class SubmitCycleCountDto {
 }
 
 export class ApproveOrRejectCycleCountDto {
-    @ApiProperty({ example: 'cycle-count-uuid' })
+    @ApiProperty({ type: String, example: 'cycle-count-uuid' })
     @IsString()
     @IsNotEmpty()
     cycleCountId!: string;
