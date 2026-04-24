@@ -35,3 +35,6 @@ export class OpeningStockController {
         ));
     }
 }
+
+// For quick test and event
+// Put apron in WAR warehouse by jason below reorder of 150

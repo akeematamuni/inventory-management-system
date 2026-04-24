@@ -12,12 +12,12 @@ export class SetOpeningStockDto {
     @IsNotEmpty()
     warehouseId!: string;
 
-    @ApiProperty({ type: String, example: 500, description: 'Initial stock quantity on system going live' })
+    @ApiProperty({ type: Number, example: 500, description: 'Initial stock quantity on system going live' })
     @IsNumber()
     @Min(1)
     quantity!: number;
 
-    @ApiPropertyOptional({ type: String, example: 85.50, description: 'Unit cost for valuation purposes' })
+    @ApiPropertyOptional({ type: Number, example: 85.50, description: 'Unit cost for valuation purposes' })
     @IsOptional()
     @IsNumber()
     @Min(0)
