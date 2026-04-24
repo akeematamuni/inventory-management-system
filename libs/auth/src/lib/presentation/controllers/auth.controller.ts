@@ -45,7 +45,6 @@ export class AuthController {
     @Get('/profile')
     @ApiOperation({ summary: 'Get details of current user' })
     async profile(@CurrentUserEmail() email: string) {
-        console.log(email);
         if (!email) throw new AccessDeniedException('You are not valideated');
         return await this.profileService.execute(email);
     }
