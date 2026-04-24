@@ -16,14 +16,14 @@ const IDS = {
         lag: '13fb9997-05b4-4162-b669-f45241a7cce9',
     },
     products: {
-        helmet: { id: 'b8823ab5-891e-4a86-bd54-4a37ed84291d', unitCost: 45.75 },
-        gloves: { id: 'c06905d0-f1c4-4db1-9c07-bdf62e657c29', unitCost: 25.00 },
-        boots: { id: '013cb052-35ef-4d8b-a572-3a0bc508f9b4', unitCost: 200.00 },
-        vest: { id: 'b1afc60b-f7b0-4c87-a2c1-2d7b39e59dbd', unitCost: 20.00 },
-        goggles: { id: '01728e46-1ac8-4fb9-b9b6-39af40c0edb9', unitCost: 50.00 },
-        earmuffs: { id: 'eb9d8b30-44ca-406a-87fe-10062d8f1d60', unitCost: 35.00 },
-        harness: { id: 'a9fa58c0-4040-4436-916f-3b7a97d0a109', unitCost: 500.00 },
-        aprons: { id: '1c2ec47c-f70f-4c9a-b64c-a8374f380b1d', unitCost: 15.00 }
+        helmet: { id: 'b8823ab5-891e-4a86-bd54-4a37ed84291d', unitCost: 45.75, reorderPoint: 50 },
+        gloves: { id: 'c06905d0-f1c4-4db1-9c07-bdf62e657c29', unitCost: 25.00, reorderPoint: 200 },
+        boots: { id: '013cb052-35ef-4d8b-a572-3a0bc508f9b4', unitCost: 200.00, reorderPoint: 30 },
+        vest: { id: 'b1afc60b-f7b0-4c87-a2c1-2d7b39e59dbd', unitCost: 20.00, reorderPoint: 100 },
+        goggles: { id: '01728e46-1ac8-4fb9-b9b6-39af40c0edb9', unitCost: 50.00, reorderPoint: 40 },
+        earmuffs: { id: 'eb9d8b30-44ca-406a-87fe-10062d8f1d60', unitCost: 35.00, reorderPoint: 60 },
+        harness: { id: 'a9fa58c0-4040-4436-916f-3b7a97d0a109', unitCost: 500.00, reorderPoint: 10 },
+        aprons: { id: '1c2ec47c-f70f-4c9a-b64c-a8374f380b1d', unitCost: 15.00, reorderPoint: 150 }
     },
     users: {
         sammy: '85ff38da-b5e9-4e40-b392-e30b724e7f66',
@@ -94,7 +94,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Hard hat. Available in white.',
             unitCost: IDS.products.helmet.unitCost,
             currency,
-            reorderPoint: 50,
+            reorderPoint: IDS.products.helmet.reorderPoint,
             barcode: '6009701438001',
             isActive: true,
             created_at: new Date(),
@@ -107,7 +107,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Level 5 cut resistance. Size L.',
             unitCost: IDS.products.gloves.unitCost,
             currency,
-            reorderPoint: 200,
+            reorderPoint: IDS.products.gloves.reorderPoint,
             barcode: '6009701438002',
             isActive: true,
             created_at: new Date(),
@@ -120,7 +120,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'S3 rated. Sizes 6-12.',
             unitCost: IDS.products.boots.unitCost,
             currency,
-            reorderPoint: 30,
+            reorderPoint: IDS.products.boots.reorderPoint,
             barcode: '6009701438003',
             isActive: true,
             created_at: new Date(),
@@ -133,7 +133,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Orange. Size XL.',
             unitCost: IDS.products.vest.unitCost,
             currency,
-            reorderPoint: 100,
+            reorderPoint: IDS.products.vest.reorderPoint,
             barcode: '6009701438004',
             isActive: true,
             created_at: new Date(),
@@ -146,7 +146,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Indirect Vented. Clear Polycarbonate Lens.',
             unitCost: IDS.products.goggles.unitCost,
             currency,
-            reorderPoint: 40,
+            reorderPoint: IDS.products.goggles.reorderPoint,
             barcode: '6009701438005',
             isActive: true,
             created_at: new Date(),
@@ -159,7 +159,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Suitable for high-noise environments.',
             unitCost: IDS.products.earmuffs.unitCost,
             currency,
-            reorderPoint: 60,
+            reorderPoint: IDS.products.earmuffs.reorderPoint,
             barcode: '6009701438006',
             isActive: true,
             created_at: new Date(),
@@ -172,7 +172,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Suitable for working at heights.',
             unitCost: IDS.products.harness.unitCost,
             currency,
-            reorderPoint: 10,
+            reorderPoint: IDS.products.harness.reorderPoint,
             barcode: '6009701438007',
             isActive: true,
             created_at: new Date(),
@@ -185,7 +185,7 @@ async function seedMongo(connection: Connection): Promise<void> {
             description: 'Industry treated for multiple enviroment',
             unitCost: IDS.products.aprons.unitCost,
             currency,
-            reorderPoint: 150,
+            reorderPoint: IDS.products.aprons.reorderPoint,
             barcode: '6009701438008',
             isActive: true,
             created_at: new Date(),
@@ -195,7 +195,6 @@ async function seedMongo(connection: Connection): Promise<void> {
 
     console.log('MongoDB has been seeded with 2 warehouses and 8 products');
 }
-
 
 async function seedPostgres(dataSource: DataSource): Promise<void> {
     console.log('Seeding PostgreSQL (users, settings, balances, ledgers, orders)...');
@@ -232,55 +231,42 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
             [Object.values(IDS.products).map(p => p.id)]
         );
 
-        await manager.query(
-            `
-            INSERT INTO "product_settings" 
-                ("id", "reorder_point", "is_active")
-            VALUES 
-                ($1, 50, true), 
-                ($2, 200, true), 
-                ($3, 30, true), 
-                ($4, 100, true),
-                ($5, 40, true),
-                ($6, 60, true),
-                ($7, 10, true),
-                ($8, 150, true)
-            `,
-            [
-                IDS.products.helmet.id,
-                IDS.products.gloves.id,
-                IDS.products.boots.id,
-                IDS.products.vest.id,
-                IDS.products.goggles.id,
-                IDS.products.earmuffs.id,
-                IDS.products.harness.id,
-                IDS.products.aprons.id,
-            ]
-        );
+        for (const product of Object.values(IDS.products)) {
+            await manager.query(
+                `
+                INSERT INTO "product_settings" 
+                    ("id", "reorder_point", "is_active")
+                VALUES 
+                    ($1, $2, true)
+                `,
+                [product.id, product.reorderPoint]
+            );
 
+        }
+        
         // 2. Opening stock balances
         // WAR warehouse opening stock
         const warBalances = [
             { productId: IDS.products.helmet.id, qty: 480 },
             { productId: IDS.products.gloves.id, qty: 1200 },
-            { productId: IDS.products.boots.id, qty: 87 },
+            { productId: IDS.products.boots.id, qty: 87 }, // send 20 to lag
             { productId: IDS.products.vest.id, qty: 320 },
             { productId: IDS.products.goggles.id, qty: 95 },
-            { productId: IDS.products.earmuffs.id, qty: 140 },
+            { productId: IDS.products.earmuffs.id, qty: 240 }, // send 100 to lag
             { productId: IDS.products.harness.id, qty: 22 },
-            { productId: IDS.products.aprons.id, qty: 100 }, // below reorder
+            // { productId: IDS.products.aprons.id, qty: 100 } // below reorder 0f 150
         ];
 
         // LAG warehouse opening stock
         const lagBalances = [
             { productId: IDS.products.helmet.id, qty: 120 },
             { productId: IDS.products.gloves.id, qty: 400 },
-            { productId: IDS.products.boots.id, qty: 28 }, // below reorder
-            { productId: IDS.products.vest.id, qty: 80 }, // below reorder
+            { productId: IDS.products.boots.id, qty: 28 }, // below reorder of 30
+            { productId: IDS.products.vest.id, qty: 180 },
             { productId: IDS.products.goggles.id, qty: 45 },
-            { productId: IDS.products.earmuffs.id, qty: 55 }, // below reorder
-            { productId: IDS.products.harness.id, qty: 8 }, // below reorder
-            { productId: IDS.products.aprons.id, qty: 200 },
+            { productId: IDS.products.earmuffs.id, qty: 50 }, // below reorder of 60
+            { productId: IDS.products.harness.id, qty: 25 },
+            { productId: IDS.products.aprons.id, qty: 400 } // send 200 to war
         ];
 
         // Delete existing balances
@@ -391,11 +377,8 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
         );
 
         const alerts = [
-            { product: IDS.products.aprons.id, warehouse: IDS.warehouses.war, balance: 100, reorder: 150 },
             { product: IDS.products.boots.id, warehouse: IDS.warehouses.lag, balance: 28, reorder: 30 },
-            { product: IDS.products.vest.id, warehouse: IDS.warehouses.lag, balance: 80, reorder: 100 },
-            { product: IDS.products.earmuffs.id, warehouse: IDS.warehouses.lag, balance: 55, reorder: 60 },
-            { product: IDS.products.harness.id, warehouse: IDS.warehouses.lag, balance: 8, reorder: 10 },
+            { product: IDS.products.earmuffs.id, warehouse: IDS.warehouses.lag, balance: 50, reorder: 60 }
         ];
 
         for (const alert of alerts) {
@@ -453,13 +436,9 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     "currency"
                 )
             VALUES
-                ($1, $2, $3, 500, 0, 45.50, 'USD'),
-                ($4, $2, $5, 300, 0, 25.00, 'USD')
+                ($1, $2, $3, 10, 0, 495.50, 'USD')
             `, 
-            [
-                randomUUID(), IDS.purchaseOrders.po001, IDS.products.helmet.id,
-                randomUUID(), IDS.products.gloves.id,
-            ]
+            [randomUUID(), IDS.purchaseOrders.po001, IDS.products.harness.id]
         );
 
         // PO-002: partially received to demonstrates variance tracking
@@ -468,7 +447,7 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
             INSERT INTO "purchase_orders"
                 ("id", "warehouse_id", "supplier_name", "status", "created_by", "created_at", "updated_at")
             VALUES
-                ($1, $2, 'ProSafe Distributors', 'PARTIALLY_RECEIVED', $3, now(), now())
+                ($1, $2, 'SafetyGear Ltd', 'PARTIALLY_RECEIVED', $3, now(), now())
             `, 
             [IDS.purchaseOrders.po002, IDS.warehouses.lag, IDS.users.jason]
         );
@@ -486,13 +465,9 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
                     "currency"
                 )
             VALUES
-                ($1, $2, $3, 100, 100, 205.00, 'USD'),
-                ($4, $2, $5, 50,  28,  498.00, 'USD')
-            `, 
-            [
-                randomUUID(), IDS.purchaseOrders.po002, IDS.products.boots.id,
-                randomUUID(), IDS.products.harness.id,
-            ]
+                ($1, $2, $3, 15, 9, 495.50, 'USD')
+            `,
+            [randomUUID(), IDS.purchaseOrders.po002, IDS.products.harness.id]
         );
 
         // 5. Stock transfer, dispatched, awaiting receipt
@@ -501,53 +476,53 @@ async function seedPostgres(dataSource: DataSource): Promise<void> {
         //     [IDS.stockTransfers.tr001]
         // );
 
-        await manager.query(
-            `DELETE FROM "stock_transfers" WHERE "id" = $1`, 
-            [IDS.stockTransfers.tr001]
-        );
+    //     await manager.query(
+    //         `DELETE FROM "stock_transfers" WHERE "id" = $1`, 
+    //         [IDS.stockTransfers.tr001]
+    //     );
 
-        await manager.query(
-            `
-            INSERT INTO "stock_transfers" 
-                (
-                    "id", 
-                    "source_warehouse_id", 
-                    "destination_warehouse_id",
-                    "stock_transfer_status", 
-                    "notes", 
-                    "created_by", 
-                    "created_at", 
-                    "updated_at"
-                ) 
-            VALUES 
-                ($1, $2, $3, 'DISPATCHED', 'Urgent replenishment for LAG vest shortage', $4, now(), now())
-            `, 
-            [IDS.stockTransfers.tr001, IDS.warehouses.war, IDS.warehouses.lag, IDS.users.kate]
-        );
+    //     await manager.query(
+    //         `
+    //         INSERT INTO "stock_transfers" 
+    //             (
+    //                 "id", 
+    //                 "source_warehouse_id", 
+    //                 "destination_warehouse_id",
+    //                 "stock_transfer_status", 
+    //                 "notes", 
+    //                 "created_by", 
+    //                 "created_at", 
+    //                 "updated_at"
+    //             ) 
+    //         VALUES 
+    //             ($1, $2, $3, 'DISPATCHED', 'Urgent replenishment for LAG vest shortage', $4, now(), now())
+    //         `, 
+    //         [IDS.stockTransfers.tr001, IDS.warehouses.war, IDS.warehouses.lag, IDS.users.kate]
+    //     );
 
-        await manager.query(
-            `
-            INSERT INTO "stock_transfer_lines" 
-                (
-                    "id", 
-                    "stock_transfer_id", 
-                    "product_id",
-                    "quantity_requested", 
-                    "quantity_dispatched", 
-                    "quantity_recieved"
-                )
-            VALUES
-                ($1, $2, $3, 100, 100, 0),
-                ($4, $2, $5, 50,  50,  0)
-            `, 
-            [
-                randomUUID(), IDS.stockTransfers.tr001, IDS.products.vest.id,
-                randomUUID(), IDS.products.aprons.id,
-            ]
-        );
+    //     await manager.query(
+    //         `
+    //         INSERT INTO "stock_transfer_lines" 
+    //             (
+    //                 "id", 
+    //                 "stock_transfer_id", 
+    //                 "product_id",
+    //                 "quantity_requested", 
+    //                 "quantity_dispatched", 
+    //                 "quantity_recieved"
+    //             )
+    //         VALUES
+    //             ($1, $2, $3, 100, 100, 0),
+    //             ($4, $2, $5, 50,  50,  0)
+    //         `, 
+    //         [
+    //             randomUUID(), IDS.stockTransfers.tr001, IDS.products.vest.id,
+    //             randomUUID(), IDS.products.aprons.id,
+    //         ]
+    //     );
     });
 
-    console.log('PostgreSQL seeded with users, settings, balances, ledger, purchase orders, transfers, alerts');
+    console.log('PostgreSQL seeded with users, settings, balances, ledger, purchase orders, alerts');
 }
 
 export async function seedDatabase(): Promise<void> {
