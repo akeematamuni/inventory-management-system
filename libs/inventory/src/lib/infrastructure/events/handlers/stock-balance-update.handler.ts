@@ -1,13 +1,27 @@
-import { Injectable, Inject } from "@nestjs/common";
+import { Injectable, Inject, Logger } from "@nestjs/common";
 import { DataSource, EntityManager } from "typeorm";
 import { InjectDataSource } from "@nestjs/typeorm";
 import { OnEvent } from "@nestjs/event-emitter";
 
 import {
-    IStockBalanceRepository, IStockLedgerEntryRepository, IStockAlertRepository, IProductSettingsRepository,
-    STOCK_BALANCE_REPOSITORY, STOCK_LEDGER_ENTRY_REPOSITORY, STOCK_ALERT_REPOSITORY, PRODUCT_SETTINGS_REPOSITORY,
-    StockBalanceEntity, StockLedgerEntryEntity, MovementType, StockReceivedEvent, StockTransferDispatchedEvent,
-    StockTransferReceivedEvent, AdjustmentCreatedEvent, CycleCountApprovedEvent, OpeningStockSetEvent, StockAlertEntity,
+    IStockBalanceRepository, 
+    IStockLedgerEntryRepository, 
+    IStockAlertRepository, 
+    IProductSettingsRepository,
+    STOCK_BALANCE_REPOSITORY, 
+    STOCK_LEDGER_ENTRY_REPOSITORY, 
+    STOCK_ALERT_REPOSITORY, 
+    PRODUCT_SETTINGS_REPOSITORY,
+    StockBalanceEntity, 
+    StockLedgerEntryEntity, 
+    MovementType, 
+    StockReceivedEvent, 
+    StockTransferDispatchedEvent,
+    StockTransferReceivedEvent, 
+    AdjustmentCreatedEvent, 
+    CycleCountApprovedEvent, 
+    OpeningStockSetEvent, 
+    StockAlertEntity,
     ProductSettings
 } from "../../../domain";
 
@@ -30,6 +44,8 @@ interface Params {
 
 @Injectable()
 export class StockBalanceUpdateHandler {
+    private readonly logger = new Logger(StockBalanceUpdateHandler.name);
+
     constructor(
         @InjectDataSource()
         private readonly dataSource: DataSource,
@@ -77,6 +93,10 @@ export class StockBalanceUpdateHandler {
         await this.ledgerRepo.save(ledgerEntry, manager);
         await this.balanceRepo.save(balance, manager);
 
+        this.logger.log(
+            `Stock ledger and balance updated. Product: ${product.id} | Balance: ${balance.quantity}`
+        );
+        
         return { product, balance };
     }
 
@@ -99,6 +119,10 @@ export class StockBalanceUpdateHandler {
 
         await this.alertRepo.save(alert, manager);
 
+        this.logger.warn(
+            `LOW STOCK ALERT. Product: ${product.id} | Balance: ${balance.quantity} | Reorder point: ${product.reorderPoint}`
+        );
+
         /**
          * NOTE: Another alert should be fired here for cross-module subscription 
          * Also to trigger the exact module that dispatches the notification
@@ -117,12 +141,16 @@ export class StockBalanceUpdateHandler {
 
         alertExists.resolve();
         await this.alertRepo.save(alertExists, manager);
+
+        this.logger.warn(
+            `Alert resolved. Product: ${product.id} | Balance: ${balance.quantity} | Reorder point: ${product.reorderPoint}`
+        );
     }
 
     @OnEvent(OpeningStockSetEvent.name, { async: true })
     async handleOpeningStockSetEvent(event: OpeningStockSetEvent): Promise<void> {
         await this.dataSource.transaction(async (manager: EntityManager) => {
-            await this.applyUpdate({
+            const result = await this.applyUpdate({
                 productId: event.productId,
                 warehouseId: event.warehouseId,
                 quantityChange: event.quantity,
@@ -135,6 +163,10 @@ export class StockBalanceUpdateHandler {
                 occurredAt: event.occurredAt,
                 manager
             });
+
+            if (result) {
+                await this.checkAndAlert(result.product, result.balance, manager);
+            }
         });
     }
 
