@@ -2,12 +2,18 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Inject, Logger } from "@nestjs/common";
 
 import {
-    IWarehouseRepository, WAREHOUSE_REPOSITORY,
-    IProductRepository, PRODUCT_REPOSITORY,
-    IStockBalanceRepository, STOCK_BALANCE_REPOSITORY,
-    WarehouseNotFoundException, WarehouseInactiveException,
-    ProductNotFoundException, ProductInactiveException,
-    IInventoryEventPublisher, INVENTORY_EVENT_PUBLISHER,
+    IWarehouseRepository, 
+    WAREHOUSE_REPOSITORY,
+    IProductRepository, 
+    PRODUCT_REPOSITORY,
+    IStockBalanceRepository, 
+    STOCK_BALANCE_REPOSITORY,
+    WarehouseNotFoundException, 
+    WarehouseInactiveException,
+    ProductNotFoundException, 
+    ProductInactiveException,
+    IInventoryEventPublisher, 
+    INVENTORY_EVENT_PUBLISHER,
     OpeningStockSetEvent
 } from '../../../domain';
 
