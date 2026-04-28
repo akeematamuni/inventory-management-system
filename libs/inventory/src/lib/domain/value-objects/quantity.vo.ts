@@ -44,7 +44,7 @@ export class Quantity extends ValueObject<QuantityProps> {
     }
 
     public isGreaterThan(other: Quantity) {
-        return !this.isLessThan(other)
+        return !this.isLessThan(other) && !this.equals(other);
     }
 
     public isZero(): boolean {
