@@ -46,10 +46,10 @@ export class CreateProductDto {
 }
 
 export class UpdateProductDto {
-    @ApiProperty({ type: String, example: 'product-uuid' })
-    @IsString()
-    @IsNotEmpty()
-    id!: string;
+    // @ApiProperty({ type: String, example: 'product-uuid' })
+    // @IsString()
+    // @IsNotEmpty()
+    // id!: string;
 
     @ApiPropertyOptional({ type: String })
     @IsOptional()
@@ -57,7 +57,7 @@ export class UpdateProductDto {
     @Length(2, 100)
     name?: string | null;
 
-    @ApiPropertyOptional({ type: String })
+    @ApiPropertyOptional({ type: Number })
     @IsOptional()
     @IsNumber()
     @Min(0)
@@ -69,7 +69,7 @@ export class UpdateProductDto {
     @Length(3, 3)
     currency?: string | null;
 
-    @ApiPropertyOptional({ type: String })
+    @ApiPropertyOptional({ type: Number })
     @IsOptional()
     @IsNumber()
     @Min(0)
