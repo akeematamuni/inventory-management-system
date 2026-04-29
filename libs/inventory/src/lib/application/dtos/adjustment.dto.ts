@@ -21,11 +21,11 @@ export class CreateAdjustmentDto {
     @Min(1)
     quantity!: number;
 
-    @ApiProperty({ enum: [MovementType.ADJUSTMENT_UP, MovementType.ADJUSTMENT_DOWN] })
-    @IsEnum([MovementType.ADJUSTMENT_UP, MovementType.ADJUSTMENT_DOWN])
-    movementType!: MovementType.ADJUSTMENT_UP | MovementType.ADJUSTMENT_DOWN;
+    @ApiProperty({ enum: MovementType, example: MovementType.ADJUSTMENT_DOWN })
+    @IsEnum(MovementType)
+    movementType!: MovementType;
 
-    @ApiProperty({ enum: AdjustmentReasonCode })
+    @ApiProperty({ enum: AdjustmentReasonCode, example: AdjustmentReasonCode.DAMAGE })
     @IsEnum(AdjustmentReasonCode)
     reasonCode!: AdjustmentReasonCode;
 

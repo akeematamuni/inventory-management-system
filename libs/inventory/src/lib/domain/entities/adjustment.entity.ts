@@ -34,8 +34,9 @@ export class AdjustmentEntity extends Entity<AdjustmentProps> {
     }
 
     public static create(props: CreateAdjustmentProps): AdjustmentEntity {
-        const mvt = props.movementType;
-        if (mvt !== (MovementType.ADJUSTMENT_UP || MovementType.ADJUSTMENT_DOWN)) {
+        const allowedMovements = [MovementType.ADJUSTMENT_UP, MovementType.ADJUSTMENT_DOWN];
+
+        if (!allowedMovements.includes(props.movementType)) {
             throw new Error(
                 `Manual adjustment can only be ${MovementType.ADJUSTMENT_UP} or ${MovementType.ADJUSTMENT_DOWN}`
             );

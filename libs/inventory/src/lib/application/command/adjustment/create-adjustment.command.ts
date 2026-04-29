@@ -5,7 +5,7 @@ export class CreateAdjustmentCommand {
         public readonly productId: string,
         public readonly warehouseId: string,
         public readonly quantity: number,
-        public readonly movementType: MovementType.ADJUSTMENT_UP | MovementType.ADJUSTMENT_DOWN,
+        public readonly movementType: MovementType,
         public readonly reasonCode: AdjustmentReasonCode,
         public readonly performedBy: string,
         public readonly notes?: string,
