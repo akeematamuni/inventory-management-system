@@ -52,14 +52,14 @@ export class WarehouseController {
         @CurrentUser() user: string,
         @ManualBody(UpdateWarehouseDto) dto: UpdateWarehouseDto
     ): Promise<WarehouseResponseDto> {
-        const _id = await this.commandBus.execute(new UpdateWarehouseCommand(
+        await this.commandBus.execute(new UpdateWarehouseCommand(
             id, 
             dto.name, 
             dto.address,
             user
         ));
 
-        return await this.queryBus.execute(new GetWarehouseQuery(_id));
+        return await this.queryBus.execute(new GetWarehouseQuery(id));
     }
 
     @Delete(':id')
