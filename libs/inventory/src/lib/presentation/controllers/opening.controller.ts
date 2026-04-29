@@ -1,4 +1,4 @@
-import { Controller, Post, HttpCode, HttpStatus } from "@nestjs/common";
+import { Controller, Post, HttpCode, HttpStatus, Inject } from "@nestjs/common";
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiBody } from "@nestjs/swagger";
 import { CommandBus } from '@nestjs/cqrs';
 
@@ -10,7 +10,7 @@ import { SetOpeningStockCommand, SetOpeningStockDto } from "../../application";
 @ApiBearerAuth()
 @Controller('opening-stock')
 export class OpeningStockController {
-    constructor(private readonly commandBus: CommandBus) {}
+    constructor(@Inject(CommandBus) private readonly commandBus: CommandBus) {}
 
     @Post()
     @HttpCode(HttpStatus.NO_CONTENT)
@@ -35,6 +35,3 @@ export class OpeningStockController {
         ));
     }
 }
-
-// For quick test and event
-// Put apron in WAR warehouse by jason below reorder of 150
