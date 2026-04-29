@@ -44,6 +44,19 @@ export class CreateAdjustmentHandler implements ICommandHandler<CreateAdjustment
             reasonNotes
         } = command;
 
+        const adjustment = AdjustmentEntity.create({
+            productId,
+            warehouseId,
+            movementType,
+            quantity,
+            notes,
+            createdBy: performedBy,
+            reason: AdjustmentReason.create({
+                code: reasonCode, 
+                notes: reasonNotes
+            })
+        });
+        
         // Guard 1: warehouse must exist and be active
         const warehouse = await this.warehouseRepo.findById(warehouseId);
         if (!warehouse) throw new WarehouseNotFoundException(warehouseId);
@@ -63,19 +76,6 @@ export class CreateAdjustmentHandler implements ICommandHandler<CreateAdjustment
                 productId, warehouseId, quantity, available
             );
         }
-        
-        const adjustment = AdjustmentEntity.create({
-            productId,
-            warehouseId,
-            movementType,
-            quantity,
-            notes,
-            createdBy: performedBy,
-            reason: AdjustmentReason.create({
-                code: reasonCode, 
-                notes: reasonNotes
-            })
-        });
 
         await this.adjRepo.save(adjustment);
         this.logger.log(`Adjustment created. User: ${performedBy} | Adjustment: ${adjustment.id}`);
