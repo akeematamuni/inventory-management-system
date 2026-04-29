@@ -55,7 +55,7 @@ export class ProductController {
         @CurrentUser() user: string,
         @ManualBody(UpdateProductDto) dto: UpdateProductDto
     ): Promise<ProductResponseDto> {
-        const _id = await this.commandBus.execute(new UpdateProductCommand(
+        await this.commandBus.execute(new UpdateProductCommand(
             id,
             dto.name,
             dto.amount,
@@ -66,7 +66,7 @@ export class ProductController {
             user
         ));
 
-        return await this.queryBus.execute(new GetProductQuery(_id));
+        return await this.queryBus.execute(new GetProductQuery(id));
     }
 
     @Patch('activate/:id')
