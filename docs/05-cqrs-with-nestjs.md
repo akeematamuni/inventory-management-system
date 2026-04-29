@@ -34,6 +34,7 @@ Each side has its own handlers, own bus, and zero knowledge of each other. To il
 
 ## Consequences
 
+
 **Positive**
 
 - Read and write paths are fully isolated; concurrent operations no longer conflicts
@@ -43,6 +44,7 @@ Each side has its own handlers, own bus, and zero knowledge of each other. To il
 - `CommandBus` and `QueryBus` make the intent of every controller call explicit; you always know if a function is in mutating state or reading it
 
 - `@nestjs/cqrs` makes boundaries explicit and enforced; commands and queries are seperated at the application layer, but without enforcing that boundary structurally, nothing stops a command handler from reading state or a query from mutating it.
+
 
 
 **Negative**
