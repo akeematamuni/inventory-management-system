@@ -1,0 +1,100 @@
+###############################################################
+Register a new user
+{
+    "firstName": "Cornelius",
+    "lastName": "Madu",
+    "email": "cornelius@example.com",
+    "password": "Password123$"
+}
+
+Login a registered user
+{
+    "email": "cornelius@example.com",
+    "password": "Password123$"
+}
+
+###############################################################
+Create a new warehouse
+{
+    "name": "Texas Warehouse",
+    "code": "TXS000",
+    "address": "10 Industrial Avenue, Available Town."
+}
+{
+    "name": "Texas1 Warehouse",
+    "code": "TXS001",
+    "address": "11 Industrial Avenue, Available Town."
+}
+{
+    "name": "Texas2 Warehouse",
+    "code": "TXS002",
+    "address": "12 Industrial Avenue, Available Town."
+}
+
+Update a warehouse
+{
+    "name": "Texas1 Warehouse Updated",
+    "address": "11 Industrial Avenue, Available Town. Updated"
+}
+
+###############################################################
+Create a product
+{
+    "name": "Full Face Respirator Mask. Pro Series",
+    "sku": "RSM-9900",
+    "amount": 145.50,
+    "currency": "USD",
+    "reorderPoint": 25,
+    "description": "Dual-filter silicone facepiece with impact-resistant lens.",
+    "barcode": "0884521099301"
+}
+{
+    "name": "Vented Hard Hat. Type 1, Class C",
+    "sku": "HVNT-2134",
+    "amount": 41.99,
+    "currency": "USD",
+    "reorderPoint": 50,
+    "description": "High-density polyethylene shell with 6-point suspension.",
+    "barcode": "6103704421908"
+}
+
+Update a product
+{
+    "name": "Full Face Respirator Mask. Pro Series Updated",
+    "sku": "RSM-9900",
+    "amount": 145.50,
+    "currency": "USD",
+    "reorderPoint": 20,
+    "description": "Dual-filter silicone facepiece with impact-resistant lens.",
+    "barcode": "0884521099301"
+}
+
+###############################################################
+Opening stock
+{
+    "productId": "Insert RSM-9900 product-uuid",
+    "warehouseId": "Insert Texas Warehouse-uuid",
+    "quantity": 200,
+    "unitCost": 145.50,
+    "currency": "USD"
+}
+{
+    "productId": "Insert HVNT-2134 product-uuid",
+    "warehouseId": "Insert Texas2 warehouse-uuid",
+    "quantity": 350,
+    "unitCost": 41.99,
+    "currency": "USD"
+}
+
+###############################################################
+Create manual adjustments
+{
+    "productId": "Insert HVNT-2134 product-uuid",
+    "warehouseId": "Insert Texas2 warehouse-uuid",
+    "quantity": 2,
+    "movementType": "ADJUSTMENT_DOWN",
+    "reasonCode": "DAMAGE",
+    "reasonNotes": "Items found damaged on shelf 3B"
+}
+
+###############################################################
