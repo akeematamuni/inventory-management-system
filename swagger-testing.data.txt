@@ -98,3 +98,74 @@ Create manual adjustments
 }
 
 ###############################################################
+Create Stock Transfer
+{
+    "sourceWarehouseId": "Insert TXS002 warehouse-uuid",
+    "destinationWarehouseId": "Insert TXS000 warehouse-uuid",
+    "lines": [
+        {
+            "productId": "Insert HVNT-2134 product-uuid",
+            "quantityRequested": 300
+        }
+    ]
+}
+{
+    "sourceWarehouseId": "Insert TXS000 warehouse-uuid",
+    "destinationWarehouseId": "Insert TXS002 warehouse-uuid",
+    "lines": [
+        {
+            "productId": "Insert RSM-9900 product-uuid",
+            "quantityRequested": 185
+        }
+    ]
+}
+
+{
+    "sourceWarehouseId": "04346751-2378-44b5-9d4c-d8961860d6cb",
+    "destinationWarehouseId": "9b237df8-2b98-42dd-8655-eeb13ff38197",
+    "lines": [
+        {
+            "productId": "5ea88512-f9e9-4f9f-9b43-f3d0a1b9a138",
+            "quantityRequested": 300
+        }
+    ]
+}
+
+Receive stock Transfer
+{
+    "lines": [
+        {
+            "lineId": "Insert line-uuid from create responce",
+            "quantityReceived": 300
+        }
+    ]
+}
+
+###############################################################
+Create a purchase order
+{
+    "warehouseId": "Insert TXS000 warehouse-uuid",
+    "supplierName": "Example Supplier Ltd",
+    "lines": [
+        {
+            "productId": "Insert RSM-9900 product-uuid",
+            "quantityOrdered": 35,
+            "unitCostAtOrder": 145.85,
+            "currency": "USD"
+        }
+    ]
+}
+{
+    "warehouseId": "9b237df8-2b98-42dd-8655-eeb13ff38197",
+    "supplierName": "Example Supplier Ltd",
+    "lines": [
+        {
+            "productId": "70b37cb0-4123-4e56-9c97-76b0286090b1",
+            "quantityOrdered": 35,
+            "unitCostAtOrder": 145.85,
+            "currency": "USD"
+        }
+    ]
+}
+
+###############################################################
