@@ -2,7 +2,8 @@ import { QueryHandler, IQueryHandler } from "@nestjs/cqrs";
 import { Inject } from "@nestjs/common";
 
 import {
-    IStockTransferRepository, STOCK_TRANSFER_REPOSITORY,
+    IStockTransferRepository, 
+    STOCK_TRANSFER_REPOSITORY,
     StockTransferNotFoundException
 } from "../../../domain";
 

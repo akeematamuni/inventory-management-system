@@ -2,9 +2,12 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Inject, Logger } from "@nestjs/common";
 
 import {
-    IPurchaseOrderRepository, PURCHASE_ORDER_REPOSITORY,
-    IInventoryEventPublisher, INVENTORY_EVENT_PUBLISHER,
-    PurchaseOrderNotFoundException, StockReceivedEvent,
+    IPurchaseOrderRepository, 
+    PURCHASE_ORDER_REPOSITORY,
+    IInventoryEventPublisher, 
+    INVENTORY_EVENT_PUBLISHER,
+    PurchaseOrderNotFoundException, 
+    StockReceivedEvent,
 } from "../../../domain";
 
 import { ConfirmGoodsReceiptCommand } from "./confirm-goods-receipt.command";
@@ -44,7 +47,7 @@ export class ConfirmGoodsReceiptHandler implements ICommandHandler<ConfirmGoodsR
                     productId: l.productId,
                     unitCostAtOrder: l.unitCostAtOrder,
                     currency: l.currency,
-                    quantityReceived: l.quantityRecieved
+                    quantityReceived: l.quantityReceived
                 })),
                 purchaseOrder.notes
             )
