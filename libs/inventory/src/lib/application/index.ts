@@ -51,6 +51,8 @@ export * from './query/purchasing/get-all-purchase-orders.handler';
 // Transfer
 export * from './command/transfer/create-stock-transfer.command';
 export * from './command/transfer/create-stock-transfer.handler';
+export * from './command/transfer/cancel-stock-transfer.command';
+export * from './command/transfer/cancel-stock-transfer.handler';
 export * from './command/transfer/dispatch-transfer.command';
 export * from './command/transfer/dispatch-transfer.handler';
 export * from './command/transfer/receive-transfer.command';
