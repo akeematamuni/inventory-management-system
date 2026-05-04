@@ -229,7 +229,7 @@ export class StockBalanceUpdateHandler {
                     productId: e.productId,
                     warehouseId: event.destinationWarehouseId,
                     quantityChange: e.quantityReceived,
-                    movementType: MovementType.TRANSFER_OUT,
+                    movementType: MovementType.TRANSFER_IN,
                     referenceId: event.transferId,
                     referenceType: 'STOCK_TRANSFER',
                     notes: event.notes,
