@@ -24,8 +24,8 @@ export interface CreateStockTransferProps {
     sourceWarehouseId: string;
     destinationWarehouseId: string;
     lines: Omit<CreateStockTransferLineProps, 'stockTransferId'>[];
-    notes?: string;
     createdBy: string;
+    notes?: string;
 }
 
 /**
@@ -49,7 +49,11 @@ export class StockTransferEntity extends Entity<StockTransferProps> {
 
         const now = new Date();
         const id = BaseId.generate().value;
-        const lines = props.lines.map(line => StockTransferLineEntity.create({ ...line, stockTransferId: id }));
+        const lines = props.lines.map(line => StockTransferLineEntity.create({ 
+            stockTransferId: id,
+            productId: line.productId,
+            quantityRequested: line.quantityRequested
+        }));
 
         return new StockTransferEntity(
             {
@@ -103,8 +107,12 @@ export class StockTransferEntity extends Entity<StockTransferProps> {
      * 2. Write ADJUSTMENT_DOWN ledger entries at source for any variance
     */
     public receiveLines(receipts: { lineId: string; quantity: number }[]): StockTransferLineEntity[] {
-        if (this.props.status !== StockTransferStatus.DISPATCHED &&
-            this.props.status !== StockTransferStatus.PARTIALLY_RECEIVED) {
+        const validStatus = [
+            StockTransferStatus.DISPATCHED, 
+            StockTransferStatus.PARTIALLY_RECEIVED
+        ];
+
+        if (!validStatus.includes(this.props.status)) {
             throw new Error('Only a DISPATCHED or PARTIALLY_RECEIVED transfer can be received');
         }
 

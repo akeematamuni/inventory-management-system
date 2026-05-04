@@ -44,14 +44,20 @@ export class PurchaseOrderEntity extends Entity<PurchaseOrderProps> {
         const now = new Date();
         const id = BaseId.generate().value;
 
-        const lines = props.lines.map(line => PurchaseOrderLineEntity.create({...line, purchaseOrderId: id}));
+        const lines = props.lines.map(line => PurchaseOrderLineEntity.create({ 
+            purchaseOrderId: id,
+            productId: line.productId,
+            unitCostAtOrder: line.unitCostAtOrder,
+            quantityOrdered: line.quantityOrdered,
+            currency: line.currency
+        }));
 
         return new PurchaseOrderEntity(
             {
-                lines,
                 warehouseId: props.warehouseId,
                 supplierName: props.supplierName,
                 status: PurchaseOrderStatus.DRAFT,
+                lines: lines,
                 notes: props.notes?.trim() ?? null,
                 createdBy: props.createdBy,
                 createdAt: now,

@@ -5,7 +5,7 @@ export interface PurchaseOrderLineProps {
     productId: string;
     unitCostAtOrder: number;
     quantityOrdered: number;
-    quantityRecieved: number;
+    quantityReceived: number;
     currency: string;
 }
 
@@ -30,7 +30,7 @@ export class PurchaseOrderLineEntity extends Entity<PurchaseOrderLineProps> {
         return new PurchaseOrderLineEntity(
             {
                 ...props,
-                quantityRecieved: 0,
+                quantityReceived: 0,
                 currency: props.currency ?? 'USD'
             },
             BaseId.generate().value
@@ -42,15 +42,15 @@ export class PurchaseOrderLineEntity extends Entity<PurchaseOrderLineProps> {
     }
 
     public get isFullyRecieved(): boolean {
-        return this.props.quantityRecieved >= this.props.quantityOrdered;
+        return this.props.quantityReceived >= this.props.quantityOrdered;
     }
 
     public get remainingQuantity(): number {
-        return this.props.quantityOrdered - this.props.quantityRecieved;
+        return this.props.quantityOrdered - this.props.quantityReceived;
     }
 
     public recieve(quantity: number): void {
-        this.props.quantityRecieved += quantity;
+        this.props.quantityReceived += quantity;
     }
 
     get purchaseOrderId(): string {
@@ -69,8 +69,8 @@ export class PurchaseOrderLineEntity extends Entity<PurchaseOrderLineProps> {
         return this.props.quantityOrdered;
     }
 
-    get quantityRecieved(): number {
-        return this.props.quantityOrdered;
+    get quantityReceived(): number {
+        return this.props.quantityReceived;
     }
 
     get currency(): string {

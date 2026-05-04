@@ -47,10 +47,11 @@ export class StockTransferLineEntity extends Entity<StockTransferLineProps> {
     }
 
     get isFullyReceived(): boolean {
-        return this.props.quantityReceived >= this.props.quantityDispatched;
+        return this.props.quantityReceived >= this.props.quantityRequested;
     }
 
     get variance(): number {
+        // Variance could also be the difference between quantity received and requested 
         return this.props.quantityDispatched - this.props.quantityReceived;
     }
 
