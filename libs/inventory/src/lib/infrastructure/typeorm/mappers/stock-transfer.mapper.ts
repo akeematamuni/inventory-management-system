@@ -53,7 +53,7 @@ export class StockTransferMapper {
         entity.stockTransferId = domain.stockTransferId;
         entity.quantityRequested = domain.quantityRequested;
         entity.quantityDispatched = domain.quantityDispatched;
-        entity.quantityReceived = domain.quantityRequested;
+        entity.quantityReceived = domain.quantityReceived;
         return entity;
     }
 }

@@ -9,7 +9,7 @@ export class PurchaseOrderMapper {
                 warehouseId: raw.warehouseId,
                 supplierName: raw.supplierName,
                 status: raw.status,
-                lines: raw.lines.map((line) => PurchaseOrderMapper.toLineDomain(line)),
+                lines: raw.lines.map(line => PurchaseOrderMapper.toLineDomain(line)),
                 notes: raw.notes,
                 createdBy: raw.createdBy,
                 createdAt: raw.createdAt,
@@ -26,7 +26,7 @@ export class PurchaseOrderMapper {
         entity.supplierName = domain.supplierName;
         entity.status = domain.status;
         entity.notes = domain.notes;
-        entity.lines = domain.lines.map((line) => PurchaseOrderMapper.toLinePersistence(line));
+        entity.lines = domain.lines.map(line => PurchaseOrderMapper.toLinePersistence(line));
         entity.createdBy = domain.createdBy;
         entity.createdAt = domain.createdAt;
         entity.updatedAt = domain.updatedAt;
@@ -40,7 +40,7 @@ export class PurchaseOrderMapper {
                 productId: raw.productId,
                 unitCostAtOrder: raw.unitCostAtOrder,
                 quantityOrdered: raw.quantityOrdered,
-                quantityRecieved: raw.quantityRecieved,
+                quantityReceived: raw.quantityRecieved,
                 currency: raw.currency
             },
             raw.id
@@ -49,11 +49,12 @@ export class PurchaseOrderMapper {
 
     private static toLinePersistence(domain: PurchaseOrderLineEntity): PurchaseOrderLineEntityTypeOrm {
         const entity = new PurchaseOrderLineEntityTypeOrm();
+        entity.id = domain.id;
         entity.purchaseOrderId = domain.purchaseOrderId;
         entity.productId = domain.productId;
         entity.unitCostAtOrder = domain.unitCostAtOrder;
         entity.quantityOrdered = domain.quantityOrdered;
-        entity.quantityRecieved = domain.quantityRecieved;
+        entity.quantityRecieved = domain.quantityReceived;
         entity.currency = domain.currency;
         return entity;
     }
