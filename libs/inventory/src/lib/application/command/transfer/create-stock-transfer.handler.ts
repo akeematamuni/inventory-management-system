@@ -2,13 +2,20 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Inject, Logger } from "@nestjs/common";
 
 import {
-    IStockTransferRepository, STOCK_TRANSFER_REPOSITORY,
-    IWarehouseRepository, WAREHOUSE_REPOSITORY,
-    IProductRepository, PRODUCT_REPOSITORY,
-    WarehouseNotFoundException, WarehouseInactiveException,
-    IStockBalanceRepository, STOCK_BALANCE_REPOSITORY,
-    ProductNotFoundException, ProductInactiveException,
-    InsufficientStockException, StockTransferEntity
+    IStockTransferRepository, 
+    STOCK_TRANSFER_REPOSITORY,
+    IWarehouseRepository, 
+    WAREHOUSE_REPOSITORY,
+    IProductRepository, 
+    PRODUCT_REPOSITORY,
+    WarehouseNotFoundException, 
+    WarehouseInactiveException,
+    IStockBalanceRepository, 
+    STOCK_BALANCE_REPOSITORY,
+    ProductNotFoundException, 
+    ProductInactiveException,
+    InsufficientStockException, 
+    StockTransferEntity
 } from "../../../domain";
 
 import { CreateStockTransferCommand } from "./create-stock-transfer.command";

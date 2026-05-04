@@ -2,9 +2,12 @@ import { CommandHandler, ICommandHandler } from "@nestjs/cqrs";
 import { Inject, Logger } from "@nestjs/common";
 
 import {
-    IStockTransferRepository, STOCK_TRANSFER_REPOSITORY,
-    StockTransferNotFoundException, IInventoryEventPublisher,
-    INVENTORY_EVENT_PUBLISHER, StockTransferDispatchedEvent
+    IStockTransferRepository, 
+    STOCK_TRANSFER_REPOSITORY,
+    StockTransferNotFoundException, 
+    IInventoryEventPublisher,
+    INVENTORY_EVENT_PUBLISHER, 
+    StockTransferDispatchedEvent
 } from '../../../domain';
 
 import { DispatchTransferCommand } from './dispatch-transfer.command';
