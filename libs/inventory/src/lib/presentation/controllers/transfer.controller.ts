@@ -5,9 +5,16 @@ import { CommandBus, QueryBus } from "@nestjs/cqrs";
 import { ManualBody, CurrentUser } from "@inventory/core/decorators";
 
 import {
-    StockTransferResponseDto, CreateStockTransferDto, CreateStockTransferCommand,
-    CreateStockTransferLine, GetStockTransferQuery, GetAllStockTransfersQuery,
-    DispatchTransferCommand, ReceiveTransferCommand, ReceiveTransferLine,
+    StockTransferResponseDto, 
+    CreateStockTransferDto, 
+    CreateStockTransferCommand,
+    CreateStockTransferLine, 
+    GetStockTransferQuery, 
+    GetAllStockTransfersQuery,
+    CancelTransferCommand,
+    DispatchTransferCommand, 
+    ReceiveTransferCommand, 
+    ReceiveTransferLine,
     ReceiveTransferDto
 } from "../../application";
 
@@ -18,10 +25,8 @@ import { StockTransferStatus } from "../../domain";
 @Controller('stock-transfers')
 export class StockTransferController {
     constructor(
-        @Inject(QueryBus)
-        private readonly queryBus: QueryBus,
-        @Inject(CommandBus)
-        private readonly commandBus: CommandBus
+        @Inject(QueryBus) private readonly queryBus: QueryBus,
+        @Inject(CommandBus) private readonly commandBus: CommandBus
     ) {}
 
     @Post()
@@ -46,6 +51,18 @@ export class StockTransferController {
         return await this.queryBus.execute(new GetStockTransferQuery(id));
     }
 
+    @Patch(':id/cancel')
+    @ApiParam({ name: 'id', type: String })
+    @ApiOperation({ summary: 'Cancel pending  transfer' })
+    @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
+    async cancel(
+        @Param('id') id: string,
+        @CurrentUser() user: string
+    ): Promise<StockTransferResponseDto> {
+        await this.commandBus.execute(new CancelTransferCommand(id, user));
+        return await this.queryBus.execute(new GetStockTransferQuery(id));
+    }
+
     @Patch(':id/dispatch')
     @ApiParam({ name: 'id', type: String })
     @ApiOperation({ summary: 'Dispatch pendin  transfer' })
@@ -54,16 +71,13 @@ export class StockTransferController {
         @Param('id') id: string,
         @CurrentUser() user: string
     ): Promise<StockTransferResponseDto> {
-        await this.commandBus.execute(new DispatchTransferCommand(
-            id, user
-        ));
-
+        await this.commandBus.execute(new DispatchTransferCommand(id, user));
         return await this.queryBus.execute(new GetStockTransferQuery(id));
     }
 
     @Patch(':id/receive')
     @ApiParam({ name: 'id', type: String })
-    // @ApiBody({ type: () => ReceiveTransferDto })
+    @ApiBody({ type: () => ReceiveTransferDto })
     @ApiOperation({ summary: 'Receive dispatched transfer' })
     @ApiResponse({ status: 200, type: () => StockTransferResponseDto })
     async receive(
