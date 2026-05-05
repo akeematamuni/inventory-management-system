@@ -30,7 +30,6 @@ Kafka is optional than default because it carries real infrastructure cost. In d
 
 ## Consequences
 
-
 **Positive**
 
 - Events are persistent - a server crash does not cause event loss
@@ -54,5 +53,3 @@ Kafka is optional than default because it carries real infrastructure cost. In d
 **RabbitMQ**: Rejected. Yes it is a solid message broker and easier to operate than kafka, but it follows a traditional queue model where messages are deleted after consumptiomn which isnt what we want. Being able to re-read past events to recover state was a hard requirement. 
 
 **Redis Pub/Sub**: Fast and lightweight, rejected because it is entirely in memory with no persistence. If no consumer is listening at the exact moment an event is published, it is lost. It was completely ruled out for production use and failure mode is worse than NestJS EventEmitter.
-
-**abc**
